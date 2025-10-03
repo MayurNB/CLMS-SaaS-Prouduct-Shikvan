@@ -1,0 +1,41 @@
+/*******************************************************************/
+
+    Employer onboard process 
+
+
+/*********************************************************************/
+
+Page 1: Onboard Employer:
+        Step1: Enter user basic details and creat the user account with status 'onboard'.
+        Step2: Enter email id then show User details if right then enter company name only and update it in employer profile.
+
+Page 2: Subscriptions Setup:
+        Step1: Enter email id & Employer profile id
+        Step2: Show the User details with company name  
+        Step3: Select Package and Pricing zone 
+        Step4: Subscriptions Price with Start date to End date
+        Step5: First Payment & confirm Employer Payment 
+        Step6: After all Above activities done allowed to access the product. with employer profile status: new
+
+Page 3: New Employer Mgt:
+        Step1: Status NEW all records show 
+        Step2: Condition 1 branch ,1 OE add after status are the activities
+        Step3: then never here record show 
+
+Page 4: Employer info Mgt:
+        Step1: show all Active Record or Deactive Record it.
+
+
+Logic behind it :
+
+### User creation time employer profile 
+first of all data send via form Client name , Client email and username with employer profile in company name.
+
+user data store via controller after user id are store in the employer profile data so it's can be solve the problem of the user id storing in the employer profile as user id.
+
+
+### User & Employer data done after entire data validate it.
+
+search by email then show entire details if everything right then below have procedure like Data As User cum Employer details show after enter OTP and select the what want it Approved or Delete it or Data Modification 
+
+based above condition on process and store this state in dedicated table design for the stuffs 

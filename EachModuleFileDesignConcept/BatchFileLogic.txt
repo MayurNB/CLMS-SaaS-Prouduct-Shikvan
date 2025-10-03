@@ -1,0 +1,77 @@
+
+
+Batch logic:
+
+1) Batch Creation (Owner/Admin/Branch Manager/Custom):
+
+    Batch Id (Auto Generated)
+    Batch Name : by creator
+    Subject data feed in batch
+    Total subject  based below rows show
+    SUbject Id (Auto Generated) Subject Name Subject Teacher Assign (drop down have ) teacher id  subject total topic 
+
+    this all stuff feed then 
+
+(NOTE: New subject can be add in same batch and subject info also change but batch delete are never allowed untill procedural system not approved by high authority)
+
+2) Batch Show:
+
+Select Batch then batch wise same data show like above with total student conneted 
+
+then subject wise how many from same batch how many from other batch
+
+other branch student data can be view 
+
+3) Batch Edit 
+
+select batch and then change or add more subject or reassign the teacher
+
+4) Batch Performance 
+
+Batch regular conduct and teacher with student attandence 
+
+Batch SUbject progress 
+
+Batch last week and month exam performance
+
+Batch Fees status 
+
+5) Batch Schedule:
+
+    select batch 
+    1 day = how many lecture based provide colume
+
+    logic simple
+
+    select day after click below show ,
+    select monday: 
+    Select start time  Select end time subject 
+
+    after click confirm then go next day still sunday 
+
+    confirm after batch liked all teacher and student can be assigned 
+
+    or
+
+    if schedule based on deemand so
+
+    Select Batch 
+
+    conduct today , tomarrow , date 
+
+    time
+
+    then subject and teacher (no Teacher changes due to system consitency)
+
+    Payment after done : 
+
+    confirm
+
+both can use as per need it
+
+6) Today Batches status:
+
+select batch time table , active student , and teahcer andy schedule on deemand leacture or anything also show 
+
+
+

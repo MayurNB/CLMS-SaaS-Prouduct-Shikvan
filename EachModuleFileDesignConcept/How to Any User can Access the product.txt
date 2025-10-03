@@ -1,0 +1,77 @@
+
+As per the User can access our product via login page right so 
+
+institute URL in have Subscriber id and Package id
+
+so,
+
+step1: as per the login page can be accept the entire id from URL
+Step2: this id containt 2 ids this can be differenticate by server on page 
+step3: after we got the subscriber id and packagetype id same based on this id's institute table in provide info can be access and send to login page 
+step4: after user can view means login time user can view the institute name , instiute logo and background in have institute image
+step5: then as per the user can try to login so as per the form in saved the data is same as the instiutte can send it so login after same data with userid and password send it
+step6: then server on UserVerification page on got the subscriber id and package it so both can be find it productype id also 
+step7: so as we got 3 id's like subscriber id , package id , product type id then As per the user id have some letter wise things 
+       As per the SVS01B1E1 this are id.
+step8: check the SVS01 it's same as Product Subscriber id if yes then next if not then not found.
+step9: after then B1 in the B1 can be get then check same have or not if yes then next otherwise not found
+step10: then again E1 so same as check it's can be haved if yes or not if yes then next or not then not found
+step11: then as yes then access granted to user. as per user can be have in front end on id's like Subscriber id , ProductTypeId , Package id , branch id , employee id
+
+Important concept wise algo:
+
+Institute Url based data show:
+
+Example: SVS01-SVPK01
+
+algorithm from backend:
+step1: SVS01-SVPK01 in have '-' so  never consider insted SVS01 store in PSID and SVPK01 store in PKID.
+step2: based on PSID and PKID can be fetch institute information like Product Type id, logo , name and background image. 
+step3: as per the user can view and login form in have path with  format[PSID-PTID-PKID-$UserName-$Password].
+step4: as per the format user can be enter stuff and then enter the login after active UserVerification page.
+
+UserVerification conceptual way and algo:
+
+so based on previous data we got from the id like PSID-PTID-PKID-$UserName-$Password.
+
+1) all id's assign to dedicated names:
+
+step1: PSID-PTID-PKID-#UserName-#Password from each id value transfer the $PSID,$PTID,$PKID,$UserName,$PassWord and '-' can igonre this for only indicate of new value.
+step2: done after next process start.
+
+2) Id's wise checking and access to next id's:
+
+step1: $PSID can be same as Product Subsciber Database in have id if Yes then Next if not then not found. redirect on home.
+step2: $PTID can be same as Product Subsciber Database in have id if Yes then Next if not then not found. redirect on home.
+step3: $PKID can be same as Product Subsciber Database in have id if Yes then Next if not then not found. redirect on home.
+step4: this algo can verified the subscriber related stuff after can start next process.
+
+3) User id and password assign Indication:
+
+step1: #UserName-#Password in this same #UserName store in $userName and #PassWord store in $PassWord.
+step2: so first of all $UserName in all data can be process as per the next.
+step3: SVS01B1S1 this from $UserName so so in this can be sub-string can be store in $UserUseSubscriberID , $BranchId  and $StudentID.
+step4: $UserUseSubscriberID = SVS01 ,$BranchId = B1 and $StudentID = S1. // other case in owner or employee.
+step5: Then next process start.
+
+4) Indication grand each id to next id access:
+
+step1: $UserUseSubscriberID and as we have already PSID can be same then check with database (this for the confirmation to right subscriber id) if true then next other wise not found.
+st1p2: $BranchId can be cheked with same way in database if true then next otheriwse not found.
+step3: $StudentId can be check with same way in database if true then next otherwise not found.
+step4: $PassWord can be check with same way in database if true then next otherwise not found.
+step5: this can be have flag it's true and $Role= Student then start next process.
+
+5) Package Wise Access:
+
+step1: checking flag status if true then next process.
+step2: as per we have already PKID , PSID and PTID this all are again check with database (2nd time confimation for package assign).
+step3: after $Role = student wise $path = student access dashboard. this have logical flow for assign the access based on stuff first of all which package.
+step4: so as per the we already identify the this user are student this based table in store path are show.
+step5: means thier have code like user identify $Role after easily can be identify so as per the all stuff can be already fetch the path of access based on role.
+step6: $Role : student can be get it direct $path then start next process 
+
+End of the login page after verification and validation process so next are the working process on other page design but this phase can be provide to user list of or object in array [PSID,PTID,PKID,BID,..] means this id are present to user untill user can be logout.
+
+
+

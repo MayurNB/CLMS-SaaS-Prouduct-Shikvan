@@ -1,0 +1,47 @@
+mysql> SHOW TABLES;
++---------------------------+
+| Tables_in_shikvan         |
++---------------------------+
+| activity_logs             |
+| assignment_submissions    |
+| assignments               |
+| attendances               |
+| branches                  |
+| cache                     |
+| cache_locks               |
+| communications            |
+| contents                  |
+| courses                   |
+| employer_payments         |
+| employers_profiles        |
+| exam_papers               |
+| exams                     |
+| failed_jobs               |
+| fees                      |
+| grades                    |
+| institute_infos           |
+| internal_staffs           |
+| job_batches               |
+| jobs                      |
+| migrations                |
+| packages                  |
+| password_reset_tokens     |
+| payments                  |
+| permissions               |
+| pricing_zones             |
+| product_infos             |
+| product_version_histories |
+| programs                  |
+| results                   |
+| role_base_access_controls |
+| role_permissions          |
+| roles                     |
+| sessions                  |
+| subscriptions             |
+| support_tickets           |
+| system_users              |
+| timetables                |
+| user_profiles             |
+| users                     |
++---------------------------+
+41 rows in set (0.15 sec)
