@@ -75,7 +75,7 @@ Route::get('/login/{institute_slug?}', [InstituteLoginPageController::class, 'sh
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 //Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 

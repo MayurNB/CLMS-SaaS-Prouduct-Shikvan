@@ -102,13 +102,18 @@
                 <div class="dropdown-divider"></div><a class="dropdown-item" href="#">
                   <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-lock-locked') }}"></use>
-                  </svg> Lock Account</a><a class="dropdown-item" href="{{ route('logout') }}">
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  </svg> Lock Account</a><!-- Hidden logout form -->
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
     @csrf
 </form>
-                  <svg class="icon me-2">
-                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
-                  </svg> Logout</a>
+
+<!-- Link that triggers form submission -->
+<a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    <svg class="icon me-2">
+        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
+    </svg> 
+    Logout
+</a>
               </div>
             </li>
           </ul>
