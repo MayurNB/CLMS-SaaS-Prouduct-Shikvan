@@ -1098,13 +1098,15 @@ Employer
                 <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <select id="programDropdown" class="form-control">
-    <option value="">-- Select Program --</option>
-    @foreach(\App\Models\LearnerCatalog::select('raw_program_name')->distinct()->get() as $program)
-    <option value="{{ trim($program->raw_program_name) }}">{{ trim($program->raw_program_name) }}</option>
+                {{-- FIX: Populate the dropdown using the user's specific program list passed from the controller --}}
+<select id="programDropdown" class="form-control">
+<option value="">-- Select Program --</option>
+@foreach($userProgramsForFilter as $programName)
+<option value="{{ $programName }}">{{ $programName }}</option>
 @endforeach
-
 </select>
+
+
 
                 <table class="table mt-3" id="learnersTable">
     <thead>

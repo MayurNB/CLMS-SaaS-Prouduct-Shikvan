@@ -16,28 +16,38 @@ use Illuminate\Support\Facades\Log;
 
 class LearnerEnrollmentController extends Controller
 {
-        function employerLearnerEnrollment()
-        {
-             $programs = Program::all();
+    function employerLearnerEnrollment()
+    {
+        // 1. Fetch general programs (for the enrollment form)
+        $programs = Program::all();
 
-            return view('Access.Core.Employer.learner_enrollment', compact('programs'));
-        }
+        // 2. FIX: Define and assign the missing variable $userProgramsForFilter
+        // This securely fetches the distinct program names entered by the current user.
+        $userId = Auth::id();
+        $userProgramsForFilter = LearnerCatalog::where('created_by', $userId)
+            ->selectRaw('TRIM(raw_program_name) as program_name')
+            ->distinct()
+            ->pluck('program_name')
+            ->toArray();
+        
+        // 3. Pass both variables to the view
+        return view('Access.Core.Employer.learner_enrollment', compact('programs', 'userProgramsForFilter'));
+    }
 
-        function employerLearnerEnrollmentDataStoreInDB(Request $request)
+    function employerLearnerEnrollmentDataStoreInDB(Request $request)
     {
         $user = Auth::user();
 
         // validate the request
         $validated = $request->validate([
-            'LearnerName'    => 'required|string|max:255',
+            'LearnerName'     => 'required|string|max:255',
             'LearnerEmailId'  => 'nullable|email|max:255',
             'LearnerPhoneNo' => 'nullable|string|max:20',
-            'ProgramName'    => 'required|string|max:255',
-            'ProgramFees'    => 'required|numeric|min:0',
+            'ProgramName'     => 'required|string|max:255',
+            'ProgramFees'     => 'required|numeric|min:0',
         ]);
 
         
-
         // store in learner_catalog
         $learner = LearnerCatalog::create([
             'raw_learner_name' => $validated['LearnerName'],
@@ -48,53 +58,57 @@ class LearnerEnrollmentController extends Controller
             'status'           => 'initial_entry',
             'learner_id'       => null, // future linking
             'program_id'       => null, // future linking
+            'created_by'       => Auth::id(),
         ]);
 
         return redirect()->back()->with('success', 'Learner enrollment saved successfully!');
     }
 
-public function getEnrolledLearnersByProgram($programName)
+public function getEnrolledLearnersByProgram($programName = null)
 {
     try {
-        // Remove extra spaces in program name
-        $programName = trim($programName);
+        $userId = Auth::id();
 
-        Log::info('Fetching learners for program: "' . $programName . '"');
+        // 1️⃣ Get all distinct programs created by the current user
+        $myPrograms = LearnerCatalog::where('created_by', $userId)
+            ->selectRaw('TRIM(raw_program_name) as program_name')
+            ->distinct()
+            ->pluck('program_name');
 
-        // Fetch the paginated data
-        $learnersPaginator = LearnerCatalog::whereRaw('TRIM(raw_program_name) = ?', [$programName])
-            // Select all necessary fields, including 'id' for completeness
-            ->select('id', 'raw_learner_name', 'raw_email',  'raw_phone',  'raw_fee_amount', 'status')
-            ->paginate(10);
+        $learners = [];
+        $total = 0;
+        $perPage = 10;
+
+        if ($programName) {
+            $programName = trim($programName);
+
+            $learnersPaginator = LearnerCatalog::where('created_by', $userId)
+                ->whereRaw('TRIM(raw_program_name) = ?', [$programName])
+                ->select('id', 'raw_learner_name', 'raw_email', 'raw_phone', 'raw_fee_amount', 'status')
+                ->paginate($perPage);
             
-        Log::info('Learners found: ' . $learnersPaginator->total());
+            // Getting the current page's items
+            $learners = $learnersPaginator->items();
+            $total = $learnersPaginator->total();
+            $perPage = $learnersPaginator->perPage();
+        }
 
-        // *** CRUCIAL FIX ***
-        // Manually convert the collection of Eloquent Models to a simple array 
-        // to bypass any underlying serialization issues (like the decimal cast error).
-        $learnerData = $learnersPaginator->getCollection()->map(function ($learner) {
-            return $learner->toArray();
-        })->all();
-        
         return response()->json([
-            'learners' => $learnerData,
-            'total'    => $learnersPaginator->total(),
-            'per_page' => $learnersPaginator->perPage(),
+            'programs' => $myPrograms,
+            'learners' => $learners,
+            'total'    => $total,
+            'per_page' => $perPage,
         ]);
-        
+
     } catch (\Exception $e) {
-        // Improved error logging for future debugging
-        Log::error("Final Error on Serialization: " . $e->getMessage() . " - Trace: " . $e->getTraceAsString());
-        
+        Log::error("Error fetching programs/learners: " . $e->getMessage() . " Trace: " . $e->getTraceAsString());
+
         return response()->json([
-            'error' => 'Server Error: Could not fetch learners.',
-            // Include the message for easier debugging in the Network tab
-            'debug_message' => $e->getMessage() 
+            'error' => 'Server Error: Could not fetch programs/learners.',
+            'debug_message' => $e->getMessage()
         ], 500);
     }
 }
-
-
 
 
 }
