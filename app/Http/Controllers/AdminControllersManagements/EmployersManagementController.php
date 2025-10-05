@@ -62,21 +62,27 @@ class EmployersManagementController extends Controller
     'industry'             => $request->input('industry', 'General'),
 ]);
 
-        // Step 3: Assign Employer Role (FIXED LOGIC)
-        // CRITICAL FIX 1: Use 'SystemEmployer' role name
-        $employerRole = Role::where('name', 'SystemEmployer')->first();
+        // 1. Retrieve the Role using the confirmed correct name and ID column
+$employerRole = Role::where('name', 'SystemEmployer')->first();
         
-        if ($employerRole) {
-            // CRITICAL FIX 2: Use the robust Eloquent ATTACH method
-            $user->roles()->attach($employerRole->id, [ 
-                'status'       => 'inactive',
-                'assigned_by'  => Auth::id(),
-                'activated_at' => null, // Keep this null as per your pivot table structure
-            ]);
-        } else {
-             // If role is missing, we must throw an error to fail the transaction
-             throw new \Exception("Required role 'SystemEmployer' not found.");
-        }
+if ($employerRole) {
+    // 2. Determine the Role ID to use for the pivot table
+    // It must use the property name that maps to the 'role_id' column.
+    // Since the model is now fixed (Step 1), we can use the primary key property.
+    $roleId = $employerRole->role_id; // Using 'role_id' explicitly for certainty
+
+    // 3. Attach the Role using the robust Eloquent relationship
+    // $user->roles() is defined in User.php and knows to insert into user_roles.
+    $user->roles()->attach($roleId, [ 
+        'status'       => 'inactive',
+        'assigned_by'  => Auth::id(), // ID of the currently logged-in Admin
+        'activated_at' => null, 
+    ]);
+} else {
+     // Failsafe: if 'SystemEmployer' is missing, the transaction will roll back.
+     throw new \Exception("Required role 'SystemEmployer' not found in database.");
+}
+
 
     }); // transaction ensures all-or-nothing
 
