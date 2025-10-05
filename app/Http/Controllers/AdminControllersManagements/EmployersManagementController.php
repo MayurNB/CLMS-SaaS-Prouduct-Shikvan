@@ -53,9 +53,14 @@ class EmployersManagementController extends Controller
 
         // Step 2: Create Employer Profile
         EmployerProfile::create([
-            'user_id'              => $user->id,
-            'onboarded_by_user_id' => Auth::id(),
-        ]);
+    'user_id'              => $user->id,
+    'onboarded_by_user_id' => Auth::id(),
+    
+    // CRITICAL: Provide values for ALL non-nullable fields defined in $fillable
+    'company_name'         => $request->input('company_name', 'N/A'),
+    'company_address'      => $request->input('company_address', 'N/A'),
+    'industry'             => $request->input('industry', 'General'),
+]);
 
         // Step 3: Assign Employer Role (FIXED LOGIC)
         // CRITICAL FIX 1: Use 'SystemEmployer' role name
