@@ -32,7 +32,7 @@ class EmployersManagementController extends Controller
 
        public function creationOfemployerAsuser(Request $request)
 {
-    // Validate input and uniqueness
+    // Validate input and uniqueness (Assume this is correct now)
     $request->validate([
         'name'     => 'required|string|max:255',
         'email'    => 'required|string|email|max:255|unique:users,email',
@@ -57,23 +57,27 @@ class EmployersManagementController extends Controller
             'onboarded_by_user_id' => Auth::id(),
         ]);
 
-        // Step 3: Assign Employer Role
-        $employerRole = Role::where('name', 'Employer')->first();
+        // Step 3: Assign Employer Role (FIXED LOGIC)
+        // CRITICAL FIX 1: Use 'SystemEmployer' role name
+        $employerRole = Role::where('name', 'SystemEmployer')->first();
+        
         if ($employerRole) {
-            UserRole::create([
-                'user_id'      => $user->id,
-                'role_id'      => $employerRole->role_id,
-                'status'       => 'active',
+            // CRITICAL FIX 2: Use the robust Eloquent ATTACH method
+            $user->roles()->attach($employerRole->id, [ 
+                'status'       => 'inactive',
                 'assigned_by'  => Auth::id(),
-                'activated_at' => now(),
+                'activated_at' => null, // Keep this null as per your pivot table structure
             ]);
+        } else {
+             // If role is missing, we must throw an error to fail the transaction
+             throw new \Exception("Required role 'SystemEmployer' not found.");
         }
 
     }); // transaction ensures all-or-nothing
 
+    // Success!
     return redirect()->back()->with('success', 'Employer user created successfully!');
 }
-
 
 
 }
