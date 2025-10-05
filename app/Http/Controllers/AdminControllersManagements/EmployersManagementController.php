@@ -74,7 +74,7 @@ if ($employerRole) {
     // 3. Attach the Role using the robust Eloquent relationship
     // $user->roles() is defined in User.php and knows to insert into user_roles.
     $user->roles()->attach($roleId, [ 
-        'status'       => 'inactive',
+        'status'       => 'active',
         'assigned_by'  => Auth::id(), // ID of the currently logged-in Admin
         'activated_at' => null, 
     ]);
