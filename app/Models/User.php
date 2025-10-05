@@ -54,11 +54,12 @@ class User extends Authenticatable
      * The roles that belong to the user.
      */
     public function roles(): BelongsToMany
-    {
-        return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id')
-                    ->withPivot('status', 'assigned_by', 'activated_at', 'created_at', 'updated_at')
-                    ->withTimestamps();
-    }
+{
+    return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id')
+        ->withPivot('status', 'assigned_by', 'activated_at', 'created_at', 'updated_at')
+        ->withTimestamps()
+        ->wherePivot('status', 'active'); // <-- CRITICAL FIX: Only load active roles
+}
     
     /**
      * Get the "Role" attribute for the user.
