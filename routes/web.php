@@ -259,7 +259,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
 // //End Admin Routes. 
 // });
 
-Route::middleware(['auth', 'role:SystemEmployer'])->prefix('Employer')->group(function () {
+Route::middleware(['auth', 'role:SystemEmployer'])->prefix('employer')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'employerDashboard'])->name('employerDashboard');
     Route::get('/profile', [ProfileController::class, 'employerProfile'])->name('employerProfile');
     Route::post('/profile/update', [ProfileController::class, 'updateEmployerProfile'])->name('updateEmployerProfile');
