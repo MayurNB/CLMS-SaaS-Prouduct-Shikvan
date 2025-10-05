@@ -20,7 +20,7 @@ class EmployerProfile extends Model
     protected $fillable = [
         'user_id',
         'company_name',
-        'company_address',
+        
         'industry',
         'onboarded_by_user_id',
     ];

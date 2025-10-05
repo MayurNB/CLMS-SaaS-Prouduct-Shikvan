@@ -58,7 +58,7 @@ class EmployersManagementController extends Controller
     
     // CRITICAL: Provide values for ALL non-nullable fields defined in $fillable
     'company_name'         => $request->input('company_name', 'N/A'),
-    'company_address'      => $request->input('company_address', 'N/A'),
+    
     'industry'             => $request->input('industry', 'General'),
 ]);
 
