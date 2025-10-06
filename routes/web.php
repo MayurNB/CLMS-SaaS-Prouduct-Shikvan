@@ -42,6 +42,7 @@ use App\Http\Controllers\User\UserController;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
 use App\Http\Controllers\LearnerEnrollment\LearnerEnrollmentController;
+use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,10 +55,26 @@ use App\Http\Controllers\LearnerEnrollment\LearnerEnrollmentController;
 |
 */
 
-// Default Laravel welcome route
-Route::get('/core', function () {
-    return view('/CoreUI/views/index');
+/*
+|--------------------------------------------------------------------------
+| Public/Catch-All Redirect
+|--------------------------------------------------------------------------
+*/
+
+// This route catches the root '/' path and redirects it to your showcase site.
+Route::get('/', function () {
+    return Redirect::to('https://mnbsolutions.vercel.app/');
 });
+
+// OPTIONAL: Catch any undefined public URL and redirect it as well.
+// If you want all non-logged-in traffic trying to access arbitrary paths 
+// (e.g., /home, /blog, etc., that don't exist) to go to your landing page.
+// NOTE: Make sure this is the LAST route in your web.php file, 
+// unless you have a specific 404 handler.
+// Route::fallback(function () {
+//     return Redirect::to('https://mnbsolutions.vercel.app/inwork-index.html');
+// });
+
 
 // IMPORTANT: These login routes MUST be in routes/web.php
 // This route will handle GET requests for your branded login page:
@@ -76,6 +93,13 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 //Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// 2. GET Route: Handles users who try to access /logout directly via URL,
+// a faulty link, or browser history, preventing the "Method Not Allowed" error.
+Route::get('/logout', function () {
+    // Redirects the user directly to the login page
+    return redirect()->route('login'); 
+})->name('logout.get'); // We use a unique name to avoid conflicts
 
 
 

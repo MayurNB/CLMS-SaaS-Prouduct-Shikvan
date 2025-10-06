@@ -58,7 +58,7 @@
             <div class="mt-auto pt-10 text-center text-gray-500 text-xs w-full"> <!-- mt-auto pushes it to the bottom -->
                 <a href="#" class="text-blue-600 hover:underline mx-2">Privacy Policy</a> |
                 <a href="#" class="text-blue-600 hover:underline mx-2">Terms of Use</a> |
-                <a href="https://yourwebsite.com" class="text-blue-600 hover:underline mx-2">Powered by Me</a>
+                <a href="https://mnbsolutions.vercel.app/" class="text-blue-600 hover:underline mx-2">Powered by MNBSolutions </a>
             </div>
         </div>
 

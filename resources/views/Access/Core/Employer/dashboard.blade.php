@@ -404,19 +404,19 @@ Employer
             <div class="card text-white bg-primary">
                 <div class="card-body pb-0 d-flex justify-content-between align-items-start">
                     <div>
-                        <div class="fs-4 fw-semibold">26K <span class="fs-6 fw-normal">(-12.4%
+                        <div class="fs-4 fw-semibold">{{ number_format($learnerCount) }} <span class="fs-6 fw-normal">(Loaded
                                 <svg class="icon">
                                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-arrow-bottom') }}"></use>
                                 </svg>)</span></div>
                         <div>Learners</div>
                     </div>
                     <div class="dropdown">
-                        <button class="btn btn-transparent text-white p-0" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <!-- <button class="btn btn-transparent text-white p-0" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg class="icon">
                                 <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-options') }}"></use>
                             </svg>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div>
+                        </button> -->
+                        <!-- <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div> -->
                     </div>
                 </div>
                 {{-- <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
@@ -430,19 +430,20 @@ Employer
             <div class="card text-white bg-info">
                 <div class="card-body pb-0 d-flex justify-content-between align-items-start">
                     <div>
-                        <div class="fs-4 fw-semibold">$6.200 <span class="fs-6 fw-normal">(40.9%
+                        <div class="fs-4 fw-semibold">{{ $currencySymbol }} {{ number_format($totalFees, 2)}} 
+                            <span class="fs-6 fw-normal">(Updated
                                 <svg class="icon">
                                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-arrow-top') }}"></use>
                                 </svg>)</span></div>
                         <div>Fees Collection </div>
                     </div>
                     <div class="dropdown">
-                        <button class="btn btn-transparent text-white p-0" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <!-- <button class="btn btn-transparent text-white p-0" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg class="icon">
                                 <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-options') }}"></use>
                             </svg>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div>
+                        </button> -->
+                        <!-- <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div> -->
                     </div>
                 </div>
                 {{-- <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
@@ -450,7 +451,7 @@ Employer
                 </div> --}}
             </div>
         </div>
-        <div class="col-sm-6 col-xl-3">
+        <!-- <div class="col-sm-6 col-xl-3">
             <div class="card text-white bg-warning">
                 <div class="card-body pb-0 d-flex justify-content-between align-items-start">
                     <div>
@@ -473,8 +474,8 @@ Employer
                     <canvas class="chart" id="card-chart3" height="70"></canvas>
                 </div> --}}
             </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
+        </div> -->
+        <!-- <div class="col-sm-6 col-xl-3">
             <div class="card text-white bg-danger">
                 <div class="card-body pb-0 d-flex justify-content-between align-items-start">
                     <div>
@@ -497,7 +498,7 @@ Employer
                     <canvas class="chart" id="card-chart4" height="70"></canvas>
                 </div> --}}
             </div>
-        </div>
+        </div> -->
         </div>
     <div class="card mb-4">
 
