@@ -1171,7 +1171,8 @@ function loadLearners(programName, page = 1) {
     tbody.empty();
 
     $.ajax({
-        url: `/Employer/programs/${encodeURIComponent(programName)}/learners?page=${page}`,
+       // FIX: Change 'Employer' to the lowercase 'employer'
+        url: `/employer/programs/${encodeURIComponent(programName)}/learners?page=${page}`,
         type: 'GET',
         success: function(response) {
             let data = response.learners;
