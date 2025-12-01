@@ -15,7 +15,10 @@ class Tag extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'tag_name',
+        'name',
+        'type',
+        'description',
+        'institute_id',
     ];
 
     /**
@@ -23,6 +26,7 @@ class Tag extends Model
      */
     public function programs()
     {
-        return $this->belongsToMany(Program::class, 'program_tags', 'tag_id', 'program_id');
+        return $this->belongsToMany(Program::class, 'program_tags', 'tag_id', 'program_id')
+                    ->withTimestamps();
     }
 }

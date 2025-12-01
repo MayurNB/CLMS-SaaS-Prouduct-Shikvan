@@ -13,17 +13,20 @@ class DiscountOffer extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
-
     protected $table = 'discounts_offers';
 
     protected $fillable = [
-        'offer_name',
-        'description',
-        'discount_type',
-        'discount_value',
+        'name',
+        'description_public',
+        'description_internal',
+        'type',
+        'value',
         'start_date',
         'end_date',
         'is_active',
+        'program_id',
+        'course_id',
+        'institute_id',
     ];
 
     /**
@@ -31,6 +34,22 @@ class DiscountOffer extends Model
      */
     public function programPrices()
     {
-        return $this->hasMany(ProgramPrice::class);
+        return $this->hasMany(ProgramPrice::class, 'discount_offer_id');
+    }
+
+    /**
+     * The program this discount offer belongs to (if linked directly).
+     */
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
+    }
+
+    /**
+     * The course this discount offer belongs to (if linked directly).
+     */
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
     }
 }

@@ -5,189 +5,228 @@
 @section('quick')
 {{-- This section seems to be for your header content --}}
 <div class="container-fluid border-bottom px-4">
-    <button class="header-toggler" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()" style="margin-inline-start: -14px;">
-        <svg class="icon icon-lg">
-            <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-menu') }}"></use>
-        </svg>
-    </button>
-    <ul class="header-nav d-none d-lg-flex">
-        <li class="nav-item"><a class="nav-link" href="{{ url('/dashboard') }}">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Batch Mgt</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Student Mgt</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Staff Mgt</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Fees Mgt</a></li>
-    </ul>
-    <ul class="header-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="#">
-
-            <li class="nav-item dropdown"><a class="nav-link py-0 pe-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+          <button class="header-toggler" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()" style="margin-inline-start: -14px;">
+            <svg class="icon icon-lg">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-menu') }}"></use>
+            </svg>
+          </button>
+          <!-- <ul class="header-nav d-none d-lg-flex">
+            <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Batch Mgt</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Student Mgt</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Staff Mgt</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Fees Mgt</a></li>
+          </ul> -->
+          <ul class="header-nav ms-auto">
+            {{--<li class="nav-item"><a class="nav-link" href="#">
+                
+             <li class="nav-item dropdown"><a class="nav-link py-0 pe-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <div class="avatar avatar-md">
                     <svg class="icon icon-lg">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bell') }}"></use>
-                    </svg>
-                </div>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end pt-0">
-                <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold rounded-top mb-2">Account</div><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bell') }}"></use>
-                    </svg> Updates<span class="badge badge-sm bg-info ms-2">42</span></a><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-envelope-open') }}"></use>
-                    </svg> Messages<span class="badge badge-sm bg-success ms-2">42</span></a><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-task') }}"></use>
-                    </svg> Tasks<span class="badge badge-sm bg-danger ms-2">42</span></a><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-comment-square') }}"></use>
-                    </svg> Comments<span class="badge badge-sm bg-warning ms-2">42</span></a>
-                <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold my-2">
-                    <div class="fw-semibold">Settings</div>
-                </div><a class="dropdown-item" href="#"> {{-- Changed to point to a 'profile' route --}}
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
-                    </svg> Profile</a><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-settings') }}"></use>
-                    </svg> Settings</a><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-credit-card') }}"></use>
-                    </svg> Payments<span class="badge badge-sm bg-secondary ms-2">42</span></a><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-file') }}"></use>
-                    </svg> Projects<span class="badge badge-sm bg-primary ms-2">42</span></a>
-                <div class="dropdown-divider"></div><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-lock-locked') }}"></use>
-                    </svg> Lock Account</a><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
-                    </svg> Logout</a>
-            </div>
-        </li>
-        </a></li>
-
-        <li class="nav-item"><a class="nav-link" href="#">
-                <svg class="icon icon-lg">
-                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-list-rich') }}"></use>
-                </svg></a></li>
-        <li class="nav-item"><a class="nav-link" href="#">
-                <svg class="icon icon-lg">
-                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-envelope-open') }}"></use>
-                </svg></a></li>
-    </ul>
-    <ul class="header-nav">
-        <li class="nav-item py-1">
-            <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
-        </li>
-        <li class="nav-item dropdown">
-            <button class="btn btn-link nav-link py-2 px-2 d-flex align-items-center" type="button" aria-expanded="false" data-coreui-toggle="dropdown">
-                <svg class="icon icon-lg theme-icon-active">
-                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-contrast') }}"></use>
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bell') }}"></use>
                 </svg>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end" style="--cui-dropdown-min-width: 8rem;">
-                <li>
-                    <button class="dropdown-item d-flex align-items-center" type="button" data-coreui-theme-value="light">
-                        <svg class="icon icon-lg me-3">
-                            <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-sun') }}"></use>
-                        </svg>Light
-                    </button>
-                </li>
-                <li>
-                    <button class="dropdown-item d-flex align-items-center" type="button" data-coreui-theme-value="dark">
-                        <svg class="icon icon-lg me-3">
-                            <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-moon') }}"></use>
-                        </svg>Dark
-                    </button>
-                </li>
-                <li>
-                    <button class="dropdown-item d-flex align-items-center active" type="button" data-coreui-theme-value="auto">
-                        <svg class="icon icon-lg me-3">
-                            <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-contrast') }}"></use>
-                        </svg>Auto
-                    </button>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item py-1">
-            <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
-        </li>
-        <li class="nav-item dropdown"><a class="nav-link py-0 pe-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <div class="avatar avatar-md"><img class="avatar-img" src="{{ asset('coreui/assets/img/avatars/8.jpg') }}" alt="user@email.com"></div>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end pt-0">
-                <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold rounded-top mb-2">Account</div><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bell') }}"></use>
-                    </svg> Updates<span class="badge badge-sm bg-info ms-2">42</span></a><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-envelope-open') }}"></use>
-                    </svg> Messages<span class="badge badge-sm bg-success ms-2">42</span></a><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-task') }}"></use>
-                    </svg> Tasks<span class="badge badge-sm bg-danger ms-2">42</span></a><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-comment-square') }}"></use>
-                    </svg> Comments<span class="badge badge-sm bg-warning ms-2">42</span></a>
-                <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold my-2">
-                    <div class="fw-semibold">Settings</div>
-                </div><a class="dropdown-item" href="#"> {{-- Changed to point to a 'profile' route --}}
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
-                    </svg> Profile</a><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-settings') }}"></use>
-                    </svg> Settings</a><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-credit-card') }}"></use>
-                    </svg> Payments<span class="badge badge-sm bg-secondary ms-2">42</span></a><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-file') }}"></use>
-                    </svg> Projects<span class="badge badge-sm bg-primary ms-2">42</span></a>
-                <div class="dropdown-divider"></div><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-lock-locked') }}"></use>
-                    </svg> Lock Account</a><a class="dropdown-item" href="#">
-                    <svg class="icon me-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
-                    </svg> Logout</a>
             </div>
-        </li>
-    </ul>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end pt-0">
+                <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold rounded-top mb-2">Account</div><a class="dropdown-item" href="#">
+                  <!-- <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bell') }}"></use>
+                  </svg> Updates<span class="badge badge-sm bg-info ms-2">42</span></a><a class="dropdown-item" href="#">
+                  <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-envelope-open') }}"></use>
+                  </svg> Messages<span class="badge badge-sm bg-success ms-2">42</span></a><a class="dropdown-item" href="#">
+                  <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-task') }}"></use>
+                  </svg> Tasks<span class="badge badge-sm bg-danger ms-2">42</span></a><a class="dropdown-item" href="#">
+                  <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-comment-square') }}"></use>
+                  </svg> Comments<span class="badge badge-sm bg-warning ms-2">42</span></a> -->
+                <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold my-2">
+                  <div class="fw-semibold">Settings</div>
+                </div><a class="dropdown-item" href="{{ route('employerProfile') }}">
+                  <!-- <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
+                  </svg> Profile</a><a class="dropdown-item" href="#">
+                  <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-settings') }}"></use>
+                  </svg> Settings</a><a class="dropdown-item" href="#">
+                  <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-credit-card') }}"></use>
+                  </svg> Payments<span class="badge badge-sm bg-secondary ms-2">42</span></a><a class="dropdown-item" href="#">
+                  <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-file') }}"></use>
+                  </svg> Projects<span class="badge badge-sm bg-primary ms-2">42</span></a>
+                <div class="dropdown-divider"></div><a class="dropdown-item" href="#">
+                  <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-lock-locked') }}"></use>
+                  </svg> Lock Account</a><a class="dropdown-item" href="#"> -->
+                  <!-- <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
+                  </svg> Logout</a> -->
+              </div>
+            </li>
+            </a></li>--}}
+                
+          {{--  <li class="nav-item"><a class="nav-link" href="#">
+                <svg class="icon icon-lg">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-list-rich') }}"></use>
+                </svg></a></li>
+            <li class="nav-item"><a class="nav-link" href="#">
+                <svg class="icon icon-lg">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-envelope-open') }}"></use>
+                </svg></a></li> --}}
+          </ul>
+          <ul class="header-nav">
+            <li class="nav-item py-1">
+              <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+            </li>
+            <li class="nav-item dropdown">
+              <button class="btn btn-link nav-link py-2 px-2 d-flex align-items-center" type="button" aria-expanded="false" data-coreui-toggle="dropdown">
+                <svg class="icon icon-lg theme-icon-active">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-contrast') }}"></use>
+                </svg>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" style="--cui-dropdown-min-width: 8rem;">
+                <li>
+                  <button class="dropdown-item d-flex align-items-center" type="button" data-coreui-theme-value="light">
+                    <svg class="icon icon-lg me-3">
+                      <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-sun') }}"></use>
+                    </svg>Light
+                  </button>
+                </li>
+                <li>
+                  <button class="dropdown-item d-flex align-items-center" type="button" data-coreui-theme-value="dark">
+                    <svg class="icon icon-lg me-3">
+                      <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-moon') }}"></use>
+                    </svg>Dark
+                  </button>
+                </li>
+                <li>
+                  <button class="dropdown-item d-flex align-items-center active" type="button" data-coreui-theme-value="auto">
+                    <svg class="icon icon-lg me-3">
+                      <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-contrast') }}"></use>
+                    </svg>Auto
+                  </button>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item py-1">
+              <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
+            </li>
+            <li class="nav-item dropdown"><a class="nav-link py-0 pe-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                @php
+    $user = Auth::user();
+    $userProfile = $user->userProfile ?? null;
+    $picture = $userProfile->profile_picture_url ?? null;
+@endphp
+
+<div class="avatar avatar-md">
+
+    @if(!empty($picture))
+        <img class="avatar-img" src="{{ $picture }}" alt="User Profile Picture">
+    @else
+        <span style="font-size: 14px; color: #555;">Profile</span>
+    @endif
+
 </div>
+
+              </a>
+              <div class="dropdown-menu dropdown-menu-end pt-0">
+                <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold rounded-top mb-2">Account</div><a class="dropdown-item" href="#">
+                  <!-- <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bell') }}"></use>
+                  </svg> Updates<span class="badge badge-sm bg-info ms-2">42</span></a><a class="dropdown-item" href="#">
+                 {{-- <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-envelope-open') }}"></use>
+                  </svg> Messages<span class="badge badge-sm bg-success ms-2">42</span></a><a class="dropdown-item" href="#">
+                  <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-task') }}"></use>
+                  </svg> Tasks<span class="badge badge-sm bg-danger ms-2">42</span></a><a class="dropdown-item" href="#">
+                  <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-comment-square') }}"></use>
+                  </svg> Comments<span class="badge badge-sm bg-warning ms-2">42</span>
+--}}
+                </a> -->
+                <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold my-2">
+                  <div class="fw-semibold">Settings</div>
+                </div><a class="dropdown-item" href="{{ route('employerProfile') }}">
+                  <!-- <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
+                  </svg> Profile</a><a class="dropdown-item" href="#">
+                  <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-settings') }}"></use>
+                  </svg> Settings</a><a class="dropdown-item" href="#">
+                  <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-credit-card') }}"></use>
+                  </svg> Payments<span class="badge badge-sm bg-secondary ms-2">42</span></a><a class="dropdown-item" href="#">
+                  <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-file') }}"></use>
+                  </svg> Projects<span class="badge badge-sm bg-primary ms-2">42</span></a>
+                <div class="dropdown-divider"></div><a class="dropdown-item" href="#">
+                  <svg class="icon me-2">
+                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-lock-locked') }}"></use>
+                  </svg> Lock Account</a><a class="dropdown-item" href="#"> -->
+                  <!-- Hidden logout form -->
+<!-- ✅ Logout (Styled Like CoreUI Dropdown Item) -->
+<a class="dropdown-item" href="#" 
+   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+  <svg class="icon me-2">
+    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
+  </svg>
+  Logout
+</a>
+
+<!-- Hidden Logout Form -->
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+  @csrf
+</form>
+              </div>
+            </li>
+          </ul>
+        </div>
 @endsection
 
 @section('side bar')
 <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
-    <li class="nav-item"><a class="nav-link" href="{{ url('/dashboard') }}"> {{-- Changed to explicit dashboard route --}}
+     <li class="nav-title">Overview</li>
+        <li class="nav-item"><a class="nav-link" href="{{ Route('employerDashboard') }}">
             <svg class="nav-icon">
-                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-speedometer') }}"></use>
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-speedometer') }}"></use>
             </svg> Dashboard<span class="badge badge-sm bg-info ms-auto">NEW</span></a></li>
-    <li class="nav-title">Theme</li>
-    {{-- This link was originally pointing to UserMgt, but is labeled Profile. Changed to point to actual profile route --}}
-    <li class="nav-item"><a class="nav-link" href="#"> {{-- Changed to point to a 'profile' route --}}
+        <li class="nav-title">PERSONAL</li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('employerProfile') }}">
             <svg class="nav-icon">
-                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
             </svg> Profile</a></li>
-    <li class="nav-item"><a class="nav-link" href="{{ route('UserMgt') }}">
+        <li class="nav-title">INSTITUTE INFO </li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('employerInstituteManage') }}">
             <svg class="nav-icon">
-                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil') }}"></use>
-            </svg> User Mgt</a></li>
-    <li class="nav-title">Working</li>
-    <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
+            </svg> My Institute</a></li>
+        <!-- <li class="nav-title">Branch Management </li>
+        <li class="nav-item"><a class="nav-link" href="{{ url('employerProfile') }}">
             <svg class="nav-icon">
-                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-puzzle') }}"></use>
-            </svg> Batch Mgt</a>
-        <ul class="nav-group-items compact">
-            <li class="nav-item"><a class="nav-link" href="{{ url('/base/accordion') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Batch Performance</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/base/breadcrumb') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Manage Batch</a></li>
-            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/components/calendar/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Manage Subject 
-                    <svg class="icon icon-sm ms-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
-                    </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/base/cards') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Manage Schedule </a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/base/carousel') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Carousel</a></li>
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil') }}"></use>
+            </svg> Branch Management</a></li>
+        <li class="nav-title">ACCESS CONTROL </li>
+        <li class="nav-item"><a class="nav-link" href="{{ url('Employer_acm') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil') }}"></use>
+            </svg> Access Control Mgt </a></li> -->
+        <!-- <li class="nav-title">ACADEMIC MANAGEMENT</li> -->
+        <!-- <li class="nav-group"><a class="nav-link nav-group-toggle" href="{{ url('Employer_acm') }}"> -->
+            <!-- <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-puzzle') }}"></use>
+            </svg>Academic </a> -->
+          <ul class="nav-group-items compact">
+            <!-- <li class="nav-item"><a class="nav-link" href="{{ Route('employerProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Programs & Courses </a></li> -->
+            <!-- <li class="nav-item"><a class="nav-link" href="{{ url('Employer_content') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Assign  </a></li> -->
+            <!-- <li class="nav-item"><a class="nav-link" href="{{ url('Employer_assignment') }}" ><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Assignment Mgt 
+                <svg class="icon icon-sm ms-2">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
+                </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('Employer_exam') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Exam Mgt</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('Employer_result') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Result Mgt </a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/collapse') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Collapse</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/list-group') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> List group</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/navs-tabs') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Navs &amp; Tabs</a></li>
@@ -197,122 +236,172 @@
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/progress') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Progress</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/spinners') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Spinners</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/tables') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tables</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/base/tooltips') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tooltips</a></li>
-        </ul>
-    </li>
-    <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/tooltips') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tooltips</a></li> -->
+          </ul>
+        </li>
+        <li class="nav-title">ADMINISTRATION MANAGEMENT</li>
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="{{ url('Employer_acm') }}">
             <svg class="nav-icon">
-                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-cursor') }}"></use>
-            </svg> Staff Mgt</a>
-        <ul class="nav-group-items compact">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-puzzle') }}"></use>
+            </svg>Quick Action </a>
+          <ul class="nav-group-items compact">
+            <li class="nav-item"><a class="nav-link" href="{{ Route('employerBranch') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Branches Manages </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('employerBranchWiseLearnerAndFeesTotolInfo') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Branches View </a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ Route('employerProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Programs & Courses </a></li>
+            <!-- <li class="nav-item"><a class="nav-link" href="{{ url('Employer_content') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Content Mgt </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('Employer_assignment') }}" ><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Assignment Mgt 
+                <svg class="icon icon-sm ms-2">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
+                </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('Employer_exam') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Exam Mgt</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('Employer_result') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Result Mgt </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/collapse') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Collapse</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/list-group') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> List group</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/navs-tabs') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Navs &amp; Tabs</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/pagination') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Pagination</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/placeholders') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Placeholders</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/popovers') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Popovers</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/progress') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Progress</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/spinners') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Spinners</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/tables') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tables</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/tooltips') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tooltips</a></li> -->
+          </ul>
+        </li>
+
+         <!-- <li class="nav-title">PEOPLE MANAGEMENT & ENROLLMENT</li>
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-cursor') }}"></use>
+            </svg> Student Mgt</a>
+          <ul class="nav-group-items compact">
+            <li class="nav-item"><a class="nav-link" href="{{ url('StdMgt1') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Student Enrollment</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/buttons/button-group') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Enrollment manage</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/buttons/dropdowns') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Student Overview</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/components/loading-buttons/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Loading Buttons
+                <svg class="icon icon-sm ms-2">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
+                </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="{{ url('/charts') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-chart-pie') }}"></use>
+            </svg> Staff Mgt</a></li>
+         <li class="nav-title">DAILY OPERATIONS</li>
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-notes') }}"></use>
+            </svg> Attandance Mgt</a>
+          <ul class="nav-group-items compact">
+            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/form-control') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Form Control</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/select') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Select</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/forms/multi-select/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Multi Select
+                <svg class="icon icon-sm ms-2">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
+                </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/checks-radios') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Checks and radios</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/range') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Range</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/forms/range-slider/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Range Slider
+                <svg class="icon icon-sm ms-2">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
+                </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/input-group') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Input group</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/floating-labels') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Floating labels</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/forms/date-picker/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Date Picker
+                <svg class="icon icon-sm ms-2">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
+                </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/forms/date-range-picker/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Date Range Picker<span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/forms/rating/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Rating
+                <svg class="icon icon-sm ms-2">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
+                </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/forms/time-picker/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Time Picker
+                <svg class="icon icon-sm ms-2">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
+                </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/layout') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Layout</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/validation') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Validation</a></li>
+          </ul>
+        </li>
+         <li class="nav-title">FINANCIAL MANAGEMENT </li>
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-cursor') }}"></use>
+            </svg> Fees Mgt</a>
+          <ul class="nav-group-items compact">
             <li class="nav-item"><a class="nav-link" href="{{ url('/buttons/buttons') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Buttons</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/buttons/button-group') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Buttons Group</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/buttons/dropdowns') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Dropdowns</a></li>
             <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/components/loading-buttons/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Loading Buttons
-                    <svg class="icon icon-sm ms-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
-                    </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
-        </ul>
-    </li>
-    <li class="nav-item"><a class="nav-link" href="{{ url('/charts') }}">
+                <svg class="icon icon-sm ms-2">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
+                </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
+          </ul>
+        </li>
+          <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
             <svg class="nav-icon">
-                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-chart-pie') }}"></use>
-            </svg> Salary Mgt</a></li>
-    <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-cursor') }}"></use>
+            </svg> Salary Mgt</a>
+          <ul class="nav-group-items compact">
+            <li class="nav-item"><a class="nav-link" href="{{ url('/buttons/buttons') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Buttons</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/buttons/button-group') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Buttons Group</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/buttons/dropdowns') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Dropdowns</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/components/loading-buttons/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Loading Buttons
+                <svg class="icon icon-sm ms-2">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
+                </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
+          </ul>
+        </li>
+         <li class="nav-title">Communication </li>
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
             <svg class="nav-icon">
-                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-notes') }}"></use>
-            </svg> Attandance Mgt</a>
-        <ul class="nav-group-items compact">
-            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/form-control') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Form Control</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/select') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Select</a></li>
-            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/forms/multi-select/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Multi Select
-                    <svg class="icon icon-sm ms-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
-                    </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/checks-radios') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Checks and radios</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/range') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Range</a></li>
-            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/forms/range-slider/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Range Slider
-                    <svg class="icon icon-sm ms-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
-                    </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/input-group') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Input group</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/floating-labels') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Floating labels</a></li>
-            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/forms/date-picker/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Date Picker
-                    <svg class="icon icon-sm ms-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
-                    </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/forms/date-range-picker/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Date Range Picker<span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/forms/rating/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Rating
-                    <svg class="icon icon-sm ms-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
-                    </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/forms/time-picker/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Time Picker
-                    <svg class="icon icon-sm ms-2">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
-                    </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/layout') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Layout</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/forms/validation') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Validation</a></li>
-        </ul>
-    </li>
-    <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
-            <svg class="nav-icon">
-                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-star') }}"></use>
-            </svg> Communication </a>
-        <ul class="nav-group-items compact">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-star') }}"></use>
+            </svg> Announcement</a>
+          <ul class="nav-group-items compact">
             <li class="nav-item"><a class="nav-link" href="{{ url('/icons/coreui-icons-free') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> CoreUI Icons<span class="badge badge-sm bg-success ms-auto">Free</span></a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/icons/coreui-icons-brand') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> CoreUI Icons - Brand</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/icons/coreui-icons-flag') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> CoreUI Icons - Flag</a></li>
-        </ul>
-    </li>
-    <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+          </ul>
+        </li>
+        
+         <li class="nav-title">PRODUCT & SERVICES </li>
+        <li class="nav-item"><a class="nav-link" href="{{ url('/widgets') }}">
             <svg class="nav-icon">
-                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bell') }}"></use>
-            </svg> Notifications</a>
-        <ul class="nav-group-items compact">
-            <li class="nav-item"><a class="nav-link" href="{{ url('/notifications/alerts') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Alerts</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/notifications/badge') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Badge</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/notifications/modals') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Modals</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/notifications/toasts') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Toasts</a></li>
-        </ul>
-    </li>
-    <li class="nav-item"><a class="nav-link" href="{{ url('/widgets') }}">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-calculator') }}"></use>
+            </svg> Services Mgt<span class="badge badge-sm bg-info ms-auto">NEW</span></a></li>
+        <li class="nav-divider"></li>
+        <li class="nav-title">SHIKVAN SUPPORT & BILLING</li>
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
             <svg class="nav-icon">
-                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-calculator') }}"></use>
-            </svg> Fees Mgt<span class="badge badge-sm bg-info ms-auto">NEW</span></a></li>
-    <li class="nav-divider"></li>
-    <li class="nav-title">Extras</li>
-    <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
-            <svg class="nav-icon">
-                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-star') }}"></use>
-            </svg> ShikVan Team </a>
-        <ul class="nav-group-items compact">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-star') }}"></use>
+            </svg> My Subscription & Billing </a>
+          <ul class="nav-group-items compact">
             <li class="nav-item"><a class="nav-link" href="{{ url('/login') }}" target="_top">
-                    <svg class="nav-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
-                    </svg> Login</a></li>
+                <svg class="nav-icon">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
+                </svg> Contact Support</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/register') }}" target="_top">
-                    <svg class="nav-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
-                    </svg> Register</a></li>
+                <svg class="nav-icon">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
+                </svg> Legal & Formal Documents </a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/404') }}" target="_top">
-                    <svg class="nav-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bug') }}"></use>
-                    </svg> Error 404</a></li>
+                <svg class="nav-icon">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bug') }}"></use>
+                </svg> Help Center / Documentation</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/500') }}" target="_top">
-                    <svg class="icon nav-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bug') }}"></use>
-                    </svg> Error 500</a></li>
-        </ul>
-    </li>
-    <li class="nav-item mt-auto"><a class="nav-link" href="https://coreui.io/docs/templates/installation/" target="_blank">
-            <svg class="nav-icon">
-                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-description') }}"></use>
-            </svg> Services Mgt</a></li>
-    <li class="nav-item"><a class="nav-link text-primary fw-semibold" href="https://coreui.io/product/bootstrap-dashboard-template/" target="_top">
-            <svg class="icon nav-icon text-primary">
-                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-layers') }}"></use>
-            </svg> Try CoreUI PRO</a></li>
-</ul>
+                <svg class="nav-icon">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bug') }}"></use>
+                </svg> Term's & Conditions</a></li>
+          </ul>
+        </li>
+       
+        <li class="nav-item"><a class="nav-link text-primary fw-semibold" href="https://coreui.io/product/bootstrap-dashboard-template/" target="_top">
+            <svg class="nav-icon text-primary">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-layers') }}"></use>
+            </svg> Try upgrade</a></li>
+      </ul>
+   -->
 @endsection
 
 @section('content')
@@ -321,7 +410,7 @@
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs" id="myCoreUITabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="view-tab" data-bs-toggle="tab" data-bs-target="#viewContent" type="button" role="tab" aria-controls="viewContent" aria-selected="true">View User Data</a>
+                <a class="nav-link active" id="view-tab" data-bs-toggle="tab" data-bs-target="#viewContent" type="button" role="tab" aria-controls="viewContent" aria-selected="true">Branches Manages </a>
             </li>
             <!-- <li class="nav-item" role="presentation">
                 <a class="nav-link" id="create-tab" data-bs-toggle="tab" data-bs-target="#createContent" type="button" role="tab" aria-controls="createContent" aria-selected="false">Create User</a>
@@ -341,18 +430,23 @@
         <div class="tab-content" id="myCoreUITabContent">
             {{-- View Tab Content --}}
             <div class="tab-pane fade show active" id="viewContent" role="tabpanel" aria-labelledby="view-tab">
-                <h5 class="card-title mb-4">User Data Overview</h5>
+                <h5 class="card-title mb-4">Branches Manages Overview</h5>
 
                 <div class="d-flex flex-wrap justify-content-center gap-3 mb-4"> {{-- Flex container for buttons --}}
 
-                    {{-- Button 1: View User Data (Opens Modal for Type Selection) --}}
+                    <!-- {{-- Button 1: View User Data (Opens Modal for Type Selection) --}}
                     <button class="btn btn-primary px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#viewUserDataModal">
                         View All Users
-                    </button>
+                    </button> -->
 
                     {{-- Button 2: Edit User (Opens Modal for User Selection) --}}
                     <button class="btn btn-info px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#editUserModal">
                         Add new Branch
+                    </button>
+
+                      {{-- Button 2: Edit User (Opens Modal for User Selection) --}}
+                    <button class="btn btn-info px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#branchview">
+                        View Branch
                     </button>
 
                     <!-- {{-- Button 3: Get Specific User Data (Opens Modal for Role/ID Input) --}}
@@ -839,37 +933,405 @@
                     <div class="modal-dialog modal-dialog-centered modal-lg modal-fullscreen-md-down">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editUserModalLabel">Edit User Data</h5>
+                                <h5 class="modal-title" id="editUserModalLabel">Create the new Branch </h5>
                                 <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <p>NOTE: Please Enter the data of new branch and add it.</p>
-                               
-                                 <div class="mb-3">
-                                    <label for="editUserId" class="form-label">Branch ID</label>
-                                    <input type="text" class="form-control" id="editUserId" placeholder="Enter ID">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editUserId" class="form-label">Branch Name</label>
-                                    <input type="text" class="form-control" id="editUserId" placeholder="Enter ID">
-                                </div>
-                                 <div class="mb-3">
-                                    <label for="editUserId" class="form-label">Branch Address</label>
-                                    <input type="text" class="form-control" id="editUserId" placeholder="Enter ID">
-                                </div>
 
-                                <!-- <button class="btn btn-primary mt-2">Load User for Editing</button>
-                                <div id="editUserFormContainer" class="mt-3">
-                                    {{-- Dynamic form with user data will load here --}}
-                                </div> -->
+
+                               
+                                 @php
+    $user = Auth::user();
+    $userProfile = $user ? $user->userProfile : null;
+@endphp
+<form action="{{ Route('employerBranchCreate') }}" method="POST" enctype="multipart/form-data">
+                                       @csrf 
+                                    <table class="table table-striped table-hover">
+                                       
+                                      <thead>
+                                            <tr>
+                                                <th>Branch Name</th>
+                                                <!-- <th>last_name </th>
+                                                <th>date_of_birth</th>
+                                                <th>gender </th> -->
+                                               
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{-- Example Rows (replace with dynamic data from backend) --}}
+                                            <tr>
+
+                                            
+
+
+<td>                                    
+            <input type="text" class="form-control" id="branchname" name="branch_name" placeholder="Brnach Name">
+
+
+ 
+</td>
+
+
+                                            
+                                                 
+                                                 
+                                                 
+                                                    
+                                                           
+                                                
+                                            </tr>
+
+                                             
+                                           
+                                        </tbody>
+                                        <thead>
+                                            <tr>
+                                                
+                                               
+                                               
+                                               
+                                                <th>address_line_1</th>
+                                                <!-- <th>address_line_2 </th> -->
+                                                <th> city   </th>
+                                                <th>state_province</th>
+                                                <th>postal_code </th>
+                                                <th>country </th>
+                                               
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{-- Example Rows (replace with dynamic data from backend) --}}
+                                            <tr>
+                                                
+                                                 
+                                                 
+                                                 
+                                                 <td>                                               <input type="text" class="form-control" id="branchname" name="address_line_1" placeholder="address_line_1">
+ 
+</td>
+
+                                                 
+ 
+                                                   <td>                                                 <input type="text" class="form-control" id="branchname" name="city" placeholder="city">
+ 
+</td>
+
+                                                   <td>                                                <input type="text" class="form-control" id="branchname" name="state_province" placeholder="state_province">
+ 
+</td>
+
+                                                        <td>                                                <input type="text" class="form-control" id="branchname" name="postal_code" placeholder="postal_code">
+
+</td>
+
+                                                          <td>                                                 <input type="text" class="form-control" id="branchname" name="country" placeholder="country">
+
+</td>
+
+                                                           
+                                                
+                                            </tr>
+
+                                             
+                                           
+                                        </tbody>
+                                        <thead>
+                                            <tr>
+                                                
+                                             
+                                                <th>Contact Email</th>
+                                                <th> Phone Number  </th>
+                                                
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{-- Example Rows (replace with dynamic data from backend) --}}
+                                            <tr>
+                                                
+                                                 
+                                                 
+                                                 
+                                              <td>                                     
+                                                 <input type="text" class="form-control" id="branchname" name="contact_email" placeholder="contact_email">
+
+</td>
+
+                                                 <td>                                    <input type="text" class="form-control" id="branchname" name="phone_number" placeholder="phone_number ">
+</td>
+
+                                                  
+
+                                                     
+                                                       
+                                                        
+                                                           
+                                                               
+                                                               
+                                                
+                                            </tr>
+
+                                             
+                                           
+                                      </tbody>
+                                        
+                                      
+                                      
+                                    </table>
+
+                                                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-coreui-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save Changes</button>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+                <!-- Modal for "Edit Specific User" -->
+                <div class="modal fade" id="branchview" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-fullscreen-md-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">View Branches Data </h5>
+                <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-0">
+                <p class="p-3">NOTE: Carefully Update.</p>
+
+                <div style="max-height: 300px; overflow-y: auto;" id="branchList">
+                    <table class="table table-bordered mb-0">
+                        <thead>
+                            <tr>
+                                <th>Branch Name</th>
+                                <th>Address</th>
+                                <th>Contact</th>
+                                <th>Status</th>
+                                <th>Action </th>
+                            </tr>
+                        </thead>
+                        <tbody id="branchRows">
+                            @include('Access.Core.Employer.partials.branch_rows', ['branches' => $branches])
+                        </tbody>
+                    </table>
+                    
+
+                    <div id="loading" class="text-center py-2" style="display:none;">Loading more...</div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-coreui-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SMALL MODAL FOR ROW DETAILS -->
+<div class="modal fade" id="branchDetailModal" tabindex="-1" aria-labelledby="branchDetailLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="branchDetailLabel">Branch Details</h5>
+                <button type="button" class="btn-close" data-coreui-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- <p><strong>Branch Id:</strong><span id="detailBranchId"></span></p> -->
+                <!-- <p><strong>Branch Name:</strong> <span id="detailBranchName"></span></p> -->
+                <!-- <p><strong>Address:</strong> <span id="detailAddress"></span></p>
+                <p><strong>Contact:</strong> <span id="detailContact"></span></p>
+                <p><strong>Status:</strong> <span id="detailStatus"></span></p> -->
+
+                <form action="{{ Route('employerBranchUpdate') }}" method="POST" enctype="multipart/form-data">
+                                       @csrf 
+                                    <table class="table table-striped table-hover">
+                                       
+                                      <thead>
+                                            <tr>
+                                                <th>Branch Name</th>
+                                                <th>Branch Status </th>
+                                                <!-- <th>last_name </th>
+                                                <th>date_of_birth</th>
+                                                <th>gender </th> -->
+                                               
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{-- Example Rows (replace with dynamic data from backend) --}}
+                                            <tr>
+
+                                            
+
+
+<td>                                    
+<input type="hidden" id="detailBranchId" name="branch_id" readonly>
+
+<input type="text" class="form-control"  id="detailBranchName" name="branch_name" placeholder="branch name">
+
+ 
+</td>
+<td>
+     <select class="form-control" id="detailStatus" name="is_active">
+        <option value="1">Active</option>
+        <option value="0">Inactive</option>
+      </select>
+</td>
+
+
+                                            
+                                                 
+                                                 
+                                                 
+                                                    
+                                                           
+                                                
+                                            </tr>
+
+                                             
+                                           
+                                        </tbody>
+                                        <thead>
+                                            <tr>
+                                                
+                                               
+                                               
+                                               
+                                                <th>address_line_1</th>
+                                                <!-- <th>address_line_2 </th> -->
+                                                <th> city   </th>
+                                                <th>state_province</th>
+                                                
+                                               
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{-- Example Rows (replace with dynamic data from backend) --}}
+                                            <tr>
+                                                
+                                                 
+                                                 
+                                                 
+                                                 <td>                                               <input type="text" class="form-control" id="detailAddressLine1" name="address_line_1" placeholder="address_line_1">
+ 
+</td>
+
+                                                 
+ 
+                                                   <td>                                                 <input type="text" class="form-control" id="detailcity" name="city" placeholder="city">
+ 
+</td>
+
+                                                   <td>                                                <input type="text" class="form-control" id="detailstate_province" name="state_province" placeholder="state_province">
+ 
+</td>
+
+                                                        
+
+                                                           
+                                                
+                                            </tr>
+
+                                             
+                                           
+                                        </tbody>
+                                        <thead>
+                                            <tr>
+                                                
+                                               
+                                               
+                                               
+                                                
+                                                <th>postal_code </th>
+                                                <th>country </th>
+                                               
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{-- Example Rows (replace with dynamic data from backend) --}}
+                                            <tr>
+                                                
+                                                 
+                                                 
+                                                 
+                                                 
+
+                                                 
+ 
+                                                   
+
+                                                   
+
+                                                        <td>                                                <input type="text" class="form-control" id="detailpostal_code" name="postal_code" placeholder="postal_code">
+
+</td>
+
+                                                          <td>                                                 <input type="text" class="form-control" id="detailcountry" name="country" placeholder="country">
+
+</td>
+
+                                                           
+                                                
+                                            </tr>
+
+                                             
+                                           
+                                        </tbody>
+                                        <thead>
+                                            <tr>
+                                                
+                                             
+                                                <th>Contact Email</th>
+                                                <th> Phone Number  </th>
+                                                
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{-- Example Rows (replace with dynamic data from backend) --}}
+                                            <tr>
+                                                
+                                                 
+                                                 
+                                                 
+                                              <td>                                     
+                                                 <input type="text" class="form-control" id="detailEmail" name="contact_email" placeholder="contact_email">
+
+</td>
+
+                                                 <td>                                    <input type="text" class="form-control" id="detailPhone" name="phone_number" placeholder="phone_number ">
+</td>
+
+                                                  
+
+                                                     
+                                                       
+                                                        
+                                                           
+                                                               
+                                                               
+                                                
+                                            </tr>
+
+                                             
+                                           
+                                      </tbody>
+                                        
+                                      
+                                      
+                                    </table>
+
+                                                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+            </div>
+        </div>
+    </div>
+</div>
 
                 <!-- Modal for "Get User by ID/Role" -->
                 <!-- <div class="modal fade" id="getSpecificUserModal" tabindex="-1" aria-labelledby="getSpecificUserModalLabel" aria-hidden="true">
@@ -986,3 +1448,69 @@
 @endsection
 
 {{-- No @push('scripts') needed here if CoreUI's JS is already loaded globally --}}
+
+@push('scripts')
+<script>
+let page = 1;
+let loading = false;
+const branchList = document.getElementById('branchList');
+
+branchList.addEventListener('scroll', function() {
+    if(branchList.scrollTop + branchList.clientHeight >= branchList.scrollHeight - 10 && !loading) {
+        loading = true;
+        page++;
+        document.getElementById('loading').style.display = 'block';
+
+        fetch(`{{ route('employerBranch') }}?page=${page}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(res => res.text())
+        .then(html => {
+            if(html.trim().length > 0) {
+                document.getElementById('branchRows').insertAdjacentHTML('beforeend', html);
+                loading = false;
+                document.getElementById('loading').style.display = 'none';
+            }
+        });
+    }
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".viewBranchBtn").forEach(btn => {
+        btn.addEventListener("click", function() {
+            const branch = JSON.parse(this.dataset.branch);
+
+            // Fill small modal with branch data
+            document.getElementById("detailBranchId").value = branch.id;
+            document.getElementById("detailBranchName").value = branch.branch_name;
+            document.getElementById("detailAddressLine1").value = branch.address_line_1;
+            document.getElementById("detailcity").value = branch.city; 
+            document.getElementById("detailstate_province").value = branch.state_province;
+            document.getElementById("detailpostal_code").value = branch.postal_code;
+            document.getElementById("detailcountry").value = branch.country;  
+            document.getElementById("detailEmail").value = branch.contact_email;
+            document.getElementById("detailPhone").value = branch.phone_number;
+            document.getElementById("detailStatus").value = branch.is_active == 1 ? "1" : "0";
+
+            // Remove any leftover backdrops
+            document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+
+            // Show small modal using CoreUI
+            const modal = new coreui.Modal(document.getElementById('branchDetailModal'));
+            modal.show();
+        });
+    });
+
+    // Ensure small modal closes properly and removes any leftover backdrops
+    const smallModalEl = document.getElementById('branchDetailModal');
+    smallModalEl.addEventListener('hidden.coreui.modal', () => {
+        document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+    });
+});
+</script>
+
+
+
+@endpush

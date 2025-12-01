@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Role;
 use App\Models\UserRole;
 
+
 class EmployersManagementController extends Controller
 {
         public function employerMgtinfo()
@@ -61,6 +62,18 @@ class EmployersManagementController extends Controller
     
     'industry'             => $request->input('industry', 'General'),
 ]);
+
+
+
+       UserProfile::create([
+
+        'id' =>  (string) Str::uuid(),
+        'user_id' => $user->id,
+        'first_name' => "NA",
+        'last_name' => "NA",
+        
+
+       ]);
 
         // 1. Retrieve the Role using the confirmed correct name and ID column
 $employerRole = Role::where('name', 'SystemEmployer')->first();

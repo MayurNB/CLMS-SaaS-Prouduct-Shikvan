@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@section('title')
+  
+Employer
+
+@endsection
+
 @section('quick')
 
  <div class="container-fluid border-bottom px-4">
@@ -8,15 +14,15 @@
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-menu') }}"></use>
             </svg>
           </button>
-          <ul class="header-nav d-none d-lg-flex">
+          <!-- <ul class="header-nav d-none d-lg-flex">
             <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Batch Mgt</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Student Mgt</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Staff Mgt</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Fees Mgt</a></li>
-          </ul>
+          </ul> -->
           <ul class="header-nav ms-auto">
-            <!--<li class="nav-item"><a class="nav-link" href="#">
+            {{--<li class="nav-item"><a class="nav-link" href="#">
                 
              <li class="nav-item dropdown"><a class="nav-link py-0 pe-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <div class="avatar avatar-md">
@@ -27,7 +33,7 @@
               </a>
               <div class="dropdown-menu dropdown-menu-end pt-0">
                 <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold rounded-top mb-2">Account</div><a class="dropdown-item" href="#">
-                  <svg class="icon me-2">
+                  <!-- <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bell') }}"></use>
                   </svg> Updates<span class="badge badge-sm bg-info ms-2">42</span></a><a class="dropdown-item" href="#">
                   <svg class="icon me-2">
@@ -38,11 +44,11 @@
                   </svg> Tasks<span class="badge badge-sm bg-danger ms-2">42</span></a><a class="dropdown-item" href="#">
                   <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-comment-square') }}"></use>
-                  </svg> Comments<span class="badge badge-sm bg-warning ms-2">42</span></a>
+                  </svg> Comments<span class="badge badge-sm bg-warning ms-2">42</span></a> -->
                 <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold my-2">
                   <div class="fw-semibold">Settings</div>
                 </div><a class="dropdown-item" href="#">
-                  <svg class="icon me-2">
+                  <!-- <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
                   </svg> Profile</a><a class="dropdown-item" href="#">
                   <svg class="icon me-2">
@@ -57,22 +63,22 @@
                 <div class="dropdown-divider"></div><a class="dropdown-item" href="#">
                   <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-lock-locked') }}"></use>
-                  </svg> Lock Account</a><a class="dropdown-item" href="#">
-                  <svg class="icon me-2">
+                  </svg> Lock Account</a><a class="dropdown-item" href="#"> -->
+                  <!-- <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
-                  </svg> Logout</a>
+                  </svg> Logout</a> -->
               </div>
             </li>
-            </a></li>-->
+            </a></li>--}}
                 
-          <!--  <li class="nav-item"><a class="nav-link" href="#">
+          {{--  <li class="nav-item"><a class="nav-link" href="#">
                 <svg class="icon icon-lg">
                   <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-list-rich') }}"></use>
                 </svg></a></li>
             <li class="nav-item"><a class="nav-link" href="#">
                 <svg class="icon icon-lg">
                   <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-envelope-open') }}"></use>
-                </svg></a></li> -->
+                </svg></a></li> --}}
           </ul>
           <ul class="header-nav">
             <li class="nav-item py-1">
@@ -116,10 +122,10 @@
               </a>
               <div class="dropdown-menu dropdown-menu-end pt-0">
                 <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold rounded-top mb-2">Account</div><a class="dropdown-item" href="#">
-                  <svg class="icon me-2">
+                  <!-- <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bell') }}"></use>
                   </svg> Updates<span class="badge badge-sm bg-info ms-2">42</span></a><a class="dropdown-item" href="#">
-                 <!-- <svg class="icon me-2">
+                 {{-- <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-envelope-open') }}"></use>
                   </svg> Messages<span class="badge badge-sm bg-success ms-2">42</span></a><a class="dropdown-item" href="#">
                   <svg class="icon me-2">
@@ -128,12 +134,12 @@
                   <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-comment-square') }}"></use>
                   </svg> Comments<span class="badge badge-sm bg-warning ms-2">42</span>
--->
-                </a>
+--}}
+                </a> -->
                 <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold my-2">
                   <div class="fw-semibold">Settings</div>
-                </div><a class="dropdown-item" href="#">
-                  <svg class="icon me-2">
+                </div>
+                  <!-- <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
                   </svg> Profile</a><a class="dropdown-item" href="#">
                   <svg class="icon me-2">
@@ -148,10 +154,19 @@
                 <div class="dropdown-divider"></div><a class="dropdown-item" href="#">
                   <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-lock-locked') }}"></use>
-                  </svg> Lock Account</a><a class="dropdown-item" href="#">
-                  <svg class="icon me-2">
-                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
-                  </svg> Logout</a>
+                  </svg> Lock Account</a><a class="dropdown-item" href="#"> -->
+                  <!-- Hidden logout form -->
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
+
+<!-- Link that triggers form submission -->
+<a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    <svg class="icon me-2">
+        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
+    </svg> 
+    Logout
+</a>
               </div>
             </li>
           </ul>
@@ -165,38 +180,46 @@
 @section('breadcrumb_item_active', 'Dashboard')
 
 
+@section('quick_access_nav_url')
+<a href="{{ Route('employerDashboard') }}">Home</a>
+@endsection
 
 @section('side bar')
 <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
      <li class="nav-title">Overview</li>
-        <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">
+        <li class="nav-item"><a class="nav-link" href="{{ Route('employerDashboard') }}">
             <svg class="nav-icon">
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-speedometer') }}"></use>
             </svg> Dashboard<span class="badge badge-sm bg-info ms-auto">NEW</span></a></li>
         <li class="nav-title">PERSONAL</li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('Instructor') }}">
+        <li class="nav-item"><a class="nav-link" href="{{ route('InstructorProfile') }}">
             <svg class="nav-icon">
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
             </svg> Profile</a></li>
-        <li class="nav-title">ACCESS CONTROL </li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('UserMgt') }}">
+        <!-- <li class="nav-title">Branch Management </li>
+        <li class="nav-item"><a class="nav-link" href="{{ url('employerProfile') }}">
             <svg class="nav-icon">
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil') }}"></use>
-            </svg> User Mgt</a></li>
-        <li class="nav-title">ACADEMIC MANAGEMENT</li>
-        <li class="nav-group"><a class="nav-link nav-group-toggle" href="">
+            </svg> Branch Management</a></li>
+        <li class="nav-title">ACCESS CONTROL </li>
+        <li class="nav-item"><a class="nav-link" href="{{ url('Employer_acm') }}">
             <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil') }}"></use>
+            </svg> Access Control Mgt </a></li> -->
+        <!-- <li class="nav-title">ACADEMIC MANAGEMENT</li> -->
+        <!-- <li class="nav-group"><a class="nav-link nav-group-toggle" href="{{ url('Employer_acm') }}"> -->
+            <!-- <svg class="nav-icon">
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-puzzle') }}"></use>
-            </svg> Batch Mgt</a>
+            </svg>Academic </a> -->
           <ul class="nav-group-items compact">
-            <li class="nav-item"><a class="nav-link" href="{{ route('BatchMgt1') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Accordion</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('BatchMgt2') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Breadcrumb</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('BatchMgt3') }}" ><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Calendar
+            <!-- <li class="nav-item"><a class="nav-link" href="{{ Route('employerProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Programs & Courses </a></li> -->
+            <!-- <li class="nav-item"><a class="nav-link" href="{{ url('Employer_content') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Assign  </a></li> -->
+            <!-- <li class="nav-item"><a class="nav-link" href="{{ url('Employer_assignment') }}" ><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Assignment Mgt 
                 <svg class="icon icon-sm ms-2">
                   <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
                 </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('BatchMgt4') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Cards</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/base/carousel') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Carousel</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('Employer_exam') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Exam Mgt</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('Employer_result') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Result Mgt </a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/collapse') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Collapse</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/list-group') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> List group</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/navs-tabs') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Navs &amp; Tabs</a></li>
@@ -206,16 +229,46 @@
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/progress') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Progress</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/spinners') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Spinners</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/tables') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tables</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/base/tooltips') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tooltips</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/tooltips') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tooltips</a></li> -->
           </ul>
         </li>
-         <li class="nav-title">PEOPLE MANAGEMENT & ENROLLMENT</li>
+        <li class="nav-title">ADMINISTRATION MANAGEMENT</li>
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="{{ url('Employer_acm') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-puzzle') }}"></use>
+            </svg>Administration </a>
+          <ul class="nav-group-items compact">
+            <li class="nav-item"><a class="nav-link" href="{{ Route('InstructorInstitute') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> My Institute </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('InstructorBranch') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Branches Manages </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('employerLearnerEnrollment') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Enrollment </a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ Route('employerProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> pro </a></li>
+            <!-- <li class="nav-item"><a class="nav-link" href="{{ url('Employer_content') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Content Mgt </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('Employer_assignment') }}" ><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Assignment Mgt 
+                <svg class="icon icon-sm ms-2">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
+                </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('Employer_exam') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Exam Mgt</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('Employer_result') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Result Mgt </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/collapse') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Collapse</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/list-group') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> List group</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/navs-tabs') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Navs &amp; Tabs</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/pagination') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Pagination</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/placeholders') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Placeholders</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/popovers') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Popovers</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/progress') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Progress</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/spinners') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Spinners</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/tables') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tables</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/tooltips') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tooltips</a></li> -->
+          </ul>
+        </li>
+
+         <!-- <li class="nav-title">PEOPLE MANAGEMENT & ENROLLMENT</li>
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
             <svg class="nav-icon">
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-cursor') }}"></use>
             </svg> Student Mgt</a>
           <ul class="nav-group-items compact">
-            <li class="nav-item"><a class="nav-link" href="{{ route('StdMgt1') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Student Enrollment</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('StdMgt1') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Student Enrollment</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/buttons/button-group') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Enrollment manage</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/buttons/dropdowns') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Student Overview</a></li>
             <li class="nav-item"><a class="nav-link" href="https://coreui.io/bootstrap/docs/components/loading-buttons/" target="_blank"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Loading Buttons
@@ -342,7 +395,7 @@
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-layers') }}"></use>
             </svg> Try upgrade</a></li>
       </ul>
-  
+   -->
 
  @endsection
 
@@ -354,24 +407,24 @@
             <div class="card text-white bg-primary">
                 <div class="card-body pb-0 d-flex justify-content-between align-items-start">
                     <div>
-                        <div class="fs-4 fw-semibold">26K <span class="fs-6 fw-normal">(-12.4%
+                        <div class="fs-4 fw-semibold">{{ number_format($learnerCount) }} <span class="fs-6 fw-normal">(Loaded
                                 <svg class="icon">
                                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-arrow-bottom') }}"></use>
                                 </svg>)</span></div>
                         <div>Learners</div>
                     </div>
                     <div class="dropdown">
-                        <button class="btn btn-transparent text-white p-0" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <!-- <button class="btn btn-transparent text-white p-0" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg class="icon">
                                 <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-options') }}"></use>
                             </svg>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div>
+                        </button> -->
+                        <!-- <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div> -->
                     </div>
                 </div>
-                <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                {{-- <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
                     <canvas class="chart" id="card-chart4" height="70"></canvas>
-                </div>
+                </div> --}}
             </div>
         </div>
        
@@ -380,27 +433,28 @@
             <div class="card text-white bg-info">
                 <div class="card-body pb-0 d-flex justify-content-between align-items-start">
                     <div>
-                        <div class="fs-4 fw-semibold">$6.200 <span class="fs-6 fw-normal">(40.9%
+                        <div class="fs-4 fw-semibold">{{ $currencySymbol }} {{ number_format($totalFees, 2)}} 
+                            <span class="fs-6 fw-normal">(Updated
                                 <svg class="icon">
                                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-arrow-top') }}"></use>
                                 </svg>)</span></div>
-                        <div>Employee</div>
+                        <div>Fees Collection </div>
                     </div>
                     <div class="dropdown">
-                        <button class="btn btn-transparent text-white p-0" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <!-- <button class="btn btn-transparent text-white p-0" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg class="icon">
                                 <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-options') }}"></use>
                             </svg>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div>
+                        </button> -->
+                        <!-- <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div> -->
                     </div>
                 </div>
-                <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                {{-- <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
                     <canvas class="chart" id="card-chart2" height="70"></canvas>
-                </div>
+                </div> --}}
             </div>
         </div>
-        <div class="col-sm-6 col-xl-3">
+        <!-- <div class="col-sm-6 col-xl-3">
             <div class="card text-white bg-warning">
                 <div class="card-body pb-0 d-flex justify-content-between align-items-start">
                     <div>
@@ -419,12 +473,12 @@
                         <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div>
                     </div>
                 </div>
-                <div class="c-chart-wrapper mt-3" style="height:70px;">
+                {{-- <div class="c-chart-wrapper mt-3" style="height:70px;">
                     <canvas class="chart" id="card-chart3" height="70"></canvas>
-                </div>
+                </div> --}}
             </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
+        </div> -->
+        <!-- <div class="col-sm-6 col-xl-3">
             <div class="card text-white bg-danger">
                 <div class="card-body pb-0 d-flex justify-content-between align-items-start">
                     <div>
@@ -443,14 +497,21 @@
                         <div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a></div>
                     </div>
                 </div>
-                <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
+                {{-- <div class="c-chart-wrapper mt-3 mx-3" style="height:70px;">
                     <canvas class="chart" id="card-chart4" height="70"></canvas>
-                </div>
+                </div> --}}
             </div>
-        </div>
+        </div> -->
         </div>
     <div class="card mb-4">
-        <div class="card-body">
+
+{{-- This won't show in frontend at all --}}
+@php
+    $showGrowthChart = false;
+@endphp
+
+@if($showGrowthChart)
+         <div class="card-body">
             <div class="d-flex justify-content-between">
                 <div>
                     <h4 class="card-title mb-0">Growth</h4>
@@ -475,8 +536,9 @@
             <div class="c-chart-wrapper" style="height:300px;margin-top:40px;">
                 <canvas class="chart" id="main-chart" height="300"></canvas>
             </div>
-        </div>
-        <div class="card-footer">
+        </div> 
+@endif
+        <!-- <div class="card-footer">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 g-4 mb-2 text-center">
                 <div class="col">
                     <div class="text-body-secondary">Performance</div>
@@ -514,10 +576,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="row g-4 mb-4">
-        <div class="col-sm-6 col-lg-4">
+        <!-- <div class="col-sm-6 col-lg-4">
             <div class="card" style="--cui-card-cap-bg: #3b5998">
                 <div class="card-header position-relative d-flex justify-content-center align-items-center">
                     <svg class="icon icon-3xl text-white my-4">
@@ -586,8 +648,8 @@
                 </div>
             </div>
         </div>
-        </div>
-    <div class="row">
+        </div> -->
+    <!-- <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
                 <div class="card-header">Overview Growth</div>
@@ -1070,6 +1132,8 @@
                 </div>
             </div>
         </div>
-        </div>
-    </div>
+        </div>-->
+    </div> 
+   
+</div>
 @endsection

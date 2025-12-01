@@ -6,23 +6,26 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-//use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 use App\Models\Role;
+use App\Models\UserProfile;
+use App\Models\EmployerProfile;
+use App\Models\UserBranchRole;
+
+use App\Models\Learners;
 
 class User extends Authenticatable
 {
-    use  HasFactory, Notifiable, HasUuids;
+    use HasFactory, Notifiable, HasUuids;
 
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * Mass assignable attributes
      */
     protected $fillable = [
         'name',
@@ -32,9 +35,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
+     * Hidden attributes for serialization
      */
     protected $hidden = [
         'password',
@@ -42,29 +43,25 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * Attribute casting
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
+
     /**
-     * The roles that belong to the user.
+     * Roles relationship (only active roles)
      */
     public function roles(): BelongsToMany
-{
-    return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id')
-        ->withPivot('status', 'assigned_by', 'activated_at', 'created_at', 'updated_at')
-        ->withTimestamps()
-        ->wherePivot('status', 'active'); // <-- CRITICAL FIX: Only load active roles
-}
-    
+    {
+        return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id')
+            ->withPivot('status', 'assigned_by', 'activated_at', 'created_at', 'updated_at')
+            ->withTimestamps()
+            ->wherePivot('status', 'active');
+    }
+
     /**
-     * Get the "Role" attribute for the user.
-     * This accessor provides a single 'Role' string for the switch statement.
-     * It prioritizes 'Admin' if present, otherwise returns the name of the first role found.
+     * Accessor for single Role string
      */
     public function getRoleAttribute(): ?string
     {
@@ -76,11 +73,11 @@ class User extends Authenticatable
             return 'Admin';
         }
 
-        return $this->roles->first()->name ?? null;
+        return $this->roles->first()?->name;
     }
 
     /**
-     * Check if the user has a specific role.
+     * Check if user has specific role
      */
     public function hasRole(string $roleName): bool
     {
@@ -88,18 +85,52 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the user profile associated with the user.
+     * User profile relationship
      */
     public function userProfile()
     {
-        return $this->hasOne(UserProfile::class);
+        return $this->hasOne(UserProfile::class, 'user_id', 'id');
     }
-    
+
     /**
-     * Get the employer profile associated with the user.
+     * Employer profile relationship
      */
     public function employerProfile()
     {
-        return $this->hasOne(EmployerProfile::class);
+        return $this->hasOne(EmployerProfile::class, 'user_id', 'id');
     }
+
+    /**
+     * Branch roles relationship
+     */
+    public function branchRoles()
+    {
+        return $this->hasMany(UserBranchRole::class, 'user_id', 'id');
+    }
+
+    public function branches()
+{
+    return $this->belongsToMany(Branch::class, 'user_branch_roles')
+        ->withPivot('role_id', 'is_active') // ✅ use actual existing columns
+        ->withTimestamps();
+}
+
+// 🔹 Optional helper
+public function getCurrentBranchIdAttribute()
+{
+    return session('branch_id') ?? $this->branches()->first()?->id;
+}
+
+    /**
+     * Optional helper: get institute via employer profile
+     */
+    public function institute()
+    {
+        return $this->employerProfile()?->institute();
+    }
+
+    public function learner() {
+    return $this->hasOne(Learners::class, 'user_id', 'id');
+}
+
 }

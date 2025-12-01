@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class InstituteInfo extends Model
 {
-    protected $table = 'institute_infos'; // Explicit table name
+    protected $table = 'institute_infos';
 
     protected $fillable = [
         'id',
@@ -25,6 +25,6 @@ class InstituteInfo extends Model
         'is_active',
     ];
 
-    public $incrementing = false; // Because your id is char(36) (UUID)
+    public $incrementing = false;
     protected $keyType = 'string';
 }

@@ -15,14 +15,13 @@ class RoleMiddleware
             return redirect()->route('login');
         }
 
-        $activeRole = $user->roles()
-            ->wherePivot('status', 'active')
-            ->first();
+        $selectedRole = session('selected_role_prefix');
 
-        // Ensure there are no hidden characters in the route's role name
-        $role = trim($role);
+        if (!$selectedRole) {
+            return redirect()->route('login.showBranchRole');
+        }
 
-        if ($activeRole && $activeRole->name === $role) {
+        if (strtolower($selectedRole) === strtolower($role)) {
             return $next($request);
         }
 

@@ -15,13 +15,15 @@ class Course extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'program_id',
         'course_name',
         'normalized_name',
         'description',
-        'duration',
-        'is_published',       // added
-        'created_by_user_id',  // added
+        'thumbnail_url',
+        'price',
+        'is_published',
+        'program_id',
+        'instructor_user_id',
+        'institute_id',
     ];
 
     /**
@@ -30,5 +32,29 @@ class Course extends Model
     public function program()
     {
         return $this->belongsTo(Program::class);
+    }
+
+    /**
+     * The instructor user who teaches this course.
+     */
+    public function instructor()
+    {
+        return $this->belongsTo(User::class, 'instructor_user_id');
+    }
+
+    /**
+     * The institute info that owns this course.
+     */
+    public function institute()
+    {
+        return $this->belongsTo(InstituteInfo::class, 'institute_id');
+    }
+
+    /**
+     * Get the discount offers associated with this course.
+     */
+    public function discountOffers()
+    {
+        return $this->hasMany(DiscountOffer::class, 'course_id');
     }
 }

@@ -27,17 +27,11 @@ class Role extends Model
         'created_by_user_id',
     ];
 
-    /**
-     * The permissions that belong to the role.
-     */
     public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class, 'role_permissions', 'role_id', 'permission_id');
     }
 
-    /**
-     * The users that have this role.
-     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_roles', 'role_id', 'user_id')
@@ -45,19 +39,18 @@ class Role extends Model
             ->withTimestamps();
     }
 
-    /**
-     * Get the employer profile that owns this role (if it's employer-specific).
-     */
     public function employerProfile(): BelongsTo
     {
         return $this->belongsTo(EmployerProfile::class, 'employer_id');
     }
 
-    /**
-     * Get the user who created this role (for auditing).
-     */
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_user_id');
+    }
+
+    public function userBranchRoles()
+    {
+        return $this->hasMany(UserBranchRole::class, 'role_id', 'role_id');
     }
 }

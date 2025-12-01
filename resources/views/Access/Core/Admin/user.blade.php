@@ -170,7 +170,7 @@
             <svg class="nav-icon">
                 <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
             </svg> Profile</a></li>
-    <li class="nav-item"><a class="nav-link" href="{{ route('UserMgt') }}">
+    <li class="nav-item"><a class="nav-link" href="{{ url('UserMgt') }}">
             <svg class="nav-icon">
                 <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil') }}"></use>
             </svg> User Mgt</a></li>
@@ -343,24 +343,114 @@
             <div class="tab-pane fade show active" id="viewContent" role="tabpanel" aria-labelledby="view-tab">
                 <h5 class="card-title mb-4">User Data Overview</h5>
 
-                <div class="d-flex flex-wrap justify-content-center gap-3 mb-4"> {{-- Flex container for buttons --}}
+              <div class="container-fluid py-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">User Management</h5>
+    </div>
 
-                    {{-- Button 1: View User Data (Opens Modal for Type Selection) --}}
-                    <button class="btn btn-primary px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#viewUserDataModal">
-                        View All Users
-                    </button>
+    <div class="card-body" id="mainUserCardBody">
+      <!-- Filters -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Institute</label>
+          <select id="instituteSelect" class="form-select">
+            <option value="">-- Select Institute --</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Branch</label>
+          <select id="branchSelect" class="form-select" disabled>
+            <option value="">-- Select Branch --</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Role</label>
+          <select id="roleSelect" class="form-select" disabled>
+            <option value="">-- Select Role --</option>
+          </select>
+        </div>
+      </div>
 
-                    {{-- Button 2: Edit User (Opens Modal for User Selection) --}}
-                    <button class="btn btn-info px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#editUserModal">
-                        Edit Specific User
-                    </button>
+      <!-- Search + Add -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <input type="text" id="searchInput" class="form-control w-50" placeholder="Search by name, email, or username">
+        <button id="addUserBtn" class="btn btn-success" disabled>
+          <i class="cil-user-follow"></i> Add User
+        </button>
+      </div>
 
-                    {{-- Button 3: Get Specific User Data (Opens Modal for Role/ID Input) --}}
-                    <button class="btn btn-secondary px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#getSpecificUserModal">
-                        Get User by ID/Role
-                    </button>
+      <!-- Table -->
+      <div class="table-responsive">
+        <table class="table table-striped align-middle" id="userTable">
+          <thead class="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Full Name</th>
+              <th>Email</th>
+              <th>Username</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
 
-                </div>
+      <div id="paginationContainer" class="mt-3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="userModalLabel">Add User</h5>
+        <button type="button" class="btn-close btn-close-white" data-coreui-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="userForm">@csrf
+          <input type="hidden" id="formAction" value="create">
+          <input type="hidden" name="branch_id" id="branch_id">
+          <input type="hidden" name="role_id" id="role_id">
+          <input type="hidden" name="user_id" id="user_id">
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Full Name</label>
+              <input type="text" name="name" id="name" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Email</label>
+              <input type="email" name="email" id="email" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Username</label>
+              <input type="text" name="username" id="username" class="form-control" required>
+            </div>
+            <div class="col-md-6 password-field">
+              <label class="form-label">Password</label>
+              <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="text-end mt-4">
+            <button type="submit" class="btn btn-primary px-4">
+              <i class="cil-save"></i> Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add/Edit Modal -->
+<!-- @include('Access.Core.Admin.partials.user-modal') -->
+
 
                 <p class="text-muted">Click a button above to perform a user management action.</p>
 
@@ -1082,3 +1172,187 @@
 @endsection
 
 {{-- No @push('scripts') needed here if CoreUI's JS is already loaded globally --}}
+
+@push('scripts')
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  let selectedBranch = null, selectedRole = null, searchQuery = '';
+
+  const el = {
+    institute: document.getElementById("instituteSelect"),
+    branch: document.getElementById("branchSelect"),
+    role: document.getElementById("roleSelect"),
+    addBtn: document.getElementById("addUserBtn"),
+    search: document.getElementById("searchInput"),
+    tbody: document.querySelector("#userTable tbody"),
+    pagination: document.getElementById("paginationContainer"),
+    form: document.getElementById("userForm"),
+  };
+
+  const resetSelect = (sel, text) => { sel.innerHTML = `<option value="">${text}</option>`; sel.disabled = true; };
+  const enableAdd = () => el.addBtn.disabled = false;
+  const disableAdd = () => el.addBtn.disabled = true;
+
+  async function fetchData(url, opts={}) {
+    try {
+      const res = await fetch(url, opts);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.error("Fetch error:", err);
+      el.tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Failed to load data</td></tr>`;
+      el.pagination.innerHTML = "";
+      return null;
+    }
+  }
+
+  // Load Institutes
+  (async function loadInstitutes() {
+    const data = await fetchData("{{ route('getInstitutes') }}");
+    if (!data) return;
+    data.forEach(i => el.institute.insertAdjacentHTML("beforeend", `<option value="${i.id}">${i.institute_name}</option>`));
+  })();
+
+  // Institute -> Branch
+  el.institute.addEventListener("change", async e => {
+    resetSelect(el.branch, "-- Select Branch --");
+    resetSelect(el.role, "-- Select Role --");
+    disableAdd();
+    selectedBranch = selectedRole = null;
+
+    const val = e.target.value;
+    if (!val) return;
+
+    const branches = await fetchData(`/branches/${val}`);
+    if (branches) {
+      el.branch.disabled = false;
+      branches.forEach(b => el.branch.insertAdjacentHTML("beforeend", `<option value="${b.id}">${b.branch_name}</option>`));
+    }
+  });
+
+  // Branch -> Role
+  el.branch.addEventListener("change", async e => {
+    resetSelect(el.role, "-- Select Role --");
+    disableAdd();
+    selectedBranch = e.target.value;
+    selectedRole = null;
+
+    if (!selectedBranch) return;
+
+    const roles = await fetchData(`/roles/${selectedBranch}`);
+    if (roles) {
+      el.role.disabled = false;
+      roles.forEach(r => el.role.insertAdjacentHTML("beforeend", `<option value="${r.role_id}">${r.display_name}</option>`));
+    }
+  });
+
+  // Role Selected
+  el.role.addEventListener("change", e => {
+    selectedRole = e.target.value;
+    if (selectedBranch && selectedRole) {
+      enableAdd();
+      loadUsers();
+    } else disableAdd();
+  });
+
+  // Search
+  el.search.addEventListener("input", e => {
+    searchQuery = e.target.value;
+    if (selectedBranch && selectedRole) loadUsers();
+  });
+
+  // Open Add Modal
+  el.addBtn.addEventListener("click", () => {
+    if (!selectedBranch || !selectedRole) return alert("Select branch & role first.");
+    el.form.reset();
+    document.getElementById("formAction").value = "create";
+    document.getElementById("branch_id").value = selectedBranch;
+    document.getElementById("role_id").value = selectedRole;
+    document.querySelector(".password-field").style.display = "block";
+    coreui.Modal.getOrCreateInstance('#userModal').show();
+  });
+
+  // Edit
+  document.body.addEventListener("click", async e => {
+    const btn = e.target.closest(".editUserBtn");
+    if (!btn) return;
+    const u = await fetchData(`/user/${btn.dataset.id}`);
+    if (!u) return;
+
+    el.form.reset();
+    document.getElementById("formAction").value = "update";
+    document.getElementById("user_id").value = u.id;
+    document.getElementById("name").value = u.name;
+    document.getElementById("email").value = u.email;
+    document.getElementById("username").value = u.username;
+    document.getElementById("branch_id").value = selectedBranch;
+    document.getElementById("role_id").value = selectedRole;
+    document.querySelector(".password-field").style.display = "none";
+    coreui.Modal.getOrCreateInstance('#userModal').show();
+  });
+
+  // Save
+  el.form.addEventListener("submit", async e => {
+    e.preventDefault();
+    const formData = new FormData(el.form);
+    const res = await fetchData(`/user/save`, {
+      method: "POST",
+      headers: { 'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value },
+      body: formData
+    });
+
+    if (res?.success) {
+      coreui.Modal.getOrCreateInstance('#userModal').hide();
+      loadUsers();
+    } else alert(res?.message || "Failed to save user");
+  });
+
+  // Load Users
+  async function loadUsers(page = 1) {
+    const url = `/users/${selectedBranch}/${selectedRole}?page=${page}&per_page=10&search=${encodeURIComponent(searchQuery)}`;
+    const res = await fetchData(url);
+    if (res?.data?.length) renderUsers(res.data, res.pagination);
+    else {
+      el.tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted">No users found</td></tr>`;
+      el.pagination.innerHTML = "";
+    }
+  }
+
+  function renderUsers(users, pag) {
+    el.tbody.innerHTML = users.map((u, i) => `
+      <tr>
+        <td>${(pag.current_page - 1) * pag.per_page + i + 1}</td>
+        <td>${u.name}</td>
+        <td>${u.email}</td>
+        <td>${u.username}</td>
+        <td><span class="badge bg-${u.status === 'active' ? 'success' : 'secondary'}">${u.status}</span></td>
+        <td><button class="btn btn-sm btn-outline-primary editUserBtn" data-id="${u.id}"><i class="cil-pencil"></i></button></td>
+      </tr>
+    `).join('');
+    renderPagination(pag);
+  }
+
+  function renderPagination(p) {
+    el.pagination.innerHTML = "";
+    if (!p || p.last_page <= 1) return;
+    const ul = document.createElement("ul");
+    ul.className = "pagination justify-content-center";
+    const makeBtn = (pg, label, dis, act) =>
+      `<li class="page-item ${dis ? 'disabled' : ''} ${act ? 'active' : ''}">
+         <a class="page-link" href="#" data-page="${pg}">${label}</a>
+       </li>`;
+    ul.innerHTML = `
+      ${makeBtn(p.current_page - 1, 'Prev', p.current_page === 1, false)}
+      ${Array.from({length: p.last_page}, (_,i)=>makeBtn(i+1, i+1, false, p.current_page===i+1)).join('')}
+      ${makeBtn(p.current_page + 1, 'Next', p.current_page === p.last_page, false)}
+    `;
+    el.pagination.appendChild(ul);
+    ul.querySelectorAll("a").forEach(a => a.addEventListener("click", e => {
+      e.preventDefault();
+      const pg = +a.dataset.page;
+      if (pg >= 1 && pg <= p.last_page) loadUsers(pg);
+    }));
+  }
+});
+</script>
+@endpush

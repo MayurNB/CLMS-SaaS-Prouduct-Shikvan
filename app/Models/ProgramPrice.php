@@ -13,17 +13,16 @@ class ProgramPrice extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
-
     protected $table = 'program_prices';
 
     protected $fillable = [
         'program_id',
-        'pricing_zone_id',
+        'price_type',
+        'base_price',
         'discount_offer_id',
-        'price',
-        'start_date',
-        'end_date',
+        'internal_notes',
         'is_active',
+        'institute_id',
     ];
 
     /**
@@ -32,14 +31,6 @@ class ProgramPrice extends Model
     public function program()
     {
         return $this->belongsTo(Program::class);
-    }
-
-    /**
-     * Get the pricing zone associated with the price.
-     */
-    public function pricingZone()
-    {
-        return $this->belongsTo(PricingZone::class);
     }
 
     /**

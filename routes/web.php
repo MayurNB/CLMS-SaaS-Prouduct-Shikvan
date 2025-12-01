@@ -1,292 +1,97 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-// Corrected import path for your custom login controller
-use App\Http\Controllers; // Make sure this matches your controller's actual namespace
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\InstituteInfoShow\InstituteLoginPageController;
-//use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\UserManagement\UserManagementController;
-use App\Http\Controllers\BatchManagement\BatchManagementController;
-
-use App\Http\Controllers\StudentManagement\StudentManagementController;
-
-use App\Http\Controllers\Profile\ProfileController;
-use App\Http\Controllers\BranchController\BranchManagementController;
-
-use App\Http\Controllers\AccessControlManagement\AccessControlManagementController;
-
-use App\Http\Controllers\ProgramsCoursesManagement\ProgramsCoursesManagementController;
-
-use App\Http\Controllers\ContentManagement\ContentManagementController;
-
-use App\Http\Controllers\AssignmentManagement\AssignmentManagementController;
-
-use App\Http\Controllers\ExamManagement\ExamManagementController;
-
-use App\Http\Controllers\Results\ResultsController;
-
-use App\Http\Controllers\FeesManagement\FeesManagementController;
-
-use App\Http\Controllers\SystemConfigurationManagement\SystemConfigurationController;
-
-use App\Http\Controllers\Dashboard\DashboardController;
-
-use App\Http\Controllers\Auth\LogoutController;
-
-use App\Http\Controllers\AdminControllersManagements\EmployersManagementController;
-
-use App\Http\Controllers\ProgramsCourses\ProgramsAndCoursesController;
-
-use App\Http\Controllers\User\UserController;
-use Symfony\Component\HttpKernel\Profiler\Profile;
-
-use App\Http\Controllers\LearnerEnrollment\LearnerEnrollmentController;
 use Illuminate\Support\Facades\Redirect;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\InstituteInfoShow\InstituteLoginPageController;
+use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Profile\ProfileController;
+use App\Http\Controllers\Branch\BranchController;
+use App\Http\Controllers\AdminControllersManagements\EmployersManagementController;
+use App\Http\Controllers\AdminControllersManagements\EmployerUserManagementController;
+use App\Http\Controllers\ProgramsCourses\ProgramsAndCoursesController;
+use App\Http\Controllers\LearnerEnrollment\LearnerEnrollmentController;
 
-/*
-|--------------------------------------------------------------------------
-| Public/Catch-All Redirect
-|--------------------------------------------------------------------------
-*/
+// ✅ Root Redirect
+Route::get('/', fn() => Redirect::to('https://mnbsolutions.vercel.app/'));
 
-// This route catches the root '/' path and redirects it to your showcase site.
-Route::get('/', function () {
-    return Redirect::to('https://mnbsolutions.vercel.app/');
-});
-
-// OPTIONAL: Catch any undefined public URL and redirect it as well.
-// If you want all non-logged-in traffic trying to access arbitrary paths 
-// (e.g., /home, /blog, etc., that don't exist) to go to your landing page.
-// NOTE: Make sure this is the LAST route in your web.php file, 
-// unless you have a specific 404 handler.
-// Route::fallback(function () {
-//     return Redirect::to('https://mnbsolutions.vercel.app/inwork-index.html');
-// });
-
-
-// IMPORTANT: These login routes MUST be in routes/web.php
-// This route will handle GET requests for your branded login page:
-// e.g., http://127.0.0.1:8000/login
-// e.g., http://127.0.0.1:8000/login/shikvan
-// e.g., http://127.0.0.1:8000/login/SVS01-SVPK01
+// ✅ LOGIN ROUTES
 Route::get('/login/{institute_slug?}', [InstituteLoginPageController::class, 'showLoginForm'])->name('login');
-
-// This route handles the POST request when the user submits the login form.
-// Ensure this is uncommented if you intend to use this for form submission later.
-// If you have a separate controller for actual user login, point this to that controller's method.
-// For now, if InstituteLoginPageController will also handle actual login logic, keep it like this.
-// If not, you'd define a different controller here for the POST request.
-//Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
-//Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// 2. GET Route: Handles users who try to access /logout directly via URL,
-// a faulty link, or browser history, preventing the "Method Not Allowed" error.
-Route::get('/logout', function () {
-    // Redirects the user directly to the login page
-    return redirect()->route('login'); 
-})->name('logout.get'); // We use a unique name to avoid conflicts
+// Branch + Role selection
+Route::get('/login/branch-role', [LoginController::class, 'showBranchRoleSelection'])->name('login.showBranchRole');
+Route::post('/select-branch-role', [LoginController::class, 'selectBranchRole'])->name('selectBranchRole');
 
 
-
-//Route related to Admin
-
-// Route::get('/Admin/Dashboard', [ProfileController::class, 'Admin_profile'])->name('Admin_profile');
-
-
-// Route::get('/Admin/Profile', [ProfileController::class, 'Admin_profile'])->name('Admin_profile');
-
-// Route::get('/Admin/Packages_Pricing', [SystemConfigurationController::class, 'Admin_packages_pricing'])->name('Admin_packages_pricing');
-// Route::post('//Admin/Packages_Pricing/create', [SystemConfigurationController::class, 'Admin_create_product_package'])->name('Admin_create_product_package');
-
-
-
-
-// Route related to Employer
-
-// Route::get('/Profile/Employer', [ProfileController::class, 'Employer_profile'])->name('Employer_profile');
-
-// Route::get('/Branch Management/Employer', [ BranchManagementController::class, 'Employer_branch'])->name('Employer_branch');
-
-// Route::get('/Access Control Management/Employer', [ AccessControlManagementController::class, 'Employer_acm'])->name('Employer_acm');
-
-// Route::get('/Programs Courses Management/Employer', [ ProgramsCoursesManagementController::class, 'Employer_programs_courses'])->name('Employer_programs_courses');
-
-// Route::get('/Content Management/Employer', [ ContentManagementController::class, 'Employer_content'])->name('Employer_content');
-
-// Route::get('/Assignment Management/Employer', [ AssignmentManagementController::class, 'Employer_assignment'])->name('Employer_assignment');
-
-// Route::get('/Exam Management/Employer', [ ExamManagementController::class, 'Employer_exam'])->name('Employer_exam');
-
-// Route::get('/Results/Employer', [ ResultsController::class, 'Employer_result'])->name('Employer_result');
-
-// End Employer Route  
-
-
-// Route Related to OE
-
-// Route::get('/Profile/Operations Executive', [ProfileController::class, 'Operations_Executive_profile'])->name('Operations_Executive_profile');
-
-
-
-// Route::get('/Access Control Management/Operations Executive', [ AccessControlManagementController::class, 'Operations_Executive_acm'])->name('Operations_Executive_acm');
-
-// Route::get('/Branch Management/Operations Executive', [ BranchManagementController::class, 'Operations_Executive_branch'])->name('Operations_Executive_branch');
-
-// Route::get('/Programs Courses creation/Operations Executive', [ ProgramsCoursesManagementController::class, 'Operations_Executive_programs_courses_creation'])->name('Operations_Executive_programs_courses_creation');
-
-// Route::get('/Programs Courses assign learner/Operations Executive', [ ProgramsCoursesManagementController::class, 'Operations_Executive_programs_courses_learner_assign'])->name('Operations_Executive_programs_courses_learner_assign');
-
-// Route::get('/Programs Courses assign employee/Operations Executive', [ ProgramsCoursesManagementController::class, 'Operations_Executive_programs_courses_emp_assign'])->name('Operations_Executive_programs_courses_emp_assign');
-
-// Route::get('/Fees Dashboard/Operations Executive', [ FeesManagementController::class, 'Operations_Executive_fees_dashboard'])->name('Operations_Executive_fees_dashboard');
-
-// Route::get('/Learner Payment/Operations Executive', [ FeesManagementController::class, 'Operations_Executive_learner_payment'])->name('Operations_Executive_learner_payment');
-
-// Route::get('/Fees Structure/Operations Executive', [ FeesManagementController::class, 'Operations_Executive_fees_structures'])->name('Operations_Executive_fees_structures');
-
-// End OE Route
-
-
-
-
-//Route::get('/profile', [LoginController::class, 'logout'])->name('logout');
-
-// Route::get('/User Management', [UserManagementController::class, 'UserMgt'])->name('UserMgt');
-
-
-
-
-
-
-// Route::get('/Profile', [ProfileController::class, 'Head_of_Department'])->name('Head_of_Department');
-
-// Route::get('/Profile', [ProfileController::class, 'Exam_Manager'])->name('Exam_Manager');
-
-// Route::get('/Profile', [ProfileController::class, 'Instructor'])->name('Instructor');
-
-// Route::get('/Profile', [ProfileController::class, 'Learner'])->name('Learner');
-
-// Route::get('/Batch Management/Batch Performance', [BatchManagementController::class, 'BatchMgt1'])->name('BatchMgt1');
-
-// Route::get('/Batch Management/Manage Batch', [BatchManagementController::class, 'BatchMgt2'])->name('BatchMgt2');
-
-// Route::get('/Batch Management/Manage Subject', [BatchManagementController::class, 'BatchMgt3'])->name('BatchMgt3');
-
-// Route::get('/Batch Management/Manage Schedule', [BatchManagementController::class, 'BatchMgt4'])->name('BatchMgt4');
-
-
-// Route::get('/Student Management/student registration manage', [StudentManagementController::class, 'StdMgt1'])->name('StdMgt1');
-
-
-
-// Route::get('/dashboard/learner', function () {
-//     return view('Access.Core.Learner.dashboard');
-// })->name('learner_dashboard');
-
-
+// ✅ AUTH-PROTECTED ROUTES
 Route::middleware(['auth'])->group(function () {
 
-
- 
-    Route::get('/oe/dashboard', [DashboardController::class, 'oeDashboard'])->name('oe.dashboard');
-
-
-});
-
-// Route::get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])
-//     ->middleware(['auth', 'role:Admin'])
-//     ->name('adminDashboard');
-
-Route::middleware(['auth', 'role:Admin'])->group(function () {
-    
-   //Admin Routes:
+    /*
+    |--------------------------------------------------------------------------
+    | Global Roles (Admin + SystemEmployer)
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware('role:Admin')->prefix('admin')->group(function () {
+        //Admin Routes:
     //Admin Dashboard related Route
-    Route::get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])->name('adminDashboard');
+    Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('adminDashboard');
     //Admin Dashboard End
 
     //Admin Profile related Route
-    Route::get('/admin/profile', [ProfileController::class, 'adminProfile'])->name('adminProfile');
+    Route::get('/profile', [ProfileController::class, 'adminProfile'])->name('adminProfile');
 
-    Route::post('/admin/profile/update', [ProfileController::class, 'updateAdminprofile'])->name('updateAdminprofile');
+    Route::post('/profile/update', [ProfileController::class, 'updateAdminprofile'])->name('updateAdminprofile');
     //Admin Profile End
 
     //Admin Employers Mgt Routes 
-    Route::get('/admin/employers-mgt-info/',[EmployersManagementController::class,'employerMgtinfo'])->name('employerMgtinfo');
+    Route::get('/employers-mgt-info',[EmployersManagementController::class,'employerMgtinfo'])->name('employerMgtinfo');
 
-    Route::get('/admin/onboard-employer/',[EmployersManagementController::class,'onboardEmployer'])->name('onboardEmployer');
+    Route::get('/onboard-employer',[EmployersManagementController::class,'onboardEmployer'])->name('onboardEmployer');
 
-    Route::post('/admin/employer-user-creation/',[EmployersManagementController::class,'creationOfemployerAsuser'])->name('creationOfemployerAsuser');
+    Route::post('/employer-user-creation',[EmployersManagementController::class,'creationOfemployerAsuser'])->name('creationOfemployerAsuser');
 
     //Route::post('/search-user-by-email', [UserController::class, 'searchUserByEmail'])->name('searchUserByEmail');
 
-    Route::post('/admin/employer-profile-creation/',[EmployersManagementController::class,'creationOfemployerAsprofile'])->name('creationOfemployerAsprofile');
+    Route::post('/employer-profile-creation',[EmployersManagementController::class,'creationOfemployerAsprofile'])->name('creationOfemployerAsprofile');
 
     Route::post('/search-user-by-email-for-confirm-data', [EmployersManagementController::class, 'searchUserByEmailforConfirmData'])->name('searchUserByEmailforConfirmData');
 
-    Route::post('/admin/employer-onboard-data-confirm/',[EmployersManagementController::class,'employerOnboarddataConfirm'])->name('employerOnboarddataConfirm');
+    Route::post('/employer-onboard-data-confirm',[EmployersManagementController::class,'employerOnboarddataConfirm'])->name('employerOnboarddataConfirm');
 
-    Route::get('/admin/employer-subscriptions-setup/',[EmployersManagementController::class,'employerSetupSubscriptions'])->name('employerSetupSubscriptions');
+    Route::get('/employer-subscriptions-setup',[EmployersManagementController::class,'employerSetupSubscriptions'])->name('employerSetupSubscriptions');
 
     Route::post('/employer-subscriptions-data-check-and-send',[EmployersManagementController::class,'employerSubscriptionsDataCheckSend'])->name('employerSubscriptionsDataCheckSend');
 
+    Route::get('/employer-user-onboard',[EmployerUserManagementController::class,'adminOnboardToUser'])->name('adminOnboardToUser');
 
+    Route::get('/institutes', [EmployerUserManagementController::class, 'getInstitutes'])->name('getInstitutes');
+    Route::get('/branches/{institute_id}', [EmployerUserManagementController::class, 'getBranches']);
+    Route::get('/roles/{branch_id}', [EmployerUserManagementController::class, 'getRoles']);
+    Route::get('/users/{branch_id}/{role_id}', [EmployerUserManagementController::class, 'getUsers']);
+    Route::get('/user/{user_id}', [EmployerUserManagementController::class, 'getSingleUser']);
+    Route::post('/user/save', [EmployerUserManagementController::class, 'storeOrUpdateUser']);
 //End Admin Routes. 
-});
+    });
 
-// Route::middleware(['auth', 'role:Admin'])->prefix('Admin')->group(function () {
-//    //Admin Routes:
-//     //Admin Dashboard related Route
-//     Route::get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])->name('adminDashboard');
-//     //Admin Dashboard End
-
-//     //Admin Profile related Route
-//     Route::get('/admin/profile', [ProfileController::class, 'adminProfile'])->name('adminProfile');
-
-//     Route::post('/admin/profile/update', [ProfileController::class, 'updateAdminprofile'])->name('updateAdminprofile');
-//     //Admin Profile End
-
-//     //Admin Employers Mgt Routes 
-//     Route::get('/admin/employers-mgt-info/',[EmployersManagementController::class,'employerMgtinfo'])->name('employerMgtinfo');
-
-//     Route::get('/admin/onboard-employer/',[EmployersManagementController::class,'onboardEmployer'])->name('onboardEmployer');
-
-//     Route::post('/admin/employer-user-creation/',[EmployersManagementController::class,'creationOfemployerAsuser'])->name('creationOfemployerAsuser');
-
-//     Route::post('/search-user-by-email', [UserController::class, 'searchUserByEmail'])->name('searchUserByEmail');
-
-//     Route::post('/admin/employer-profile-creation/',[EmployersManagementController::class,'creationOfemployerAsprofile'])->name('creationOfemployerAsprofile');
-
-//     Route::post('/search-user-by-email-for-confirm-data', [EmployersManagementController::class, 'searchUserByEmailforConfirmData'])->name('searchUserByEmailforConfirmData');
-
-//     Route::post('/admin/employer-onboard-data-confirm/',[EmployersManagementController::class,'employerOnboarddataConfirm'])->name('employerOnboarddataConfirm');
-
-//     Route::get('/admin/employer-subscriptions-setup/',[EmployersManagementController::class,'employerSetupSubscriptions'])->name('employerSetupSubscriptions');
-
-//     Route::post('/employer-subscriptions-data-check-and-send',[EmployersManagementController::class,'employerSubscriptionsDataCheckSend'])->name('employerSubscriptionsDataCheckSend');
-
-
-// //End Admin Routes. 
-// });
-
-Route::middleware(['auth', 'role:SystemEmployer'])->prefix('employer')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'employerDashboard'])->name('employerDashboard');
+    Route::middleware('role:SystemEmployer')->prefix('employer')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'employerDashboard'])->name('employerDashboard');
     Route::get('/profile', [ProfileController::class, 'employerProfile'])->name('employerProfile');
-    Route::post('/profile/update', [ProfileController::class, 'updateEmployerProfile'])->name('updateEmployerProfile');
+    Route::post('/profile/update', [ProfileController::class, 'updateEmployerprofile'])->name('updateEmployerprofile');
+
+    Route::get('/institute', [InstituteLoginPageController::class, 'employerInstituteManage'])->name('employerInstituteManage');
+
+    Route::get('/branch', [BranchController::class, 'employerBranch'])->name('employerBranch');
+
+    Route::post('/branch-create', [BranchController::class, 'employerBranchCreate'])->name('employerBranchCreate');
+
+    Route::post('/branch-update', [BranchController::class, 'employerBranchUpdate'])->name('employerBranchUpdate');
+
+
+    //Route::post('/profile/update', [ProfileController::class, 'updateEmployerProfile'])->name('updateEmployerProfile');
+
 
     Route::get('/programs-courses',[ProgramsAndCoursesController::class, 'employerProgramAndCourses'])->name('employerProgramAndCourses');
 
@@ -298,7 +103,23 @@ Route::middleware(['auth', 'role:SystemEmployer'])->prefix('employer')->group(fu
   // AJAX: get courses for selected program
     Route::get('/programs/{program}/courses', [ProgramsAndCoursesController::class, 'getProgramCourses'])->name('getProgramCourses');
    
-    Route::get('/Learner Enrollment', [LearnerEnrollmentController::class, 'employerLearnerEnrollment'])->name('employerLearnerEnrollment');
+    // 3. 🆕 NEW: Handle Program Update (POST request from the edit form)
+    Route::post('/programs/update/{programId}', [ProgramsAndCoursesController::class, 'employerProgramUpdate'])->name('employerProgramUpdate');
+
+    // 4. 🚀 NEW: AJAX route to fetch ALL program details (for the edit modal)
+    // Renamed this to be clearer for AJAX use, using your existing pattern.
+    Route::get('/programs/{programId}/edit-data', [ProgramsAndCoursesController::class, 'getProgramDetails'])->name('employer.program.details.ajax');
+
+    // AJAX Add Routes (Keep these)
+    Route::post('/programs/courses/add', [ProgramsAndCoursesController::class, 'addCourse']);
+    Route::post('/programs/prices/add', [ProgramsAndCoursesController::class, 'addPrice']);
+    Route::post('/programs/discounts/add', [ProgramsAndCoursesController::class, 'addDiscount']);
+    Route::post('/programs/tags/add', [ProgramsAndCoursesController::class, 'addTag']);
+    Route::get('/branch-learner-fees-data', [LearnerEnrollmentController::class, 'employerBranchWiseLearnerAndFeesTotolInfo'])->name('employerBranchWiseLearnerAndFeesTotolInfo');
+
+
+    Route::get('/not-use', [LearnerEnrollmentController::class, 'employerLearnerEnrollment'])->name('employerLearnerEnrollment');
+
 
     Route::post(
     '/Learner-Enrollment/data-store',
@@ -309,4 +130,131 @@ Route::get(
     '/programs/{programName}/learners',
     [LearnerEnrollmentController::class, 'getEnrolledLearnersByProgram']
 )->name('getEnrolledLearnersByProgram');
+
+Route::get('/programs/{programId}/details', [ProgramsAndCoursesController::class, 'getProgramDetails'])->name('getProgramDetails');
+
+Route::post('/employer/programs/courses/add', [ProgramsAndCoursesController::class, 'addCourse']);
+Route::post('/employer/programs/prices/add', [ProgramsAndCoursesController::class, 'addPrice']);
+Route::post('/employer/programs/discounts/add', [ProgramsAndCoursesController::class, 'addDiscount']);
+Route::post('/employer/programs/tags/add', [ProgramsAndCoursesController::class, 'addTag']);
+
+// routes/web.php
+Route::get('/programs/{id}', [ProgramsAndCoursesController::class, 'show']);
+
+    
+
+
+});
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Branch-Level Roles
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware('role:BranchExecutive')->prefix('branch-executive')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'branchExecutiveDashboard'])->name('branchExecutiveDashboard');
+        Route::get('/profile', [ProfileController::class, 'branchExecutiveProfile'])->name('branchExecutiveProfile');
+    
+        Route::post('/profile/update', [ProfileController::class, 'updatebranchExecutiveProfile'])->name('updatebranchExecutiveProfile');
+
+        Route::get('/institute', [InstituteLoginPageController::class, 'branchExecutiveInstitute'])->name('branchExecutiveInstitute');
+
+        Route::get('/branch', [BranchController::class, 'branchExecutiveBranch'])->name('branchExecutiveBranch');
+    
+        Route::get('/branch/programs/{id}', [ProgramsAndCoursesController::class, 'show']);
+
+        Route::get('/programs-courses',[ProgramsAndCoursesController::class, 'branchExecutiveProgramAndCourses'])->name('branchExecutiveProgramAndCourses');
+
+        Route::get('/programs/{programId}/details', [ProgramsAndCoursesController::class, 'getProgramDetails'])->name('getProgramDetails');
+
+          Route::get('/branch/programs/{programId}/edit-data', [ProgramsAndCoursesController::class, 'getProgramDetails'])->name('employer.program.details.ajax.branch');
+
+
+            Route::get('/Learner Enrollment', [LearnerEnrollmentController::class, 'branchExecutiveLearnerEnrollment'])->name('branchExecutiveLearnerEnrollment');
+
+            // Learn Enrollment procedure 
+
+            // Learner creation 
+                    Route::post('/branch/learner/store', [LearnerEnrollmentController::class, 'storeLearner'])->name('branchExecutive.storeLearner');
+
+
+
+         // 🔹 ✅ Add this route — list programs for enrollment (missing before)
+    Route::get('/branch-executive/programs/list', [LearnerEnrollmentController::class, 'listPrograms'])
+        ->name('programs.list');
+
+    
+
+    Route::get('/programs/{id}/details', [LearnerEnrollmentController::class, 'programDetails'])
+        ->name('programs.details');
+
+    Route::post('/enrollments/store', [LearnerEnrollmentController::class, 'store'])
+        ->name('enrollments.store');
+
+        Route::get('/create', [LearnerEnrollmentController::class, 'showEnrollmentForm'])->name('enrollments.create');
+ Route::get('/program/{program_id}/courses', [LearnerEnrollmentController::class, 'fetchProgramCourses'])
+        ->name('branchExecutive.program.courses');  
+    
+    Route::post('/store', [LearnerEnrollmentController::class, 'saveEnrollment'])->name('enrollments.store');
+    
+//Route::post('/enrollment/get-program-details', [LearnerEnrollmentController::class, 'getProgramDetails'])->name('enrollment.getProgramDetails');
+
+
+
+
+// web.php
+Route::match(['get', 'post'], '/learner-fees-overview', [LearnerEnrollmentController::class, 'ViewOverviewOfFeesBeforePayment'])
+    ->name('ViewOverviewOfFeesBeforePayment');
+
+
+        Route::post('/enrollment-fees-payment', [LearnerEnrollmentController::class, 'EnrollmentFeesPayment'])->name('EnrollmentFeesPayment');
+
+
+Route::get('/learner-enrollment-manage',[LearnerEnrollmentController::class,'LearnerEnrollmentManage'])->name('LearnerEnrollmentManage');
+
+    Route::get('/learner-enrollment-update', [LearnerEnrollmentController::class, 'branchExecutiveLearnerEnrollmentUpdate'])->name('branchExecutiveLearnerEnrollmentUpdate');
+
+
+    Route::post('/learner-enrollment-deactive',[LearnerEnrollmentController::class,'enrollmentDeactive'])->name('enrollmentDeactive');
+
+});
+
+
+
+    Route::middleware('role:Instructor')->prefix('instructor')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'instructorDashboard'])->name('instructorDashboard');
+
+        Route::get('/profile', [ProfileController::class, 'InstructorProfile'])->name('InstructorProfile');
+    
+        Route::post('/profile/update', [ProfileController::class, 'updateInstructorProfile'])->name('updateInstructorProfile');
+    
+        Route::get('/institute', [InstituteLoginPageController::class, 'InstructorInstitute'])->name('InstructorInstitute');
+
+        Route::get('/branch', [BranchController::class, 'InstructorBranch'])->name('InstructorBranch');
+
+    
+    });
+
+    Route::middleware('role:Learner')->prefix('learner')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'learnerDashboard'])->name('learnerDashboard');
+    
+        Route::get('/profile', [ProfileController::class, 'LearnerProfile'])->name('LearnerProfile');
+    
+        Route::post('/profile/update', [ProfileController::class, 'updateLearnerProfile'])->name('updateLearnerProfile');
+    
+        Route::get('/institute', [InstituteLoginPageController::class, 'LearnerInstitute'])->name('LearnerInstitute');
+
+        Route::get('/branch', [BranchController::class, 'LearnerBranch'])->name('LearnerBranch');
+
+        Route::get('/just-view',[LearnerEnrollmentController::class,'JustView'])->name('JustView');
+    
+    });
+});
+
+Route::get('/test-log', function() {
+    \App\Services\LogService::app("APP_LOG TEST ENTRY");
+    \App\Services\LogService::security("SECURITY TEST ENTRY");
+    \App\Services\LogService::payment("PAYMENTS TEST ENTRY");
+    return "LOGGING TEST COMPLETED";
 });

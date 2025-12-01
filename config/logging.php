@@ -127,6 +127,43 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        // --- Custom Log Channels for SaaS (Daily Rotation with Auto-Deletion) ---
+
+        // This channel is used for standard errors and does not rotate.
+        'error_custom' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/error.log'),
+            'level' => 'error',
+            'replace_placeholders' => true,
+        ],
+
+        // General application log (e.g., info, warnings)
+        'app_log' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/app.log'),
+            'level' => 'info',
+            'days' => 30, // Keeps logs for 30 days, then deletes the oldest
+            'replace_placeholders' => true,
+        ],
+
+        // Financial logs (high retention for auditing)
+        'payments' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/payments.log'),
+            'level' => 'info',
+            'days' => 365, // Keeps logs for 1 year
+            'replace_placeholders' => true,
+        ],
+
+        // Security logs (high retention for compliance)
+        'security' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/security.log'),
+            'level' => 'notice',
+            'days' => 180, // Keeps logs for 180 days (6 months)
+            'replace_placeholders' => true,
+        ],
+
     ],
 
 ];

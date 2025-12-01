@@ -161,7 +161,7 @@
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-puzzle') }}"></use>
             </svg> Employers Users Mgt </a>
           <ul class="nav-group-items compact">
-            <li class="nav-item"><a class="nav-link" href="{{ url('/') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Users Info Mgt</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('adminOnboardToUser') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Users Info Mgt</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Control Access Mgt</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/') }}" ><span class="nav-icon"><span class="nav-icon-bullet"></span></span> User Deletion Mgt
                 <svg class="icon icon-sm ms-2">

@@ -5,7 +5,7 @@
 Employer
 
 @endsection
-@section('breadcrumb_item_active', 'Learner Enrollment') {{-- Changed for clarity for this page --}}
+@section('breadcrumb_item_active', 'Branches View') {{-- Changed for clarity for this page --}}
 
 @section('quick_access_nav_url')
 <a href="{{ Route('employerDashboard') }}">Home</a>
@@ -52,7 +52,7 @@ Employer
                   </svg> Comments<span class="badge badge-sm bg-warning ms-2">42</span></a> -->
                 <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold my-2">
                   <div class="fw-semibold">Settings</div>
-                </div><a class="dropdown-item" href="#">
+                </div><a class="dropdown-item" href="{{ route('employerProfile') }}">
                   <!-- <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
                   </svg> Profile</a><a class="dropdown-item" href="#">
@@ -123,7 +123,22 @@ Employer
               <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
             </li>
             <li class="nav-item dropdown"><a class="nav-link py-0 pe-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <div class="avatar avatar-md"><img class="avatar-img" src="{{ asset('coreui/assets/img/avatars/8.jpg') }}" alt="user@email.com"></div>
+                @php
+    $user = Auth::user();
+    $userProfile = $user->userProfile ?? null;
+    $picture = $userProfile->profile_picture_url ?? null;
+@endphp
+
+<div class="avatar avatar-md">
+
+    @if(!empty($picture))
+        <img class="avatar-img" src="{{ $picture }}" alt="User Profile Picture">
+    @else
+        <span style="font-size: 14px; color: #555;">Profile</span>
+    @endif
+
+</div>
+
               </a>
               <div class="dropdown-menu dropdown-menu-end pt-0">
                 <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold rounded-top mb-2">Account</div><a class="dropdown-item" href="#">
@@ -143,7 +158,7 @@ Employer
                 </a> -->
                 <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold my-2">
                   <div class="fw-semibold">Settings</div>
-                </div>
+                </div><a class="dropdown-item" href="{{ route('employerProfile') }}">
                   <!-- <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
                   </svg> Profile</a><a class="dropdown-item" href="#">
@@ -161,17 +176,19 @@ Employer
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-lock-locked') }}"></use>
                   </svg> Lock Account</a><a class="dropdown-item" href="#"> -->
                   <!-- Hidden logout form -->
-<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-    @csrf
-</form>
-
-<!-- Link that triggers form submission -->
-<a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-    <svg class="icon me-2">
-        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
-    </svg> 
-    Logout
+<!-- ✅ Logout (Styled Like CoreUI Dropdown Item) -->
+<a class="dropdown-item" href="#" 
+   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+  <svg class="icon me-2">
+    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
+  </svg>
+  Logout
 </a>
+
+<!-- Hidden Logout Form -->
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+  @csrf
+</form>
               </div>
             </li>
           </ul>
@@ -188,11 +205,16 @@ Employer
             <svg class="nav-icon">
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-speedometer') }}"></use>
             </svg> Dashboard<span class="badge badge-sm bg-info ms-auto">NEW</span></a></li>
-        <!-- <li class="nav-title">PERSONAL</li>
+        <li class="nav-title">PERSONAL</li>
         <li class="nav-item"><a class="nav-link" href="{{ route('employerProfile') }}">
             <svg class="nav-icon">
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
-            </svg> Profile</a></li> -->
+            </svg> Profile</a></li>
+        <li class="nav-title">INSTITUTE INFO </li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('employerInstituteManage') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
+            </svg> My Institute</a></li>
         <!-- <li class="nav-title">Branch Management </li>
         <li class="nav-item"><a class="nav-link" href="{{ url('employerProfile') }}">
             <svg class="nav-icon">
@@ -233,9 +255,11 @@ Employer
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="{{ url('Employer_acm') }}">
             <svg class="nav-icon">
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-puzzle') }}"></use>
-            </svg>Administration </a>
+            </svg>Quick Action </a>
           <ul class="nav-group-items compact">
-            <li class="nav-item"><a class="nav-link" href="{{ Route('employerLearnerEnrollment') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Enrollment </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('employerBranch') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Branches Manages </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('employerBranchWiseLearnerAndFeesTotolInfo') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Branches View </a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ Route('employerProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Programs & Courses </a></li>
             <!-- <li class="nav-item"><a class="nav-link" href="{{ url('Employer_content') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Content Mgt </a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('Employer_assignment') }}" ><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Assignment Mgt 
                 <svg class="icon icon-sm ms-2">
@@ -423,29 +447,48 @@ Employer
 
                 <div class="d-flex flex-wrap justify-content-center gap-3 mb-4"> {{-- Flex container for buttons --}}
 
-                    {{-- Button 1: View Package & Pricing (Opens Modal for Type Selection) --}}
-                    <button class="btn btn-primary px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#ViewDataModal">
-                        Learner Enrollment
-                    </button>
+                    <div class="container mt-3">
 
-                    {{-- Button 2: Package creation (Opens Modal for Package creation) --}}
-                    <!-- <button class="btn btn-info px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#editUserModal">
-                        Creation of Courses
-                    </button> -->
+    <h3 class="mb-3 text-center">📊 Branch Summary</h3>
 
-                     {{-- Button 3: Pricing creation (Opens Modal for Pricing insert) --}}
-                    <button class="btn btn-info px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#getSpecificUserModal">
-                        View
-                    </button>
+    @forelse($branches as $b)
+        <div class="card shadow-sm mb-3" style="border-radius: 12px;">
+            <div class="card-body">
 
-                    <!-- {{-- Button 3: Get Specific User Data (Opens Modal for Role/ID Input) --}}
-                    <button class="btn btn-secondary px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#getSpecificUserModal">
-                        Get User by ID/Role
-                    </button> -->
+                <h5 class="fw-bold">{{ $b->branch_name }}</h5>
+                <hr>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <strong>Total Learners:</strong>
+                    <span>{{ $b->total_learners ?? 0 }}</span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <strong>Total Expected:</strong>
+                    <span>₹ {{ number_format($b->total_expected ?? 0) }}</span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <strong>Total Paid:</strong>
+                    <span class="text-success fw-bold">₹ {{ number_format($b->total_paid ?? 0) }}</span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <strong>Balance:</strong>
+                    <span class="text-danger fw-bold">₹ {{ number_format($b->total_balance ?? 0) }}</span>
+                </div>
+
+            </div>
+        </div>
+    @empty
+        <p class="text-center text-muted">No branch data available.</p>
+    @endforelse
+
+</div>
 
                 </div>
 
-                <p class="text-muted">Click a button above to perform a action.</p>
+                <p class="text-muted">NOTE:If Data are not correct then report it.</p>
 
                 {{-- Modals for Profile view Actions --}}
 
@@ -475,7 +518,7 @@ Employer
     userProfile = $user ? $user->userProfile : null;
 @endphp --}}
 
-<form action="{{ route('employerLearnerEnrollmentDataStoreInDB') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ url('employerLearnerEnrollmentDataStoreInDB') }}" method="POST" enctype="multipart/form-data">
                                        @csrf 
                                     <table class="table table-striped table-hover">
                                        
@@ -518,7 +561,10 @@ Employer
                                             Program
                                           </th>
                                           <th>
-                                            Fees
+                                            Total fees
+                                          </th>
+                                           <th>
+                                            Paid Fees
                                           </th>
                                         </tr>
                                        </thead>
@@ -532,6 +578,17 @@ Employer
                                                                                             <input type="text" class="form-control" name="ProgramFees" id="editUserId" placeholder="Program Fees">
 
                                           </td>
+                                           <td>
+                                                                                            <input type="text" class="form-control" name="PaidFees" id="editUserId" placeholder="Paid Fees">
+
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td colspan="2">Balance fees:</td>
+        <td>
+            <!-- Balance Fees Display: Add ID to the span -->
+            <span id="balanceFeesResult">₹ 0.00</span>
+        </td>
                                         </tr>
                                        </tbody>
                                       <!-- <thead>
@@ -998,9 +1055,7 @@ Employer
                     <td>
                         <select name="ProgramId" class="form-control" required>
                             <option value="">-- Select Program --</option>
-                            @foreach($programs as $program)
-                                <option value="{{ $program->id }}">{{ $program->program_name }}</option>
-                            @endforeach
+                            
                         </select>
                     </td>
 
@@ -1110,9 +1165,7 @@ Employer
                 {{-- FIX: Populate the dropdown using the user's specific program list passed from the controller --}}
 <select id="programDropdown" class="form-control">
 <option value="">-- Select Program --</option>
-@foreach($userProgramsForFilter as $programName)
-<option value="{{ $programName }}">{{ $programName }}</option>
-@endforeach
+
 </select>
 
 
@@ -1124,7 +1177,9 @@ Employer
             <th>Learner Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Fees</th>
+            <th>Total Fees</th>
+            <th>Paid Fees </th>
+            <th>Balance Fees </th>
             <th>Status</th>
         </tr>
     </thead>
@@ -1188,6 +1243,7 @@ function loadLearners(programName, page = 1) {
                             <td>${learner.raw_email ?? '-'}</td>
                             <td>${learner.raw_phone}</td>
                             <td>${learner.raw_fee_amount}</td>
+                            <td>${learner.paid_amount}</td>
                             <td>${learner.status}</td>
                         </tr>
                     `);
@@ -1213,4 +1269,53 @@ function loadLearners(programName, page = 1) {
 
 
 </script>
+
+<script>
+    /**
+     * Calculates the remaining balance by subtracting paid fees from total fees.
+     * Triggered every time the user types in the totalFees or paidFees input fields.
+     */
+    function calculateBalance() {
+        // 1. Get elements by ID
+        const totalFeesInput = document.getElementById('totalFees');
+        const paidFeesInput = document.getElementById('paidFees');
+        const resultSpan = document.getElementById('balanceFeesResult');
+
+        // Safety check to ensure all elements exist
+        if (!totalFeesInput || !paidFeesInput || !resultSpan) {
+            return;
+        }
+
+        // 2. Safely convert input values to numbers, defaulting to 0 if empty
+        const totalFees = parseFloat(totalFeesInput.value) || 0;
+        const paidFees = parseFloat(paidFeesInput.value) || 0;
+
+        // 3. Perform the calculation
+        let balanceDue = totalFees - paidFees;
+
+        // 4. Update the display and color code
+        resultSpan.textContent = `₹ ${Math.abs(balanceDue).toFixed(2)}`;
+        
+        // Use color to indicate status (Owed or Overpaid)
+        resultSpan.classList.remove('text-red-600', 'text-green-600', 'font-bold');
+
+        if (balanceDue > 0) {
+            // Money is owed
+            resultSpan.classList.add('text-red-600', 'font-bold');
+        } else if (balanceDue < 0) {
+            // Overpayment/Credit
+            resultSpan.textContent = `₹ 0.00 (Credit: ₹ ${Math.abs(balanceDue).toFixed(2)})`;
+            resultSpan.classList.add('text-green-600', 'font-bold');
+        } else {
+            // Exactly paid
+            resultSpan.textContent = '₹ 0.00';
+        }
+    }
+
+    // Run the function once the page is loaded to initialize the display
+    window.onload = calculateBalance;
+</script>
+
 @endpush
+
+

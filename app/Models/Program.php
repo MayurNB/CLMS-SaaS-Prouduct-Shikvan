@@ -21,8 +21,9 @@ class Program extends Model
         'start_date',
         'end_date',
         'is_active',
+        'duration_days',
         'is_online',
-         'created_by_user_id', // MUST be here
+         'institute_id', // MUST be here
     ];
 
     /**
@@ -58,4 +59,9 @@ class Program extends Model
     {
         return $this->hasMany(Fee::class);
     }
+
+    public function discounts()
+{
+    return $this->hasMany(\App\Models\DiscountOffer::class, 'program_id');
+}
 }
