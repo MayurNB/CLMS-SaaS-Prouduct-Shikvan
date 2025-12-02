@@ -1,4 +1,4 @@
-# 1. BASE IMAGE: Use PHP 8.2 to match your Laravel/Composer requirements (PHP ^8.2).
+# 1. BASE IMAGE: Use PHP 8.2-FPM on Alpine Linux.
 FROM php:8.2-fpm-alpine
 
 # Set the working directory inside the container
@@ -7,7 +7,7 @@ WORKDIR /var/www/html
 # 2. DEPENDENCY INSTALLATION, COMPILATION, AND CLEANUP
 RUN apk update \
     && apk add --no-cache --update \
-        # Dependencies needed for compiling extensions
+        # Dependencies needed for compiling PHP extensions
         linux-headers \
         libpng-dev \
         libjpeg-turbo-dev \
@@ -15,22 +15,24 @@ RUN apk update \
         libzip-dev \
         oniguruma-dev \
         ${PHPIZE_DEPS} \
+        # Dependencies for standard Alpine PHP extensions
+        icu-dev \
+        libxml2-dev \
         # General tools needed for the build process
         git \
         curl \
         unzip \
         # CRITICAL ADDITION: Install Nginx, the web server
         nginx \
-        # CRITICAL ADDITION: Dependencies for PHP extensions
-        icu-dev \
     \
-    # Compile and install PHP extensions
+    # Compile and install standard PHP extensions
     && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath sockets \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd \
     \
-    # === CRITICAL FIX: Add Missing Extensions (intl and opcache) ===
-    && docker-php-ext-install intl \
+    # === CRITICAL FIX: Add ALL Common Missing Extensions for Laravel ===
+    # These often cause silent PHP-FPM crashes leading to Cloud Run timeout.
+    && docker-php-ext-install intl opcache session xml \
     && docker-php-ext-enable opcache \
     \
     # Install runtime packages that were originally only available as -dev.
@@ -39,10 +41,10 @@ RUN apk update \
         libjpeg-turbo \
         freetype \
         libzip \
-        # CRITICAL: ICU library for intl
         icu \
+        libxml2 \
     \
-    # Cleanup: Remove only the heavy development headers and cache files
+    # Cleanup: Remove development packages and cache files to reduce image size
     && apk del --purge *dev \
     && rm -rf /var/cache/apk/* /tmp/* /usr/share/doc/*
 
@@ -60,11 +62,13 @@ RUN git config --global --add safe.directory /var/www/html
 # Run Composer installation for production
 RUN composer install --no-dev --optimize-autoloader
 
-# CRITICAL FIX: CREATE EMPTY .ENV FILE (Guarantees startup config is present)
+# === CRITICAL FIX: CREATE EMPTY .ENV FILE ===
+# This guarantees the file exists for Laravel's bootstrap, bypassing the Git/COPY issue.
 RUN touch .env \
     && chown www-data:www-data .env
 
 # Set the correct permissions for Laravel storage (CRITICAL)
+# Nginx and PHP-FPM workers run as www-data and must have write access here.
 RUN chown -R www-data:www-data /var/www/html/storage \
     && chown -R www-data:www-data /var/www/html/bootstrap/cache
 
@@ -74,6 +78,7 @@ RUN chown -R www-data:www-data /var/www/html/storage \
 COPY nginx.conf /etc/nginx/conf.d/default.conf 
 
 # CRITICAL FIX 2: Ensure the main nginx.conf file includes the conf.d directory.
+# This ensures Nginx uses the server block configuration you provided.
 RUN sed -i '/include \/etc\/nginx\/conf\.d\/\*\.conf;/a include \/etc\/nginx\/conf\.d\/\*\.conf;' /etc/nginx/nginx.conf
 
 # Copy the startup script and make it executable
