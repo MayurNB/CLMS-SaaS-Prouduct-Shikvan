@@ -21,11 +21,17 @@ RUN apk update \
         unzip \
         # CRITICAL ADDITION: Install Nginx, the web server
         nginx \
+        # CRITICAL ADDITION: Dependencies for PHP extensions
+        icu-dev \
     \
     # Compile and install PHP extensions
     && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath sockets \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd \
+    \
+    # === CRITICAL FIX: Add Missing Extensions (intl and opcache) ===
+    && docker-php-ext-install intl \
+    && docker-php-ext-enable opcache \
     \
     # Install runtime packages that were originally only available as -dev.
     && apk add --no-cache \
@@ -33,6 +39,8 @@ RUN apk update \
         libjpeg-turbo \
         freetype \
         libzip \
+        # CRITICAL: ICU library for intl
+        icu \
     \
     # Cleanup: Remove only the heavy development headers and cache files
     && apk del --purge *dev \
@@ -52,8 +60,7 @@ RUN git config --global --add safe.directory /var/www/html
 # Run Composer installation for production
 RUN composer install --no-dev --optimize-autoloader
 
-# === CRITICAL FIX: CREATE EMPTY .ENV FILE (replaces the failing COPY .env .env) ===
-# This guarantees the file exists for Laravel's bootstrap, even if it's excluded from Git.
+# CRITICAL FIX: CREATE EMPTY .ENV FILE (Guarantees startup config is present)
 RUN touch .env \
     && chown www-data:www-data .env
 
