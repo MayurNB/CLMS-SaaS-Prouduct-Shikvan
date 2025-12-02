@@ -1,21 +1,18 @@
 steps:
 # 1. BUILD: Build the Docker image and tag it with ':latest'.
-# We must explicitly add a standard tag for gcloud to recognize the image reference.
 - name: 'gcr.io/cloud-builders/docker'
   args:
   - 'build'
   - '-t'
-  - 'gcr.io/$PROJECT_ID/clms-saas-prouduct:latest' # Use the standard ':latest' tag
+  - 'gcr.io/$PROJECT_ID/clms-saas-prouduct:latest'
   - '.'
 
 # 2. PUSH: Push the newly built container image to the Google Container Registry (GCR).
-# The 'images' field below automatically handles the push action, but we can keep 
-# this step explicit for clarity if preferred. The tag must match the one used above.
 - name: 'gcr.io/cloud-builders/docker'
   args:
   - 'push'
   - 'gcr.io/$PROJECT_ID/clms-saas-prouduct:latest'
 
-# Explicitly list the image to push. This is critical for the registry to recognize the final image name.
+# Explicitly list the image to push. This is critical.
 images:
 - 'gcr.io/$PROJECT_ID/clms-saas-prouduct:latest'
