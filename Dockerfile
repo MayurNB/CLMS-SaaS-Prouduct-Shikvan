@@ -4,9 +4,8 @@ FROM php:8.1-fpm-alpine
 # Set the working directory inside the container
 WORKDIR /var/www/html
 
-# 1. Install System Dependencies required for compiling PHP extensions
-# The PHPIZE_DEPS variable includes common build tools (autoconf, make, etc.)
-# We also add linux-headers (to fix the 'sock_diag.h' error) and GD library dependencies.
+# 1. Install System Dependencies (Fixes sockets, gd, AND mbstring)
+# We use 'oniguruma-dev' here to satisfy the 'mbstring' extension dependency.
 RUN apk update \
     && apk add --no-cache --update \
         linux-headers \
@@ -17,12 +16,14 @@ RUN apk update \
         git \
         curl \
         unzip \
+        oniguruma-dev \
         ${PHPIZE_DEPS} \
     # 2. Install PHP Extensions
+    # This step should now complete successfully
     && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath sockets \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd \
-    # 3. Clean up build dependencies and package cache to minimize image size
+    # 3. Clean up
     && apk del --purge *dev \
     && rm -rf /var/cache/apk/* /tmp/* /usr/share/doc/*
 
@@ -34,9 +35,6 @@ COPY . .
 
 # Run Composer installation for production
 RUN composer install --no-dev --optimize-autoloader
-
-# Generate Laravel application key (only required if not set via ENV)
-# RUN php artisan key:generate
 
 # Set the correct permissions for Laravel storage (CRITICAL)
 RUN chown -R www-data:www-data /var/www/html/storage \
