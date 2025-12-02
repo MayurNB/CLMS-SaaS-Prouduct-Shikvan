@@ -5,8 +5,6 @@ FROM php:8.2-fpm-alpine
 WORKDIR /var/www/html
 
 # 2. DEPENDENCY INSTALLATION, COMPILATION, AND CLEANUP
-# This step is critical: it installs both development headers (for compiling extensions) 
-# and the necessary runtime libraries (for extensions to work).
 RUN apk update \
     && apk add --no-cache --update \
         # Dependencies needed for compiling extensions
@@ -21,6 +19,8 @@ RUN apk update \
         git \
         curl \
         unzip \
+        # CRITICAL ADDITION: Install Nginx, the web server
+        nginx \
     \
     # Compile and install PHP extensions
     && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath sockets \
@@ -28,8 +28,6 @@ RUN apk update \
     && docker-php-ext-install gd \
     \
     # Install runtime packages that were originally only available as -dev.
-    # We must keep the runtime versions (e.g., libpng, libjpeg-turbo) to prevent the 
-    # 'No such file or directory' errors at runtime.
     && apk add --no-cache \
         libpng \
         libjpeg-turbo \
@@ -49,11 +47,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 COPY . .
 
 # Fix for "detected dubious ownership" git error during composer install/update
-# This is necessary because the files were copied by root but will be used by the www-data user later.
 RUN git config --global --add safe.directory /var/www/html
 
 # Run Composer installation for production
-# This should now succeed because the PHP version (8.2) matches the composer.lock file.
 RUN composer install --no-dev --optimize-autoloader
 
 # Set the correct permissions for Laravel storage (CRITICAL)
@@ -62,8 +58,17 @@ RUN chown -R www-data:www-data /var/www/html/storage \
 
 # 4. EXPOSE AND START
 
-# Expose the FPM port (Cloud Run defaults to $PORT, but this is the PHP-FPM default)
-EXPOSE 9000
+# CRITICAL: Link your custom nginx.conf to the default configuration file location.
+# This assumes your local nginx.conf is named 'nginx.conf'
+RUN rm -f /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Start the PHP-FPM server
-CMD ["php-fpm"]
+# Copy the startup script and make it executable
+COPY start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
+# The container will listen on the port defined by Cloud Run ($PORT, usually 8080)
+EXPOSE 8080
+
+# Use the startup script as the entrypoint
+CMD ["/usr/local/bin/start.sh"]
