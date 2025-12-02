@@ -52,10 +52,10 @@ RUN git config --global --add safe.directory /var/www/html
 # Run Composer installation for production
 RUN composer install --no-dev --optimize-autoloader
 
-# === CRITICAL FIX: Ensure .env is copied before permissions are set ===
-# We copy it here, after the main code COPY . ., and before the next RUN commands.
-# This should now succeed since you confirmed the file exists.
-COPY .env .env
+# === CRITICAL FIX: CREATE EMPTY .ENV FILE (replaces the failing COPY .env .env) ===
+# This guarantees the file exists for Laravel's bootstrap, even if it's excluded from Git.
+RUN touch .env \
+    && chown www-data:www-data .env
 
 # Set the correct permissions for Laravel storage (CRITICAL)
 RUN chown -R www-data:www-data /var/www/html/storage \
