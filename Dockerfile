@@ -58,9 +58,13 @@ RUN chown -R www-data:www-data /var/www/html/storage \
 
 # 4. EXPOSE AND START
 
-# CRITICAL FIX: Link your custom nginx.conf to the guaranteed config file location
-RUN rm -f /etc/nginx/http.d/default.conf
-COPY nginx.conf /etc/nginx/http.d/default.conf 
+# CRITICAL FIX 1: Copy your configuration to the standard Nginx conf.d directory
+COPY nginx.conf /etc/nginx/conf.d/default.conf 
+
+# CRITICAL FIX 2: Ensure the main nginx.conf file includes the conf.d directory.
+# We will use SED to ensure it includes the conf.d directory if it doesn't already.
+# This line is often needed in minimal Alpine builds.
+RUN sed -i '/include \/etc\/nginx\/conf\.d\/\*\.conf;/a include \/etc\/nginx\/conf\.d\/\*\.conf;' /etc/nginx/nginx.conf
 
 # Copy the startup script and make it executable
 COPY start.sh /usr/local/bin/start.sh
@@ -68,8 +72,6 @@ RUN chmod +x /usr/local/bin/start.sh
 
 # The container will listen on the port defined by Cloud Run ($PORT, usually 8080)
 EXPOSE 8080
-
-# === REMOVED THE 'USER www-data' LINE HERE ===
 
 # Use the startup script as the entrypoint
 CMD ["/usr/local/bin/start.sh"]
