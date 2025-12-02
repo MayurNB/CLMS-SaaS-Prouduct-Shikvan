@@ -53,13 +53,13 @@ RUN git config --global --add safe.directory /var/www/html
 RUN composer install --no-dev --optimize-autoloader
 
 # Set the correct permissions for Laravel storage (CRITICAL)
+# Note: These chown commands are run as root (during build)
 RUN chown -R www-data:www-data /var/www/html/storage \
     && chown -R www-data:www-data /var/www/html/bootstrap/cache
 
 # 4. EXPOSE AND START
 
 # CRITICAL FIX: Link your custom nginx.conf to the guaranteed config file location
-# This location is preferred in Alpine Nginx
 RUN rm -f /etc/nginx/http.d/default.conf
 COPY nginx.conf /etc/nginx/http.d/default.conf 
 
@@ -69,6 +69,10 @@ RUN chmod +x /usr/local/bin/start.sh
 
 # The container will listen on the port defined by Cloud Run ($PORT, usually 8080)
 EXPOSE 8080
+
+# === CRITICAL NEW LINE ===
+# Switch to the non-root user 'www-data' to run the application processes (Nginx/PHP-FPM)
+USER www-data
 
 # Use the startup script as the entrypoint
 CMD ["/usr/local/bin/start.sh"]
