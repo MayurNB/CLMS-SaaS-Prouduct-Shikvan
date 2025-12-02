@@ -18,6 +18,12 @@ RUN apk update \
         # Dependencies for standard Alpine PHP extensions
         icu-dev \
         libxml2-dev \
+        sqlite-dev \
+        # CRITICAL ADDITION: FINAL SYSTEM LIBRARIES
+        libpq \
+        sqlite-libs \
+        fontconfig \
+        postgresql-client \
         # General tools needed for the build process
         git \
         curl \
@@ -30,9 +36,8 @@ RUN apk update \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd \
     \
-    # === CRITICAL FIX: Add ALL Common Missing Extensions for Laravel ===
-    # These often cause silent PHP-FPM crashes leading to Cloud Run timeout.
-    && docker-php-ext-install intl opcache session xml \
+    # === CRITICAL FIX: Add ALL Common Missing Extensions for Laravel, including PDO_SQLITE ===
+    && docker-php-ext-install intl opcache session xml pdo_sqlite \
     && docker-php-ext-enable opcache \
     \
     # Install runtime packages that were originally only available as -dev.
