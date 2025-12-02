@@ -1,40 +1,21 @@
 steps:
-# 1. BUILD: Use the Dockerfile in the root directory to create the container image.
-# We tag the image uniquely with the commit ID ($COMMIT_SHA).
+# 1. BUILD: Build the Docker image and tag it with ':latest'.
+# We must explicitly add a standard tag for gcloud to recognize the image reference.
 - name: 'gcr.io/cloud-builders/docker'
   args:
   - 'build'
   - '-t'
-  - 'gcr.io/loyal-acre-465011-i2/clms-saas-prouduct:$COMMIT_SHA' # Your Image Registry Path
+  - 'gcr.io/$PROJECT_ID/clms-saas-prouduct:latest' # Use the standard ':latest' tag
   - '.'
 
-# 2. PUSH: Upload the newly built container image to Artifact Registry.
+# 2. PUSH: Push the newly built container image to the Google Container Registry (GCR).
+# The 'images' field below automatically handles the push action, but we can keep 
+# this step explicit for clarity if preferred. The tag must match the one used above.
 - name: 'gcr.io/cloud-builders/docker'
   args:
   - 'push'
-  - 'gcr.io/loyal-acre-465011-i2/clms-saas-prouduct:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/clms-saas-prouduct:latest'
 
-# 3. DEPLOY: Deploy the image to the Cloud Run service in the correct region.
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: gcloud
-  args:
-  - 'run'
-  - 'deploy'
-  - 'clms-saas-prouduct'  # Your Cloud Run Service Name
-  - '--image'
-  - 'gcr.io/loyal-acre-465011-i2/clms-saas-prouduct:$COMMIT_SHA'
-  - '--region'
-  - 'asia-south1' # Your Region (Mumbai)
-  - '--allow-unauthenticated'
-  - '--min-instances=1'
-  - '--max-instances=20'
-  # **CRITICAL**: Securely connects to your Cloud SQL instance.
-  - '--add-cloudsql-instances'
-  - 'loyal-acre-465011-i2:asia-south1:clms-saas-product'
-  - '--update-env-vars'
-  - 'DB_DATABASE=clms_db,DB_USERNAME=clms-db-access-admin,DB_PASSWORD=cLmS@sAaS.cOm'
-
-timeout: 1600s # Gives the build up to 26 minutes to complete all steps
-
+# Explicitly list the image to push. This is critical for the registry to recognize the final image name.
 images:
-- 'gcr.io/loyal-acre-465011-i2/clms-saas-prouduct:$COMMIT_SHA'
+- 'gcr.io/$PROJECT_ID/clms-saas-prouduct:latest'
