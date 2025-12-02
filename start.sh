@@ -1,29 +1,28 @@
-#!/bin/sh
+#!/bin/bash
 
+# Cloud Run sets the $PORT environment variable. Use 8080 as a fallback for local testing.
 PORT=${PORT:-8080}
 
-echo "Starting Nginx on port ${PORT} and PHP-FPM (via socket)..."
+# 1. Start PHP-FPM in the background
+echo "Starting PHP-FPM..."
+/usr/sbin/php-fpm7.4 -D
 
-# Dynamically update the Nginx configuration to listen on the required $PORT
-sed -i "s|listen 8080;|listen ${PORT};|" /etc/nginx/conf.d/default.conf
+# 2. Run Database Migrations (Critical for Laravel)
+# We wait a moment for the Cloud SQL proxy (via DB_SOCKET) to establish connection
+sleep 5
+echo "Running database migrations..."
+php artisan migrate --force
 
-# Update PHP-FPM to listen on the Unix socket.
-sed -i 's/^listen = .*$/listen = \/var\/run\/php-fpm.sock/' /usr/local/etc/php-fpm.d/www.conf
+# 3. Cache configuration and routes (Optimization)
+echo "Caching configurations and routes..."
+php artisan config:cache
+php artisan route:cache
 
-# Ensure the directory for the socket is owned by www-data
-mkdir -p /var/run 
-chown -R www-data:www-data /var/run
+# 4. Start Nginx
+echo "Starting Nginx on port ${PORT}..."
+# We run Nginx in the foreground so the container stays alive.
+# Nginx must be configured to listen on the dynamic $PORT.
+# If your nginx.conf uses a hardcoded port (e.g., `listen 80;`), this will fail. 
+# It should dynamically listen to the $PORT environment variable.
 
-# CRITICAL FIX: Check NGINX syntax before starting
-nginx -t 
-
-if [ $? -ne 0 ]; then
-  echo "Nginx configuration test failed. Check logs."
-  exit 1
-fi
-
-# Start PHP-FPM in the background. 
-php-fpm
-
-# Start Nginx in the foreground. This keeps the container alive.
-exec nginx -g "daemon off;"
+/usr/sbin/nginx -g "daemon off;"
