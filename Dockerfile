@@ -52,7 +52,9 @@ RUN git config --global --add safe.directory /var/www/html
 # Run Composer installation for production
 RUN composer install --no-dev --optimize-autoloader
 
-# Add this line to ensure .env is available for the entrypoint script
+# === CRITICAL FIX: Ensure .env is copied before permissions are set ===
+# We copy it here, after the main code COPY . ., and before the next RUN commands.
+# This should now succeed since you confirmed the file exists.
 COPY .env .env
 
 # Set the correct permissions for Laravel storage (CRITICAL)
@@ -65,8 +67,6 @@ RUN chown -R www-data:www-data /var/www/html/storage \
 COPY nginx.conf /etc/nginx/conf.d/default.conf 
 
 # CRITICAL FIX 2: Ensure the main nginx.conf file includes the conf.d directory.
-# We will use SED to ensure it includes the conf.d directory if it doesn't already.
-# This line is often needed in minimal Alpine builds.
 RUN sed -i '/include \/etc\/nginx\/conf\.d\/\*\.conf;/a include \/etc\/nginx\/conf\.d\/\*\.conf;' /etc/nginx/nginx.conf
 
 # Copy the startup script and make it executable
