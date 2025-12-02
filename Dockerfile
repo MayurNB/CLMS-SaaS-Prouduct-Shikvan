@@ -53,7 +53,6 @@ RUN git config --global --add safe.directory /var/www/html
 RUN composer install --no-dev --optimize-autoloader
 
 # Set the correct permissions for Laravel storage (CRITICAL)
-# Note: These chown commands are run as root (during build)
 RUN chown -R www-data:www-data /var/www/html/storage \
     && chown -R www-data:www-data /var/www/html/bootstrap/cache
 
@@ -70,9 +69,7 @@ RUN chmod +x /usr/local/bin/start.sh
 # The container will listen on the port defined by Cloud Run ($PORT, usually 8080)
 EXPOSE 8080
 
-# === CRITICAL NEW LINE ===
-# Switch to the non-root user 'www-data' to run the application processes (Nginx/PHP-FPM)
-USER www-data
+# === REMOVED THE 'USER www-data' LINE HERE ===
 
 # Use the startup script as the entrypoint
 CMD ["/usr/local/bin/start.sh"]

@@ -6,17 +6,19 @@ PORT=${PORT:-8080}
 echo "Starting Nginx on port ${PORT} and PHP-FPM (via socket)..."
 
 # Dynamically update the Nginx configuration to listen on the required $PORT
-# Path: /etc/nginx/http.d/default.conf
 sed -i "s|listen 8080;|listen ${PORT};|" /etc/nginx/http.d/default.conf
 
 # **CRITICAL FIX**: Update the PHP-FPM configuration (www.conf) to listen on the Unix socket.
 sed -i 's/^listen = .*$/listen = \/var\/run\/php-fpm.sock/' /usr/local/etc/php-fpm.d/www.conf
 
-# Create the /var/run directory if necessary. Since the USER is www-data, it should have write permission to this path.
+# === RE-ADDED CHOWN ===
+# Since we are running as root now, this ensures the socket directory is owned by www-data
 mkdir -p /var/run 
+chown -R www-data:www-data /var/run
 
-# Start PHP-FPM in the background. It will create the socket file.
+# Start PHP-FPM in the background. It runs its worker processes as www-data.
 php-fpm
 
-# Start Nginx in the foreground. This process is the main one and keeps the container alive.
+# Start Nginx in the foreground. It runs its master process as root (for binding to 8080), 
+# but its workers will run as www-data (due to the user directive in nginx.conf).
 exec nginx -g "daemon off;"
