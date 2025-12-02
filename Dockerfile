@@ -52,6 +52,9 @@ RUN git config --global --add safe.directory /var/www/html
 # Run Composer installation for production
 RUN composer install --no-dev --optimize-autoloader
 
+# Add this line to ensure .env is available for the entrypoint script
+COPY .env .env
+
 # Set the correct permissions for Laravel storage (CRITICAL)
 RUN chown -R www-data:www-data /var/www/html/storage \
     && chown -R www-data:www-data /var/www/html/bootstrap/cache
