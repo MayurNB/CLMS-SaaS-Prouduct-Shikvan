@@ -258,3 +258,10 @@ Route::get('/test-log', function() {
     \App\Services\LogService::payment("PAYMENTS TEST ENTRY");
     return "LOGGING TEST COMPLETED";
 });
+
+
+/*
+
+some common route like help , support , faq etc also need to be make.
+
+*/
