@@ -264,4 +264,6 @@ Route::get('/test-log', function() {
 
 some common route like help , support , faq etc also need to be make.
 
+with also make some pring and policy related pages means routes also.
+
 */
