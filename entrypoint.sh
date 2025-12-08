@@ -1,8 +1,5 @@
 #!/bin/sh
 set -e
 
-# Run migrations
-php artisan migrate --force
-
-# Start Apache
-exec "$@"
+# Start Apache (Cloud Run requires the container to listen on $PORT)
+exec apache2-foreground

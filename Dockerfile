@@ -21,14 +21,14 @@ RUN apt-get update && apt-get install -y \
 RUN a2enmod rewrite
 
 # -----------------------------
+# Replace Apache port with Cloud Run port
+# -----------------------------
+COPY docker/apache-cloudrun.conf /etc/apache2/ports.conf
+
+# -----------------------------
 # Copy Project Files
 # -----------------------------
 COPY . .
-
-# -----------------------------
-# Copy Cloud Run Apache Config
-# -----------------------------
-COPY docker/apache-cloudrun.conf /etc/apache2/sites-available/000-default.conf
 
 # -----------------------------
 # Install Composer
