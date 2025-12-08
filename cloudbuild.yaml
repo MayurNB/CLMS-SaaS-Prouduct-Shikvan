@@ -1,18 +1,20 @@
 steps:
-# 1. BUILD: Build the Docker image and tag it with ':latest'.
-- name: 'gcr.io/cloud-builders/docker'
-  args:
-  - 'build'
-  - '-t'
-  - 'gcr.io/$PROJECT_ID/clms-saas-prouduct:latest'
-  - '.'
+  # Step 1: Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t', 'asia-south1-docker.pkg.dev/$PROJECT_ID/clms-repo/clms-app:$SHORT_SHA',
+        '.'
+      ]
 
-# 2. PUSH: Push the newly built container image to the Google Container Registry (GCR).
-- name: 'gcr.io/cloud-builders/docker'
-  args:
-  - 'push'
-  - 'gcr.io/$PROJECT_ID/clms-saas-prouduct:latest'
+  # Step 2: Push Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'asia-south1-docker.pkg.dev/$PROJECT_ID/clms-repo/clms-app:$SHORT_SHA'
+      ]
 
-# Explicitly list the image to push. This is critical.
 images:
-- 'gcr.io/$PROJECT_ID/clms-saas-prouduct:latest'
+  - 'asia-south1-docker.pkg.dev/$PROJECT_ID/clms-repo/clms-app:$SHORT_SHA'
