@@ -41,6 +41,11 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
 # -----------------------------
+# Clear Laravel Config Cache
+# -----------------------------
+RUN php artisan config:clear
+
+# -----------------------------
 # Create writable folders & set permissions
 # -----------------------------
 RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache \

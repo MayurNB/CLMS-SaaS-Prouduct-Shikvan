@@ -1,8 +1,25 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
-# Ensure the PORT env exists for Apache config templates if needed.
-export PORT="${PORT:-8080}"
+# -----------------------------
+# Wait for Cloud SQL socket if using unix_socket
+# -----------------------------
+if [ -n "$DB_SOCKET" ]; then
+  echo "Using Cloud SQL socket at $DB_SOCKET"
+fi
 
-# Start Apache in foreground (Cloud Run expects process to listen on $PORT)
+# -----------------------------
+# Run migrations (optional, uncomment if needed)
+# -----------------------------
+# php artisan migrate --force
+
+# -----------------------------
+# Clear & cache config (ensure Cloud Run ENV is used)
+# -----------------------------
+php artisan config:clear
+php artisan config:cache
+
+# -----------------------------
+# Start Apache
+# -----------------------------
 exec apache2-foreground
