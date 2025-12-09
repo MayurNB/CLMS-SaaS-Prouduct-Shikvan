@@ -1,15 +1,8 @@
 #!/bin/sh
+set -e
 
-# Create writable directories
-mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache
-chown -R www-data:www-data storage bootstrap/cache
-chmod -R 775 storage bootstrap/cache
+# Ensure the PORT env exists for Apache config templates if needed.
+export PORT="${PORT:-8080}"
 
-# Run migrations and optimize (optional, only first deployment)
-# php artisan migrate --force
-# php artisan config:cache
-# php artisan route:cache
-# php artisan view:cache
-
-# Start Apache
+# Start Apache in foreground (Cloud Run expects process to listen on $PORT)
 exec apache2-foreground
