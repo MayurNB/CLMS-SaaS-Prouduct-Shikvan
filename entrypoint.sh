@@ -1,11 +1,14 @@
 #!/bin/sh
 set -e
 
-# Clear Laravel caches (prevents 500 errors on fresh deploys)
+# Replace Apache port with Cloud Run PORT
+sed -i "s/Listen .*/Listen ${PORT:-8080}/" /etc/apache2/ports.conf
+
+# Clear Laravel caches (optional)
 php artisan config:clear
 php artisan cache:clear
 php artisan route:clear
 php artisan view:clear
 
-# Start Apache (listen on $PORT)
+# Start Apache
 exec apache2-foreground
