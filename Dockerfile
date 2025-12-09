@@ -37,10 +37,11 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
 # -----------------------------
-# Set Permissions
+# Create Laravel Writable Directories
 # -----------------------------
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public
+RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
 # -----------------------------
 # Copy Entrypoint Script
@@ -58,4 +59,3 @@ EXPOSE 8080
 # Start Apache
 # -----------------------------
 CMD ["apache2-foreground"]
-
