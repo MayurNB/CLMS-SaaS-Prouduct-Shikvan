@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\InstituteInfoShow\InstituteLoginPageController;
@@ -14,7 +16,7 @@ use App\Http\Controllers\ProgramsCourses\ProgramsAndCoursesController;
 use App\Http\Controllers\LearnerEnrollment\LearnerEnrollmentController;
 
 // ✅ Root Redirect
-Route::get('/', fn() => Redirect::to('https://mnbsolutions.vercel.app/'));
+Route::get('/fine', fn() => Redirect::to('https://mnbsolutions.vercel.app/'));
 
 // ✅ LOGIN ROUTES
 Route::get('/login/{institute_slug?}', [InstituteLoginPageController::class, 'showLoginForm'])->name('login');
@@ -258,6 +260,22 @@ Route::get('/test-log', function() {
     \App\Services\LogService::payment("PAYMENTS TEST ENTRY");
     return "LOGGING TEST COMPLETED";
 });
+
+
+Route::get('/', function () {
+    Log::info("HOST=".env('DB_HOST'));
+    Log::info("PORT=".env('DB_PORT'));
+    Log::info("DB_SOCKET=".env('DB_SOCKET'));
+    try {
+        DB::connection()->getPdo();
+        Log::info("SUCCESS");
+        return "OK";
+    } catch (\Throwable $e) {
+        Log::error("ERROR: ".$e->getMessage());
+        return $e->getMessage();
+    }
+});
+
 
 
 /*
