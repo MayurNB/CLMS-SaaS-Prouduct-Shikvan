@@ -1,14 +1,15 @@
 #!/bin/sh
-set -e
 
-# Replace Apache port with Cloud Run PORT
-sed -i "s/Listen .*/Listen ${PORT:-8080}/" /etc/apache2/ports.conf
+# Create writable directories
+mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
 
-# Clear Laravel caches (optional)
-php artisan config:clear
-php artisan cache:clear
-php artisan route:clear
-php artisan view:clear
+# Run migrations and optimize (optional, only first deployment)
+# php artisan migrate --force
+# php artisan config:cache
+# php artisan route:cache
+# php artisan view:cache
 
 # Start Apache
 exec apache2-foreground
