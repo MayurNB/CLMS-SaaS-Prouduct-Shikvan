@@ -40,7 +40,7 @@ RUN composer install --no-dev --optimize-autoloader
 # Set Permissions
 # -----------------------------
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public
 
 # -----------------------------
 # Copy Entrypoint Script
@@ -58,3 +58,4 @@ EXPOSE 8080
 # Start Apache
 # -----------------------------
 CMD ["apache2-foreground"]
+
