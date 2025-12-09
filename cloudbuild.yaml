@@ -16,6 +16,18 @@ steps:
         'asia-south1-docker.pkg.dev/$PROJECT_ID/clms-repo/clms-app:$SHORT_SHA'
       ]
 
+  # Step 3: Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run', 'deploy', 'clms-saas-prouduct',
+        '--image=asia-south1-docker.pkg.dev/$PROJECT_ID/clms-repo/clms-app:$SHORT_SHA',
+        '--region=asia-south1',
+        '--platform=managed',
+        '--allow-unauthenticated'
+      ]
+
 images:
   - 'asia-south1-docker.pkg.dev/$PROJECT_ID/clms-repo/clms-app:$SHORT_SHA'
 
