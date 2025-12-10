@@ -26,7 +26,6 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="{{ asset('coreui/assets/favicon/ms-icon-144x144.png') }}">
     <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="{{ asset('coreui/vendors/simplebar/css/simplebar.css') }}">
     <link rel="stylesheet" href="{{ asset('coreui/css/vendors/simplebar.css') }}">
     <link href="{{ asset('coreui/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('coreui/css/examples.css') }}" rel="stylesheet">
