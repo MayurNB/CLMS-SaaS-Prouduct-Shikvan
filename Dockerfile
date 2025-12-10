@@ -25,7 +25,6 @@ RUN a2enmod rewrite
 # Replace Apache port with Cloud Run port
 # -----------------------------
 COPY docker/apache-cloudrun.conf /etc/apache2/ports.conf
-COPY docker/apache-cloudrun.conf /etc/apache2/sites-available/000-default.conf
 
 
 # Add a default ServerName to avoid warning
