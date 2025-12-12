@@ -47,7 +47,7 @@ Employer
                   </svg> Comments<span class="badge badge-sm bg-warning ms-2">42</span></a> -->
                 <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold my-2">
                   <div class="fw-semibold">Settings</div>
-                </div><a class="dropdown-item" href="#">
+                </div><a class="dropdown-item" href="{{ route('employerProfile') }}">
                   <!-- <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
                   </svg> Profile</a><a class="dropdown-item" href="#">
@@ -118,7 +118,22 @@ Employer
               <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
             </li>
             <li class="nav-item dropdown"><a class="nav-link py-0 pe-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <div class="avatar avatar-md"><img class="avatar-img" src="{{ asset('coreui/assets/img/avatars/8.jpg') }}" alt="user@email.com"></div>
+                @php
+    $user = Auth::user();
+    $userProfile = $user->userProfile ?? null;
+    $picture = $userProfile->profile_picture_url ?? null;
+@endphp
+
+<div class="avatar avatar-md">
+
+    @if(!empty($picture))
+        <img class="avatar-img" src="{{ $picture }}" alt="User Profile Picture">
+    @else
+        <span style="font-size: 14px; color: #555;">Profile</span>
+    @endif
+
+</div>
+
               </a>
               <div class="dropdown-menu dropdown-menu-end pt-0">
                 <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold rounded-top mb-2">Account</div><a class="dropdown-item" href="#">
@@ -138,7 +153,7 @@ Employer
                 </a> -->
                 <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold my-2">
                   <div class="fw-semibold">Settings</div>
-                </div>
+                </div><a class="dropdown-item" href="{{ route('employerProfile') }}">
                   <!-- <svg class="icon me-2">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
                   </svg> Profile</a><a class="dropdown-item" href="#">
@@ -156,22 +171,23 @@ Employer
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-lock-locked') }}"></use>
                   </svg> Lock Account</a><a class="dropdown-item" href="#"> -->
                   <!-- Hidden logout form -->
-<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-    @csrf
-</form>
-
-<!-- Link that triggers form submission -->
-<a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-    <svg class="icon me-2">
-        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
-    </svg> 
-    Logout
+<!-- ✅ Logout (Styled Like CoreUI Dropdown Item) -->
+<a class="dropdown-item" href="#" 
+   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+  <svg class="icon me-2">
+    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
+  </svg>
+  Logout
 </a>
+
+<!-- Hidden Logout Form -->
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+  @csrf
+</form>
               </div>
             </li>
           </ul>
         </div>
-
 @endsection
 
 
@@ -187,7 +203,7 @@ Employer
 @section('side bar')
 <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
      <li class="nav-title">Overview</li>
-        <li class="nav-item"><a class="nav-link" href="{{ Route('employerDashboard') }}">
+        <li class="nav-item"><a class="nav-link" href="{{ Route('learnerDashboard') }}">
             <svg class="nav-icon">
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-speedometer') }}"></use>
             </svg> Dashboard<span class="badge badge-sm bg-info ms-auto">NEW</span></a></li>
@@ -232,7 +248,7 @@ Employer
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/tooltips') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tooltips</a></li> -->
           </ul>
         </li>
-        <li class="nav-title">ADMINISTRATION MANAGEMENT</li>
+        <!-- <li class="nav-title">ADMINISTRATION MANAGEMENT</li>
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="{{ url('Employer_acm') }}">
             <svg class="nav-icon">
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-puzzle') }}"></use>
@@ -241,7 +257,7 @@ Employer
             <li class="nav-item"><a class="nav-link" href="{{ Route('LearnerInstitute') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> My Institute </a></li>
             <li class="nav-item"><a class="nav-link" href="{{ Route('LearnerBranch') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Branches Manages </a></li>
             <li class="nav-item"><a class="nav-link" href="{{ Route('employerLearnerEnrollment') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Enrollment </a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ Route('employerProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> pro </a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ Route('employerProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> pro </a></li> -->
             <!-- <li class="nav-item"><a class="nav-link" href="{{ url('Employer_content') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Content Mgt </a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('Employer_assignment') }}" ><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Assignment Mgt 
                 <svg class="icon icon-sm ms-2">
@@ -259,8 +275,8 @@ Employer
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/spinners') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Spinners</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/tables') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tables</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/tooltips') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tooltips</a></li> -->
-          </ul>
-        </li>
+          <!-- </ul>
+        </li> -->
 
           <li class="nav-title">PEOPLE MANAGEMENT & ENROLLMENT</li>
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
@@ -314,7 +330,7 @@ Employer
             <li class="nav-item"><a class="nav-link" href="{{ url('/forms/layout') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Layout</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/forms/validation') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Validation</a></li>
           </ul>
-        </li>
+        </li> -->
         <!--
          <li class="nav-title">FINANCIAL MANAGEMENT </li>
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">

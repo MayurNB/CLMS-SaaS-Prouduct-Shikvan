@@ -307,7 +307,7 @@
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-puzzle') }}"></use>
             </svg>Academic & Schedule</a>
           <ul class="nav-group-items compact">
-            <li class="nav-item"><a class="nav-link" href="{{ Route('branchExecutiveProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Programs & Courses </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('branchExecutiveProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Programs & Courses  </a></li>
             <!-- <li class="nav-item"><a class="nav-link" href="{{ Route('branchExecutiveBranch') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Branches Manages </a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('employerLearnerEnrollment') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Enrollment </a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ Route('employerProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> pro </a></li> -->
@@ -474,7 +474,7 @@
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs" id="myCoreUITabs" role="tablist">
         <li class="nav-item" role="presentation">
-          <a class="nav-link active" id="view-tab" data-bs-toggle="tab" data-bs-target="#viewContent" type="button" role="tab" aria-controls="viewContent" aria-selected="true">Programs & Courses</a>
+          <a class="nav-link active" id="view-tab" data-bs-toggle="tab" data-bs-target="#viewContent" type="button" role="tab" aria-controls="viewContent" aria-selected="true">Learner and Enrollment </a>
         </li>
         <!-- <li class="nav-item" role="presentation">
                 <a class="nav-link" id="create-tab" data-bs-toggle="tab" data-bs-target="#createContent" type="button" role="tab" aria-controls="createContent" aria-selected="false">Create User</a>
@@ -519,7 +519,7 @@
 
               <thead>
                 <tr>
-                  <th>Program Creation</th>
+                  <!-- <th>Program Creation</th> -->
                   <!-- <th>Tags</th>
                       <th>program_prices</th> -->
                 </tr>
@@ -529,19 +529,19 @@
                   <td>
                     {{-- Button 1: View Package & Pricing (Opens Modal for Type Selection) --}}
                     <button class="btn btn-primary px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#CreateLearnerModal">
-                      Creation of Program
+                      Creation of Learner
                     </button>
                   </td>
                   <td>
                     {{-- Button 1: View Package & Pricing (Opens Modal for Type Selection) --}}
                     <button class="btn btn-primary px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#EnrollmentModal">
-                      View program
+                      Enroll Programs
                     </button>
                   </td>
                   <td>
                     {{-- Button 1: View Package & Pricing (Opens Modal for Type Selection) --}}
                     <button class="btn btn-primary px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#viewOverviewModal">
-                      View program
+                      Fees
                     </button>
                   </td>
                   <!-- <td>editUserModal
