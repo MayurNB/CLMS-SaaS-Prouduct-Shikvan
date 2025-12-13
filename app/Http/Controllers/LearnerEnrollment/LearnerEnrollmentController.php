@@ -1269,14 +1269,23 @@ public function JustView()
 
  public function employerBranchWiseLearnerAndFeesTotolInfo()
 {
+    $user = Auth::user();
+
+    $instituteId = $user->employerProfile?->institute?->id;
+
+    if (!$instituteId) {
+        abort(403, 'Institute not found');
+    }
+
     $branches = DB::table('branches')
+        ->where('branches.institute_id', $instituteId) // 🔐 FILTER ADDED
         ->leftJoin('enrollments', function ($join) {
             $join->on('enrollments.branch_id', '=', 'branches.id')
-                 ->where('enrollments.status', 'active'); // only active enrollments
+                 ->where('enrollments.status', 'active');
         })
         ->leftJoin('learners', function ($join) {
             $join->on('learners.id', '=', 'enrollments.learner_id')
-                 ->where('learners.status', '!=', 'delete'); // block deleted learners
+                 ->where('learners.status', '!=', 'delete');
         })
         ->leftJoin('enrollment_fees', 'enrollment_fees.enrollment_id', '=', 'enrollments.id')
         ->select(
@@ -1293,6 +1302,7 @@ public function JustView()
 
     return view('Access.Core.Employer.learner_enrollment', compact('branches'));
 }
+
        
     
 function branchExecutiveLearnerEnrollmentUpdate()
