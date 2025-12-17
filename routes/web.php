@@ -15,6 +15,8 @@ use App\Http\Controllers\AdminControllersManagements\EmployerUserManagementContr
 use App\Http\Controllers\ProgramsCourses\ProgramsAndCoursesController;
 use App\Http\Controllers\LearnerEnrollment\LearnerEnrollmentController;
 
+use App\Http\Controllers\BillingControllersManagements\UnitBillController;
+
 // ✅ Root Redirect
 Route::get('/fine', fn() => Redirect::to('https://mnbsolutions.vercel.app/'));
 
@@ -142,6 +144,10 @@ Route::post('/employer/programs/tags/add', [ProgramsAndCoursesController::class,
 
 // routes/web.php
 Route::get('/programs/{id}', [ProgramsAndCoursesController::class, 'show']);
+
+
+Route::get('/unit-bill-show', [UnitBillController::class, 'UnitBillView'])->name('UnitBillView');
+
 
     
 
