@@ -608,10 +608,11 @@ Employer
                 </div>
             </div>
         </div>
-    </div>
-</div>
+      </div>
 
-        </div>
+    </div>
+
+        
     <div class="card mb-4">
 
 {{-- This won't show in frontend at all --}}
