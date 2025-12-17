@@ -83,8 +83,8 @@
     </div>
 @endif
       <footer class="footer px-4">
-        <div><a href="https://coreui.io">MNBSolutions </a><a href="https://coreui.io/product/free-bootstrap-admin-template/">CLMS</a> © 2025 SaaS Product.</div>
-        <div class="ms-auto">Powered by&nbsp;<a href="https://coreui.io/docs/">MNBSolutions</a></div>
+        <div><a href="#">MNBSolutions </a><a href="#">CLMS</a> © 2025 SaaS Product.</div>
+        <div class="ms-auto">Powered by&nbsp;<a href="#">MNBSolutions</a></div>
       </footer>
        
 
