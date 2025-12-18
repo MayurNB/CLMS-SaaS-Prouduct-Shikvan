@@ -5,9 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
-    <meta name="author" content="Łukasz Holeczek">
-    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+    <meta name="description" content="cLMS - Coaching Learning Management System">
     <title>@yield('title')</title>
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('coreui/assets/favicon/apple-icon-57x57.png') }}">
     <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('coreui/assets/favicon/apple-icon-60x60.png') }}">
@@ -23,6 +21,10 @@
     <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('coreui/assets/favicon/favicon-96x96.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('coreui/assets/favicon/favicon-16x16.png') }}">
     <link rel="manifest" href="{{ asset('coreui/assets/favicon/manifest.json') }}">
+    <link rel="icon" href="{{ asset('brand/favicon.ico') }}">
+<link rel="shortcut icon" href="{{ asset('brand/favicon.ico') }}">
+<link rel="manifest" href="{{ asset('pwa-manifest.json') }}">
+
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="{{ asset('coreui/assets/favicon/ms-icon-144x144.png') }}">
     <meta name="theme-color" content="#ffffff">
@@ -32,12 +34,17 @@
     <script src="{{ asset('coreui/js/config.js') }}"></script>
     <script src="{{ asset('coreui/js/color-modes.js') }}"></script>
     <link href="{{ asset('coreui/vendors/@coreui/chartjs/css/coreui-chartjs.css') }}" rel="stylesheet">
+
+    <link rel="manifest" href="{{ asset('pwa-manifest.json') }}">
+<meta name="theme-color" content="#321fdb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
   </head>
   <body>
     <div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
       <div class="sidebar-header border-bottom">
         <div class="sidebar-brand">
-         <h1> <b> <l> CLMS  </l></b></h1> <p>Ver-0.0.0.0</p>
+         <h1> <b> <l> cLMS  </l></b></h1> <p>Ver-0.0.0.0</p>
         </div>
         <button class="btn-close d-lg-none" type="button" data-coreui-theme="dark" aria-label="Close" onclick="coreui.Sidebar.getInstance(document.querySelector(&quot;#sidebar&quot;)).toggle()"></button>
       </div>

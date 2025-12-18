@@ -53,6 +53,19 @@
             <a href="#" class="text-blue-600 hover:underline mx-2">Terms of Use</a> |
             <a href="https://mnbsolutions.vercel.app/" class="text-blue-600 hover:underline mx-2">Powered by MNBSolutions</a>
         </div>
+        <div>
+         <button id="installAppBtn"
+        style="
+        display:none;
+        position:fixed;
+        bottom:20px;
+        right:20px;
+        z-index:9999;
+        padding:12px 18px;">
+    📱 Install App
+</button>
+        </div>
+        
     </div>
 
     <!-- Right Section: Background Image -->
@@ -122,5 +135,37 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 @endif
 
+<script>
+let deferredPrompt = null;
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js');
+    });
+}
+
+// Detect install prompt
+window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    const btn = document.getElementById('installAppBtn');
+    if (btn) btn.style.display = 'block';
+});
+
+// Handle install click
+document.getElementById('installAppBtn').addEventListener('click', async function () {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+
+    deferredPrompt = null;
+    this.style.display = 'none';
+});
+</script>
+
 </body>
 </html>
+
