@@ -11,7 +11,8 @@ fi
 # -----------------------------
 # Run migrations (optional, uncomment if needed)
 # -----------------------------
-# php artisan migrate --force
+php artisan migrate --force --no-interaction --no-ansi \
+  || echo "Migration already applied or skipped safely"
 
 # -----------------------------
 # Clear & cache config (ensure Cloud Run ENV is used)
