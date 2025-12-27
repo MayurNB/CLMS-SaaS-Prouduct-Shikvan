@@ -1,222 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLMS Price Calculator - Active Asset Billing</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type="number"] {
-            -moz-appearance: textfield;
-            text-align: right;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CLMS Billing | MNB Solutions Enterprise</title>
+
+<style>
+:root{
+  --primary:#0b5ed7;
+  --dark:#0f172a;
+  --light:#f8fafc;
+  --danger:#dc2626;
+  --warning:#f59e0b;
+  --success:#16a34a;
+  --border:#e5e7eb;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Inter,system-ui,sans-serif;
+}
+
+body{
+  background:linear-gradient(135deg,#f1f5f9,#ffffff);
+  color:var(--dark);
+  padding:20px;
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.brand{
+  font-size:20px;
+  font-weight:800;
+}
+
+.badge{
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:13px;
+  background:#e0f2fe;
+  color:#0369a1;
+  font-weight:600;
+}
+
+.card{
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 25px 45px rgba(0,0,0,.08);
+  padding:26px;
+  margin-bottom:20px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.stat{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:20px;
+}
+
+.stat h3{
+  font-size:13px;
+  color:#64748b;
+  margin-bottom:8px;
+}
+
+.stat p{
+  font-size:24px;
+  font-weight:800;
+}
+
+.total{
+  font-size:34px;
+  font-weight:900;
+  color:var(--primary);
+}
+
+.alert{
+  padding:18px;
+  border-radius:14px;
+  margin-top:18px;
+  font-weight:600;
+  line-height:1.6;
+}
+
+.alert.success{background:#ecfdf5;color:var(--success);}
+.alert.danger{background:#fef2f2;color:var(--danger);}
+.alert.warning{background:#fffbeb;color:#92400e;}
+
+.info-box{
+  margin-top:22px;
+  padding:20px;
+  border-radius:14px;
+  background:#f8fafc;
+  border:1px dashed var(--border);
+}
+
+.info-box h4{
+  font-size:15px;
+  margin-bottom:10px;
+}
+
+.info-box p{
+  font-size:14px;
+  color:#475569;
+  line-height:1.7;
+}
+
+.flow{
+  margin-top:15px;
+}
+
+.flow li{
+  margin-left:18px;
+  margin-bottom:8px;
+  font-size:14px;
+  color:#334155;
+}
+
+.footer{
+  text-align:center;
+  font-size:13px;
+  color:#64748b;
+  margin-top:30px;
+}
+</style>
 </head>
-<body class="bg-gray-50 min-h-screen p-4 sm:p-8">
 
-    <div class="max-w-5xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden">
-        
-        <!-- Header -->
-        <header class="bg-indigo-700 text-white p-6 sm:p-8">
-            <h1 class="text-2xl sm:text-3xl font-extrabold mb-1">CLMS – Active Asset Billing & Payment</h1>
-            <p class="text-indigo-200 text-lg">Calculate your estimated Monthly Active Asset Billing (AAB) based on your current usage.</p>
-        </header>
-<div>
-    <a href="{{ Route('employerDashboard') }}">Click here to back.!</a>
-</div>
-        <!-- Main Content Grid -->
-        <div class="p-4 sm:p-8 lg:grid lg:grid-cols-12 lg:gap-8">
+<body>
+<div class="container">
 
-            <!-- Column 1: Input Fields -->
-            <div class="lg:col-span-4 space-y-4 p-4 border rounded-xl bg-gray-50 shadow-inner">
-                <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Input Current Active Assets</h2>
+  <div class="header">
+    <div class="brand">CLMS Billing Dashboard</div>
+    <div class="badge">Enterprise • Verified Billing</div>
+  </div>
 
-                <div class="space-y-3" id="input-fields">
-                    <!-- Input fields dynamically read/updated -->
-                    <!-- Learner Input -->
-                    <label class="block text-sm font-medium text-gray-700">Total Learners (e.g. 400)</label>
-                    <input type="number" id="learners" value="{{$activeLearners}}" min="0" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150" readonly>
-
-                    <!-- Instructor Input -->
-                    <label class="block text-sm font-medium text-gray-700">Total Instructors (e.g. 10)</label>
-                    <input type="number" id="instructors" value="{{$instructorsCount}}" min="0" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
-
-                    <!-- Branch Executive Input -->
-                    <label class="block text-sm font-medium text-gray-700">Total Branch Executives (e.g. 1)</label>
-                    <input type="number" id="branchExecutives" value="{{$branchExecutivesCount}}" min="0" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
-                    
-                    <!-- Employer Input -->
-                    <label class="block text-sm font-medium text-gray-700">Total Employers (limit only 1)</label>
-                    <input type="number" id="employers" value="1" min="0" max="1" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
-
-                    <!-- Branch Input -->
-                    <label class="block text-sm font-medium text-gray-700">Total Branches (e.g. 1)</label>
-                    <input type="number" id="branches" value="{{$activeBranches}}" min="1" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
-                    
-                    <!-- Program Input -->
-                    <label class="block text-sm font-medium text-gray-700">Total Programs (e.g. 30)</label>
-                    <input type="number" id="programs" value="{{$activePrograms}}" min="0" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
-
-                    <!-- Course Input -->
-                    <label class="block text-sm font-medium text-gray-700">Total Courses (e.g. 210)</label>
-                    <input type="number" id="courses" value="{{$activeCourses}}" min="0" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
-
-                    <!-- Transactions Input -->
-                    <label class="block text-sm font-medium text-gray-700">Payment Transactions (Estimate per month, e.g. 400)</label>
-                    <input type="number" id="transactions" value="{{$totalPaymentTransactions}}" min="0" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
-                </div>
-            </div>
-
-            <!-- Column 2: Calculation and Clarification -->
-            <div class="lg:col-span-8 mt-8 lg:mt-0 space-y-6">
-
-                <!-- Calculation Table -->
-                <div class="overflow-x-auto shadow-lg rounded-xl">
-                    <table class="min-w-full bg-white divide-y divide-gray-200">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Description</th>
-                                <th class="py-3 px-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Units</th>
-                                <th class="py-3 px-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Rate (₹)</th>
-                                <th class="py-3 px-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Amount (₹)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="billing-details" class="divide-y divide-gray-100">
-                            <!-- Rows populated by JavaScript -->
-                        </tbody>
-                        <tfoot>
-                            <tr class="bg-indigo-50 font-extrabold text-indigo-800 border-t-2 border-indigo-700">
-                                <td colspan="3" class="py-3 px-4 text-right text-sm sm:text-lg">Total Monthly Bill (₹)</td>
-                                <td id="total-bill" class="py-3 px-4 text-right text-sm sm:text-lg">0</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-
-                <!-- Billing Clarification -->
-                <div class="p-6 bg-indigo-50 rounded-xl shadow-md space-y-3">
-                    <h2 class="text-xl font-bold text-indigo-700">Billing Clarification:</h2>
-                    <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
-                        <li><b>Application Access & Active Charges:</b> ₹1000/month (fixed).</li>
-                        <li><b>Billing is generated</b> on the <b>27th</b> of every month based on active asset usage.</li>
-                        <li><b>Payment window:</b> 28th to 4th of next month.</li>
-                        <li><b>Late payment after 4th</b> attracts <b>5% penalty</b> on the total Active Asset Billing (AAB).</li>
-                        <li><b>Active Asset Billing (AAB):</b> Calculated per month based on current active usage.</li>
-                        <li><b>Pending dues</b> must be cleared before current month payments to avoid recurring penalties.</li>
-                        <li class="font-bold text-red-600"><b>User Profile Clarification:</b> The <b>₹5 User Profile</b> rate is a separate fee applied to every specialized profile (Learner, Instructor, etc.) as an access and setup fee.</li>
-<li class="font-bold text-red-600"><b>NOTE: Your total monthly bill is variable and depends entirely on your overall active asset usage (the number of units consumed). The unit rates themselves (e.g., ₹20 per Learner, ₹150 per Branch) are fixed for transparency and budget stability.</b></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+  <!-- Billing Summary -->
+  <div class="card">
+    <div class="grid">
+      <div class="stat">
+        <h3>Total Active Learners</h3>
+        <p id="learners">0</p>
+      </div>
+      <div class="stat">
+        <h3>Rate per Learner</h3>
+        <p>₹10 / Month</p>
+      </div>
+      <div class="stat">
+        <h3>Estimated Monthly Bill</h3>
+        <p class="total">₹<span id="total">0</span></p>
+      </div>
     </div>
 
-    <script>
-        // Unit Rates based on the user's final list
-        const RATES = {
-            ApplicationFixed: 1000,
-            UserProfiles: 5,
-            Learners: 20,
-            Instructors: 50,
-            BranchExecutives: 40,
-            Employers: 30,
-            Branches: 150,
-            Programs: 20,
-            Courses: 5,
-            PaymentTransactions: 2,
-            InstitutionalProfile: 50, // Added based on earlier list, assumed fixed 1 unit
-            EmployerProfile: 50,     // Added based on earlier list, assumed fixed 1 unit
-        };
+    <!-- Billing Alert -->
+    <div id="billingAlert" class="alert"></div>
 
-        function formatCurrency(amount) {
-            return amount.toLocaleString('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 });
-        }
+    <!-- Important Notice -->
+    <div class="info-box">
+      <h4>⚠️ Important Billing Notice</h4>
+      <p>
+        This dashboard is provided for <b>billing visibility and reference only</b>.
+        Payments are <b>not accepted directly</b> from this panel.
+      </p>
 
-        function calculateBill() {
-            // 1. Get Input Values
-            const learners = parseInt(document.getElementById('learners').value) || 0;
-            const instructors = parseInt(document.getElementById('instructors').value) || 0;
-            const branchExecutives = parseInt(document.getElementById('branchExecutives').value) || 0;
-            const employers = parseInt(document.getElementById('employers').value) || 0;
-            const branches = parseInt(document.getElementById('branches').value) || 0;
-            const programs = parseInt(document.getElementById('programs').value) || 0;
-            const courses = parseInt(document.getElementById('courses').value) || 0;
-            const transactions = parseInt(document.getElementById('transactions').value) || 0;
-            
-            // Limit employer input to 1
-            if (employers > 1) document.getElementById('employers').value = 1;
+      <p>
+        Our company will always share the <b>official billing amount</b> through
+        verified communication channels. Clients are requested to
+        <b>cross-check the bill</b> shown here with the officially shared invoice
+        before proceeding with payment.
+      </p>
 
-            // 2. Calculate Derived Units
-            // As per user's example, "User Profile" is the sum of all specialized users.
-            const totalUserProfiles = learners + instructors + branchExecutives + employers;
+      <div class="flow">
+        <ul>
+          <li>Billing cycle starts on <b>27th of every month</b></li>
+          <li>Grace period until <b>4th of next month</b></li>
+          <li>Payment confirmation is handled <b>manually & securely</b></li>
+        </ul>
+      </div>
+    </div>
 
-            // Assuming Institutional Profile and Employer Profile are fixed fees for the system setup (1 unit each)
-            const institutionalProfileUnits = 1; 
-            const employerProfileUnits = 1;
+    <!-- System Update Message -->
+    <div class="alert warning">
+      🙏 <b>Payment Dashboard Update</b><br>
+      We sincerely apologize for the inconvenience.
+      Our team is actively developing a more <b>efficient, secure, and smooth
+      enterprise-grade payment dashboard</b>.
+      <br><br>
+      Until then, this panel will display <b>informational billing instances</b>
+      to help you understand usage and expected charges.
+    </div>
 
-            // 3. Calculate Amounts
-            const calculations = [
-                { desc: "Application Access & Active Charges (Fixed)", units: 1, rate: RATES.ApplicationFixed, amount: RATES.ApplicationFixed },
-                { desc: "Institutional Profile (Infra)", units: institutionalProfileUnits, rate: RATES.InstitutionalProfile, amount: institutionalProfileUnits * RATES.InstitutionalProfile },
-                { desc: "Employer Profile (Infra)", units: employerProfileUnits, rate: RATES.EmployerProfile, amount: employerProfileUnits * RATES.EmployerProfile },
-                { desc: "Branches", units: branches, rate: RATES.Branches, amount: branches * RATES.Branches },
-                { desc: "Programs", units: programs, rate: RATES.Programs, amount: programs * RATES.Programs },
-                { desc: "Courses", units: courses, rate: RATES.Courses, amount: courses * RATES.Courses },
-                { desc: "User Profiles (Access & Setup Fee)", units: totalUserProfiles, rate: RATES.UserProfiles, amount: totalUserProfiles * RATES.UserProfiles },
-                { desc: "Learners (Core Usage)", units: learners, rate: RATES.Learners, amount: learners * RATES.Learners },
-                { desc: "Instructors (Core Usage)", units: instructors, rate: RATES.Instructors, amount: instructors * RATES.Instructors },
-                { desc: "Branch Executives (Core Usage)", units: branchExecutives, rate: RATES.BranchExecutives, amount: branchExecutives * RATES.BranchExecutives },
-                { desc: "Employers (Core Usage)", units: employers, rate: RATES.Employers, amount: employers * RATES.Employers },
-                { desc: "Payment Transactions", units: transactions, rate: RATES.PaymentTransactions, amount: transactions * RATES.PaymentTransactions },
-            ];
+  </div>
 
-            // 4. Render Table
-            const tableBody = document.getElementById('billing-details');
-            tableBody.innerHTML = '';
-            let totalBill = 0;
+  <div class="footer">
+    © 2025 MNB Solutions Enterprise • CLMS Billing System (Preview Instance)
+  </div>
 
-            calculations.forEach(item => {
-                totalBill += item.amount;
-                const row = `
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="py-2 px-4 text-sm font-medium text-gray-700">${item.desc}</td>
-                        <td class="py-2 px-4 text-center text-sm font-medium text-gray-700">${item.units}</td>
-                        <td class="py-2 px-4 text-right text-sm font-medium text-gray-700">${formatCurrency(item.rate)}</td>
-                        <td class="py-2 px-4 text-right text-sm font-medium text-gray-900">${formatCurrency(item.amount)}</td>
-                    </tr>
-                `;
-                tableBody.innerHTML += row;
-            });
+</div>
 
-            // 5. Render Total
-            document.getElementById('total-bill').textContent = formatCurrency(totalBill);
-        }
+<script>
+/* ======================
+   CONFIGURATION
+====================== */
+const ACTIVE_LEARNERS = @json($activeLearners ?? 0); // replace later from backend
+const PRICE_PER_LEARNER = 10;
 
-        // Add event listeners to all input fields
-        document.addEventListener('DOMContentLoaded', () => {
-            const inputs = document.querySelectorAll('#input-fields input');
-            inputs.forEach(input => {
-                input.addEventListener('input', calculateBill);
-            });
-            // Run on load with default values
-            calculateBill(); 
-        });
-    </script>
+/* ======================
+   CALCULATION
+====================== */
+document.getElementById("learners").innerText = ACTIVE_LEARNERS;
+document.getElementById("total").innerText = ACTIVE_LEARNERS * PRICE_PER_LEARNER;
+
+/* ======================
+   DATE LOGIC
+====================== */
+const today = new Date();
+const day = today.getDate();
+const alertBox = document.getElementById("billingAlert");
+
+if(day === 27){
+  alertBox.className = "alert success";
+  alertBox.innerHTML =
+    "✅ <b>Billing Cycle Started</b><br>" +
+    "Today marks the official CLMS billing date. " +
+    "The final bill will be shared separately for verification.";
+}
+else if(day > 27 || day <= 4){
+  alertBox.className = "alert danger";
+  alertBox.innerHTML =
+    "⚠️ <b>Billing Window Active</b><br>" +
+    "This is the payment grace period (27th – 4th). " +
+    "Please ensure the official invoice is reviewed once received.";
+}
+else{
+  alertBox.className = "alert success";
+  alertBox.innerHTML =
+    "ℹ️ <b>Billing Information</b><br>" +
+    "This is a preview of your upcoming CLMS bill. " +
+    "The next billing cycle begins on the 27th.";
+}
+</script>
+
 </body>
-    <!-- Footer -->
-    <footer class="mt-8 text-center text-sm text-gray-500 py-4">
-        <p>
-            Developed &amp; Maintained by 
-            <span class="font-semibold text-gray-700">MNBSolutions</span> — 
-            <span class="font-medium">All Rights Reserved</span>
-        </p>
-    </footer>
-
 </html>

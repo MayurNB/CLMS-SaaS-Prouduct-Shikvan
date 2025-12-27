@@ -17,6 +17,11 @@ use App\Http\Controllers\LearnerEnrollment\LearnerEnrollmentController;
 
 use App\Http\Controllers\BillingControllersManagements\UnitBillController;
 
+use App\Http\Controllers\LearnerOnboard;
+use App\Http\Controllers\LearnerOnboard\LearnerOnboardController;
+
+use App\Http\Controllers\ComingSoon\ComingSoonController;
+
 // ✅ Root Redirect
 Route::get('/fine', fn() => Redirect::to('https://mnbsolutions.vercel.app/'));
 
@@ -178,6 +183,7 @@ Route::get('/unit-bill-show', [UnitBillController::class, 'UnitBillView'])->name
 
           Route::get('/branch/programs/{programId}/edit-data', [ProgramsAndCoursesController::class, 'getProgramDetails'])->name('employer.program.details.ajax.branch');
 
+         Route::get('/Learner Onboard', [LearnerOnboardController::class, 'learnerOnboard'])->name('learnerOnboard');
 
             Route::get('/Learner Enrollment', [LearnerEnrollmentController::class, 'branchExecutiveLearnerEnrollment'])->name('branchExecutiveLearnerEnrollment');
 
@@ -226,6 +232,8 @@ Route::get('/learner-enrollment-manage',[LearnerEnrollmentController::class,'Lea
 
     Route::post('/learner-enrollment-deactive',[LearnerEnrollmentController::class,'enrollmentDeactive'])->name('enrollmentDeactive');
 
+
+    Route::get('/Coming Soon',[ComingSoonController::class, 'branch_ExecutiveComingSoon'])->name('branch_ExecutiveComingSoon');
 });
 
 
