@@ -260,7 +260,7 @@ Employer
           </ul>
         </li>
         <li class="nav-title">ADMINISTRATION MANAGEMENT</li>
-        <li class="nav-group"><a class="nav-link nav-group-toggle" href="{{ url('nothing') }}">
+        <li class="nav-group"><a class="nav-link nav-group-toggle">
             <svg class="nav-icon">
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-puzzle') }}"></use>
             </svg>Quick Action </a>
