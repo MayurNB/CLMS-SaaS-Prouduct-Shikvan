@@ -534,4 +534,61 @@ public function addTag(Request $request){
 }
 
 
+
+
+
+
+/******************************************************************************/
+
+
+public function employerNewProgramAndCourses()
+{
+        
+    $user = Auth::user();
+
+    // Correctly get the institute ID via employer profile
+    $instituteId = $user->employerProfile?->institute?->id;
+
+    if (!$instituteId) {
+        return back()->with('error', 'No institute found for this employer.');
+    }
+
+    // Fetch all programs for this institute
+    $programs = Program::where('institute_id', $instituteId)
+        ->orderBy('created_at', 'desc')
+        ->paginate(10); // or ->get() for all without pagination
+
+        //dd($programs);
+    
+    return view('Access.Core.Employer.new_programs_courses', compact('programs'));
+}
+
+
+
+
+/****************************************************************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

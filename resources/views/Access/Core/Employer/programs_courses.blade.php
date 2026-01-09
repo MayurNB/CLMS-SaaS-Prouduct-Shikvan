@@ -1968,10 +1968,14 @@ document.getElementById('addDiscount').addEventListener('click', () => {
             <label>Description (Internal)</label>
             <textarea name="discounts[${discountIndex}][description_internal]" class="form-control"></textarea>
         </div>
-        <div class="mb-2">
-            <label>Type</label>
-            <input type="text" name="discounts[${discountIndex}][type]" class="form-control">
-        </div>
+        <div class="col-md-3">
+    <label class="form-label">Type</label>
+    <select name="discounts[${discountIndex}][type]" class="form-select" required>
+        <option value="">Select Type</option>
+        <option value="percentage">Percentage (%)</option>
+        <option value="percentage">Percentage (%)</option> 
+    </select>
+</div>
         <div class="mb-2">
             <label>Value</label>
             <input type="number" step="0.01" name="discounts[${discountIndex}][value]" class="form-control">
@@ -2477,8 +2481,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="col-md-3">
                                 <label class="form-label">Type</label>
                                 <select name="discounts[${discountIndex}][type]" class="form-select">
-                                    <option value="0">Fixed Amount</option>
-                                    <option value="1">Percentage (%)</option>
+                                    <option value="percentage">Percentage (%)</option>
+                                    <option value="percentage">Percentage (%)</option>
                                 </select>
                             </div>
                             <div class="col-md-2 d-flex align-items-end">

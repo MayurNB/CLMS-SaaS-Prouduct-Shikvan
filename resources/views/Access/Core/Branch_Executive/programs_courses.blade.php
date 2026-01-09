@@ -277,8 +277,10 @@
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-puzzle') }}"></use>
             </svg>People Management</a>
           <ul class="nav-group-items compact">
-            <li class="nav-item"><a class="nav-link" href="{{ Route('branchExecutiveLearnerEnrollment') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Learner Enrollment </a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ Route('LearnerEnrollmentManage') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Learner Manage </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('learnerOnboard') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Learner Onboard </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('learnerNewEnrollment') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Learner Enrollment </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('fees.payments.page') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Fees Payment </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('enrollments.enrollmentManage') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Learner Manage </a></li>
             <!-- <li class="nav-item"><a class="nav-link" href="{{ url('employerLearnerEnrollment') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Enrollment </a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ Route('employerProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> pro </a></li> -->
             <!-- <li class="nav-item"><a class="nav-link" href="{{ url('Employer_content') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Content Mgt </a></li>
@@ -496,8 +498,10 @@
             <div class="tab-pane fade show active" id="viewContent" role="tabpanel" aria-labelledby="view-tab">
                 <h5 class="card-title mb-4">Operations </h5>
 
+
                 <div class="d-flex flex-wrap justify-content-center gap-3 mb-4"> {{-- Flex container for buttons --}}
 
+                <h4>Important: <b>In accordance with institutional policy, programs and courses cannot be modified by this branch. To view full program details, please click "View Program List" and select the "Edit" option (Read-Only). </b></h4>
                     <!-- {{-- Button 1: View Package & Pricing (Opens Modal for Type Selection) --}}
                     <button class="btn btn-primary px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#ViewDataModal">
                         Creation of Programs
@@ -517,16 +521,16 @@
 
                     <table class="table table-striped table-hover">
                       
-                      <thead>
+                      <!-- <thead>
                     <tr>
                       <th>Program Creation</th>
-                      <!-- <th>Tags</th>
+                       <th>Tags</th>
                       <th>program_prices</th> -->
                     </tr>
-                  </thead>
+                  </thead> 
                   <tbody>
                     <tr>
-                      <td>
+                      <!-- <td>
                          {{-- Button 1: View Package & Pricing (Opens Modal for Type Selection) --}}
                     <button class="btn btn-primary px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#ViewDataModal">
                         Creation of Program
@@ -537,7 +541,7 @@
                     <button class="btn btn-primary px-4 py-2 rounded-md" data-coreui-toggle="modal" data-coreui-target="#programDetailsModal">
                         View program
                     </button>
-                      </td>
+                      </td> -->
                        <!-- <td>editUserModal
                        <button class="btn btn-success" data-coreui-toggle="modal" data-coreui-target="#SmallFormModal">
   Update it
@@ -620,7 +624,6 @@
 
                 </div>
 
-                <p class="text-muted"> NOTE:All content from institute only.</p>
 
 
 
@@ -1334,7 +1337,7 @@
             
         </div>
 
-        <button type="submit" class="btn btn-success mt-3">Save Changes</button>
+        <!-- <button type="submit" class="btn btn-success mt-3">Save Changes</button> -->
     </form>
 </template>
                                   <!-- entire update program related data -->

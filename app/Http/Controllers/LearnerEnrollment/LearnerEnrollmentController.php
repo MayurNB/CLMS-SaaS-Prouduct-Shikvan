@@ -981,257 +981,227 @@ if ($enrollmentData) {
  
 
   public function LearnerEnrollmentManage(Request $request)
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
 
-        // --------------------------
-        // Determine branch_id for the logged-in user
-        // --------------------------
-        $branchId = null;
+    // --------------------------
+    // Determine branch_id for the logged-in user
+    // --------------------------
+    $branchId = null;
 
-        // Try user_branch_roles (preferred)
-        $ubr = DB::table('user_branch_roles')
-            ->where('user_id', $user->id)
-            ->where('branch_id',session('activeBranch_id'))
-            ->where('is_active', 1)
-            ->first();
+    // Try user_branch_roles (preferred)
+    $ubr = DB::table('user_branch_roles')
+        ->where('user_id', $user->id)
+        ->where('branch_id', session('activeBranch_id'))
+        ->where('is_active', 1)
+        ->first();
 
-        if ($ubr && isset($ubr->branch_id)) {
-            $branchId = $ubr->branch_id;
-        } else {
-            // fallback: maybe user table stores branch_id (if present)
-            if (isset($user->branch_id) && $user->branch_id) {
-                $branchId = $user->branch_id;
-            }
+    if ($ubr && isset($ubr->branch_id)) {
+        $branchId = $ubr->branch_id;
+    } else {
+        // fallback: maybe user table stores branch_id (if present)
+        if (isset($user->branch_id) && $user->branch_id) {
+            $branchId = $user->branch_id;
         }
+    }
 
-        // If branch not found, we still continue but use empty enrollments collection
-        if (!$branchId) {
-            $Enrollments = collect();
-            $Enrollment_Fees = collect();
-        } else {
-            // --------------------------
-            // Load enrollments for this branch
-            // --------------------------
-            $Enrollments = Enrollment::where('branch_id', $branchId)->get();
+    // If branch not found, we still continue but use empty enrollments collection
+    if (!$branchId) {
+        $Enrollments = collect();
+        $Enrollment_Fees = collect();
+    } else {
+        // Load enrollments for this branch
+        $Enrollments = Enrollment::where('branch_id', $branchId)->get();
 
-            // Load fees for those enrollments
-            $Enrollment_Fees = EnrollmentFee::whereIn(
-                'enrollment_id',
-                $Enrollments->pluck('id')->toArray()
-            )->get();
-        }
+        // Load fees for those enrollments
+        $Enrollment_Fees = EnrollmentFee::whereIn(
+            'enrollment_id',
+            $Enrollments->pluck('id')->toArray()
+        )->get();
+    }
 
-        // Programs (global)
-        $Programs = Program::get();
+    // Programs (global)
+    $Programs = Program::get();
 
-        // --------------------------
-        // Apply server-side filters on enrollments (program / fee_status / enrollment_date)
-        // We will filter the $Enrollments collection (in-memory) for simplicity (you already used collections)
-        // --------------------------
-        $filteredEnrollments = $Enrollments;
+    $filteredEnrollments = $Enrollments;
 
-        // filter by program (expects program id)
-        if ($request->filled('program')) {
-            $filteredEnrollments = $filteredEnrollments->where('program_id', $request->program);
-        }
+    // Filter by program
+    if ($request->filled('program')) {
+        $filteredEnrollments = $filteredEnrollments->where('program_id', $request->program);
+    }
 
-        // filter by enrollment_date (expects YYYY-MM-DD)
-        if ($request->filled('enrollment_date')) {
-            $filteredEnrollments = $filteredEnrollments->where('enrollment_date', $request->enrollment_date);
-        }
+    // Filter by enrollment_date
+    if ($request->filled('enrollment_date')) {
+        $filteredEnrollments = $filteredEnrollments->where('enrollment_date', $request->enrollment_date);
+    }
 
-        // filter by fee_status (expects fee_status values like 'complete','partial','pending')
-        if ($request->filled('fee_status')) {
-            $fs = $request->fee_status;
+    // Filter by fee_status
+    if ($request->filled('fee_status')) {
+        $fs = $request->fee_status;
+        $enrollmentIdsWithFeeStatus = $Enrollment_Fees
+            ->where('fee_status', $fs)
+            ->pluck('enrollment_id')
+            ->unique()
+            ->toArray();
 
-            // find enrollment ids which have that fee_status in Enrollment_Fees
-            $enrollmentIdsWithFeeStatus = $Enrollment_Fees
-                ->where('fee_status', $fs)
-                ->pluck('enrollment_id')
-                ->unique()
-                ->toArray();
+        $filteredEnrollments = $filteredEnrollments->filter(function ($e) use ($enrollmentIdsWithFeeStatus) {
+            return in_array($e->id, $enrollmentIdsWithFeeStatus);
+        });
+    }
 
-            $filteredEnrollments = $filteredEnrollments->filter(function ($e) use ($enrollmentIdsWithFeeStatus) {
-                return in_array($e->id, $enrollmentIdsWithFeeStatus);
-            });
-        }
+    // Get learner ids allowed by filters
+    $filteredLearnerIds = $filteredEnrollments->pluck('learner_id')->unique()->toArray();
 
-        // Get learner ids allowed by filters (if filters applied)
-        $filteredLearnerIds = $filteredEnrollments->pluck('learner_id')->unique()->toArray();
+    $learnersQuery = Learners::query();
 
-        // --------------------------
-        // Build learners query (server-side pagination)
-        // We'll show learners who belong to the branch (via enrollments)
-        // --------------------------
-        $learnersQuery = Learners::query();
+    if (!empty($filteredLearnerIds)) {
+        $learnersQuery = $learnersQuery->whereIn('id', $filteredLearnerIds);
+    } else {
+        $learnersQuery = $learnersQuery->whereRaw('1 = 0');
+    }
 
-        // If branch-based: restrict to learners that appear in the branch enrollments
-        if (!empty($filteredLearnerIds)) {
-            $learnersQuery = $learnersQuery->whereIn('id', $filteredLearnerIds);
-        } else {
-            // If no enrollments for branch (or no branch), return empty results
-            // To avoid returning ALL learners accidentally, we'll restrict to none
-            $learnersQuery = $learnersQuery->whereRaw('1 = 0');
-        }
+    // Paginate learners
+    $learners = $learnersQuery->paginate(25)->appends($request->query());
 
-        // Paginate learners (server-side)
-        $learners = $learnersQuery->paginate(25)->appends($request->query());
+    $EnrolledLearnerData = [];
 
-        // --------------------------
-        // Build data array exactly as your UI expects
-        // --------------------------
-        $EnrolledLearnerData = [];
+    foreach ($learners as $learner) {
+        // Find the enrollment for this learner
+        $enrollment = $Enrollments->where('learner_id', $learner->id)->first();
 
-        foreach ($learners as $learner) {
-
-            // find the first enrollment for this learner within the branch enrollments (if any)
-            $enrollment = $Enrollments->where('learner_id', $learner->id)->first();
-
-            if (!$enrollment) {
-                // safe fallback row (should be rare if filtered correctly)
-                $EnrolledLearnerData[] = [
-                    'LearnerID' => $learner->id,
-                    'LearnerName' => $learner->raw_learner_name,
-                    'LearnerEmail' => $learner->raw_email,
-                    'LearnerPhoneNo' => $learner->raw_phone,
-                    'LearnerStatus' => $learner->status,
-                    'Program' => 'N/A',
-                    'TotalFee' => 0,
-                    'Paid' => 0,
-                    'Balance' => 0,
-                    'FeeStatus' => 'N/A',
-                    'Courses' => [],
-                    'Payments' => [],
-                    'Discounts' => [],
-                    'EnrollmentDate' => null,
-                    'EnrollmentID' => null,
-                    'EnrollmentFeesId'=>null,
-                ];
-                continue;
-            }
-
-            // fee record for this enrollment
-            $fee = $Enrollment_Fees->where('enrollment_id', $enrollment->id)->first();
-
-            
-
-            // program for this enrollment (from $Programs collection)
-            $program = $Programs->where('id', $enrollment->program_id)->first();
-
-            // --- ENROLLED COURSES (per enrollment) ---
-            $EnrolledCourses = DB::table('enrolled_courses')
-                ->where('enrollment_id', $enrollment->id)
-                ->get();
-
-            $CourseList = [];
-            foreach ($EnrolledCourses as $item) {
-                $Course = DB::table('courses')->where('id', $item->course_id)->first();
-                if ($Course) {
-                    $CourseList[] = [
-                        'CourseId'    => $Course->id,
-                        'CourseName'  => $Course->course_name,
-                        'CoursePrice' => $Course->price,
-                        'CourseStatus'=> $item->status,
-                    ];
-                }
-            }
-
-            // --- PAYMENTS (use enrollment_fee.id as payable_id) ---
-            $PaymentList = [];
-
-            if ($fee && $fee->id) {
-                $payments = DB::table('payments')
-                    ->where('payable_id', $fee->id)
-                    ->where('payable_type', 'LF') // your system uses 'LF' for fee payable type
-                    ->orderBy('paid_at', 'desc')
-                    ->get();
-
-                foreach ($payments as $p) {
-                    $PaymentList[] = [
-                        'id' => $p->id,
-                        'amount' => $p->amount,
-                        'method' => $p->payment_method,
-                        'transaction_id' => $p->transaction_id,
-                        'status' => $p->status,
-                        'paid_at' => $p->paid_at,
-                        'payable_id' => $p->payable_id,
-                        'payable_type' => $p->payable_type,
-                    ];
-                }
-            }
-
-            // --- DISCOUNTS ---
-            $DiscountList = [];
-            $enrollmentDiscounts = DB::table('enrollment_discounts')
-                ->where('enrollment_id', $enrollment->id)
-                ->get();
-
-            foreach ($enrollmentDiscounts as $ed) {
-                $offer = DB::table('discounts_offers')->where('id', $ed->discount_id)->first();
-                $DiscountList[] = [
-                    'discount_id' => $ed->discount_id,
-                    'discount_amount' => $ed->discount_amount,
-                    'applied_date' => $ed->applied_date,
-                    'offer_name' => $offer->name ?? null,
-                    'offer_type' => $offer->type ?? null,
-                    'offer_value' => $offer->value ?? null,
-                ];
-            }
-
-            // Fee calculations (safe)
-            $totalFee = $fee->total_fee_charged ?? 0;
-            $paidAmount = $fee->paid_amount ?? 0;
-            $balance = floatval($totalFee - $paidAmount);
-
-           // dd($PaymentList);
-
+        if (!$enrollment) {
             $EnrolledLearnerData[] = [
                 'LearnerID' => $learner->id,
                 'LearnerName' => $learner->raw_learner_name,
                 'LearnerEmail' => $learner->raw_email,
                 'LearnerPhoneNo' => $learner->raw_phone,
                 'LearnerStatus' => $learner->status,
+                'Program' => 'N/A',
+                'TotalFee' => 0,
+                'Paid' => 0,
+                'Balance' => 0,
+                'FeeStatus' => 'N/A',
+                'Courses' => [],
+                'Payments' => [],
+                'Discounts' => [],
+                'EnrollmentDate' => null,
+                'EnrollmentID' => null,
+                'EnrollmentFeesId' => null,
+            ];
+            continue;
+        }
 
-                'Program' => $program->program_name ?? 'N/A',
-                'TotalFee' => $totalFee,
-                'Paid' => $paidAmount,
-                'Balance' => $balance,
-                'FeeStatus' => $fee->fee_status ?? 'N/A',
-                
+        // --- SAFE FEE DATA ---
+        $fee = $Enrollment_Fees->where('enrollment_id', $enrollment->id)->first();
+        
+        // Check if $fee exists before accessing properties
+        $feeId = $fee->id ?? null;
+        $totalFee = $fee->total_fee_charged ?? 0;
+        $paidAmount = $fee->paid_amount ?? 0;
+        $balance = floatval($totalFee - $paidAmount);
+        $feeStatusText = $fee->fee_status ?? 'N/A';
 
-                'Courses' => $CourseList,
-                'Payments' => $PaymentList,
-                'Discounts' => $DiscountList,
+        // Program for this enrollment
+        $program = $Programs->where('id', $enrollment->program_id)->first();
 
-                'EnrollmentDate' => $enrollment->enrollment_date,
-                'EnrollmentID' => $enrollment->id,
-                'EnrollmentFeesId' => $fee->id,
+        // --- ENROLLED COURSES ---
+        $EnrolledCourses = DB::table('enrolled_courses')
+            ->where('enrollment_id', $enrollment->id)
+            ->get();
+
+        $CourseList = [];
+        foreach ($EnrolledCourses as $item) {
+            $Course = DB::table('courses')->where('id', $item->course_id)->first();
+            if ($Course) {
+                $CourseList[] = [
+                    'CourseId'    => $Course->id,
+                    'CourseName'  => $Course->course_name,
+                    'CoursePrice' => $Course->price,
+                    'CourseStatus'=> $item->status,
+                ];
+            }
+        }
+
+        // --- PAYMENTS ---
+        $PaymentList = [];
+        if ($feeId) { // Only query payments if we actually have a fee ID
+            $payments = DB::table('payments')
+                ->where('payable_id', $feeId)
+                ->where('payable_type', 'LF')
+                ->orderBy('paid_at', 'desc')
+                ->get();
+
+            foreach ($payments as $p) {
+                $PaymentList[] = [
+                    'id' => $p->id,
+                    'amount' => $p->amount,
+                    'method' => $p->payment_method,
+                    'transaction_id' => $p->transaction_id,
+                    'status' => $p->status,
+                    'paid_at' => $p->paid_at,
+                    'payable_id' => $p->payable_id,
+                    'payable_type' => $p->payable_type,
+                ];
+            }
+        }
+
+        // --- DISCOUNTS ---
+        $DiscountList = [];
+        $enrollmentDiscounts = DB::table('enrollment_discounts')
+            ->where('enrollment_id', $enrollment->id)
+            ->get();
+
+        foreach ($enrollmentDiscounts as $ed) {
+            $offer = DB::table('discounts_offers')->where('id', $ed->discount_id)->first();
+            $DiscountList[] = [
+                'discount_id' => $ed->discount_id,
+                'discount_amount' => $ed->discount_amount,
+                'applied_date' => $ed->applied_date,
+                'offer_name' => $offer->name ?? null,
+                'offer_type' => $offer->type ?? null,
+                'offer_value' => $offer->value ?? null,
             ];
         }
 
-        // --------------------------
-        // Wrap results into LengthAwarePaginator to preserve pagination meta
-        // --------------------------
-        $pagedLearners = new LengthAwarePaginator(
-            $EnrolledLearnerData,
-            $learners->total(),
-            $learners->perPage(),
-            $learners->currentPage(),
-            ['path' => request()->url(), 'query' => request()->query()]
-        );
-
-        // Programs for filter dropdown
-        $programOptions = $Programs->pluck('program_name', 'id')->toArray();
-
-        return view('Access.Core.Branch_Executive.learner_enrollment_manage', [
-            'EnrolledLearnerData' => $pagedLearners,
-            'programOptions' => $programOptions,
-            'filter_program' => $request->program,
-            'filter_fee_status' => $request->fee_status,
-            'filter_enrollment_date' => $request->enrollment_date,
-        ]);
+        $EnrolledLearnerData[] = [
+            'LearnerID' => $learner->id,
+            'LearnerName' => $learner->raw_learner_name,
+            'LearnerEmail' => $learner->raw_email,
+            'LearnerPhoneNo' => $learner->raw_phone,
+            'LearnerStatus' => $learner->status,
+            'Program' => $program->program_name ?? 'N/A',
+            'TotalFee' => $totalFee,
+            'Paid' => $paidAmount,
+            'Balance' => $balance,
+            'FeeStatus' => $feeStatusText,
+            'Courses' => $CourseList,
+            'Payments' => $PaymentList,
+            'Discounts' => $DiscountList,
+            'EnrollmentDate' => $enrollment->enrollment_date,
+            'EnrollmentID' => $enrollment->id,
+            'EnrollmentFeesId' => $feeId,
+        ];
     }
+
+    // Wrap results into LengthAwarePaginator
+    $pagedLearners = new \Illuminate\Pagination\LengthAwarePaginator(
+        $EnrolledLearnerData,
+        $learners->total(),
+        $learners->perPage(),
+        $learners->currentPage(),
+        ['path' => request()->url(), 'query' => request()->query()]
+    );
+
+    $programOptions = $Programs->pluck('program_name', 'id')->toArray();
+
+    return view('Access.Core.Branch_Executive.learner_enrollment_manage', [
+        'EnrolledLearnerData' => $pagedLearners,
+        'programOptions' => $programOptions,
+        'filter_program' => $request->program,
+        'filter_fee_status' => $request->fee_status,
+        'filter_enrollment_date' => $request->enrollment_date,
+    ]);
+}
 
 
 
@@ -1384,5 +1354,14 @@ $programs = Program::where('is_active', 1)
                 return back()->with('success', 'Enrollment Deactivated..!!');
 
     }
+
+
+
+
+
+
+
+
     
+
 }

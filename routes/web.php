@@ -14,6 +14,9 @@ use App\Http\Controllers\AdminControllersManagements\EmployersManagementControll
 use App\Http\Controllers\AdminControllersManagements\EmployerUserManagementController;
 use App\Http\Controllers\ProgramsCourses\ProgramsAndCoursesController;
 use App\Http\Controllers\LearnerEnrollment\LearnerEnrollmentController;
+use App\Http\Controllers\LearnerEnrollment\LearnerEnrollmentCreationController;
+
+use App\Http\Controllers\LearnerEnrollment\LearnerEnrollmentManageController;
 
 use App\Http\Controllers\BillingControllersManagements\UnitBillController;
 
@@ -22,6 +25,10 @@ use App\Http\Controllers\LearnerOnboard\LearnerOnboardController;
 
 use App\Http\Controllers\ComingSoon\ComingSoonController;
 
+
+use App\Http\Controllers\Fees\FeesSetupController;
+
+use App\Http\Controllers\Payments\FeesPaymentsController;
 // ✅ Root Redirect
 Route::get('/fine', fn() => Redirect::to('https://mnbsolutions.vercel.app/'));
 
@@ -102,7 +109,19 @@ Route::middleware(['auth'])->group(function () {
     //Route::post('/profile/update', [ProfileController::class, 'updateEmployerProfile'])->name('updateEmployerProfile');
 
 
+    // fees setup page are deisgn it below
+
+
+Route::get('/fees/setup', [FeesSetupController::class, 'employerSetupFees'])->name('employer.fees.setup');
+Route::post('/fees/store', [FeesSetupController::class, 'storeFee'])->name('employer.fees.store');
+Route::post('/fees/deactivate/{id}', [FeesSetupController::class, 'deactivateFee'])->name('employer.fees.deactivate');
+Route::post('/employer/fees/reactivate', [FeesSetupController::class, 'reactivateFee'])->name('employer.fees.reactivate');
+    // fees setup page deisgn above
+
     Route::get('/programs-courses',[ProgramsAndCoursesController::class, 'employerProgramAndCourses'])->name('employerProgramAndCourses');
+
+    Route::get('/new-programs-courses',[ProgramsAndCoursesController::class, 'employerNewProgramAndCourses'])->name('employerNewProgramAndCourses');
+
 
     Route::post('/programs-courses/create', [ProgramsAndCoursesController::class, 'employerProgramCreation'])->name('employerProgramCreation');
 
@@ -183,9 +202,47 @@ Route::get('/unit-bill-show', [UnitBillController::class, 'UnitBillView'])->name
 
           Route::get('/branch/programs/{programId}/edit-data', [ProgramsAndCoursesController::class, 'getProgramDetails'])->name('employer.program.details.ajax.branch');
 
-         Route::get('/Learner Onboard', [LearnerOnboardController::class, 'learnerOnboard'])->name('learnerOnboard');
 
-            Route::get('/Learner Enrollment', [LearnerEnrollmentController::class, 'branchExecutiveLearnerEnrollment'])->name('branchExecutiveLearnerEnrollment');
+    // Learner OnBoard to Payment Confirm Entire procedure it
+        
+        Route::get('/learner-onboard', [LearnerOnboardController::class, 'learnerOnboard'])->name('learnerOnboard');
+
+        Route::get('/new-learner-enrollment', [LearnerEnrollmentCreationController::class, 'learnerNewEnrollment'])->name('learnerNewEnrollment');
+
+        Route::post('/learner-data-search', [LearnerEnrollmentCreationController::class, 'learnerDataSearch'])->name('learnerDataSearch');
+
+        Route::post('/ajax/program-data', [LearnerEnrollmentCreationController::class,'programAjax'])
+    ->name('ajax.program.data');
+
+    Route::post('/learner/enrollment/store', [LearnerEnrollmentCreationController::class, 'storeEnrollment'])->name('learnerEnrollmentStore');
+
+
+    Route::get('/payments', 
+            [FeesPaymentsController::class, 'feesPaymentsPage']
+        )->name('fees.payments.page');
+
+        Route::get('/payments/search', 
+            [FeesPaymentsController::class, 'learnerSearch']
+        )->name('fees.payments.search');
+
+        Route::get('/payments/enrollment/{id}', 
+            [FeesPaymentsController::class,'loadEnrollment']
+        )->name('fees.payments.enrollment');
+
+        Route::post('/payments/store', 
+            [FeesPaymentsController::class, 'paymentStore']
+        )->name('fees.payments.store');
+
+
+    Route::get('/enrollments-manage', [LearnerEnrollmentManageController::class, 'enrollmentManage'])
+    ->name('enrollments.enrollmentManage');
+
+Route::get('/enrollments/{id}', [LearnerEnrollmentManageController::class, 'enrollmentManageView'])
+    ->name('enrollments.enrollmentManageView');
+
+    // Learner OnBoard to Pyamnet Confirm procedure end it     
+            
+   Route::get('/Learner Enrollment', [LearnerEnrollmentController::class, 'branchExecutiveLearnerEnrollment'])->name('branchExecutiveLearnerEnrollment');
 
             // Learn Enrollment procedure 
 
