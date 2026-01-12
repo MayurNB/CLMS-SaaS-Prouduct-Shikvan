@@ -109,7 +109,7 @@
   Logout
 </a>
 
-<!-- Hidden Logout Form -->
+<!-- Hidden Logout Form imp-->
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
   @csrf
 
