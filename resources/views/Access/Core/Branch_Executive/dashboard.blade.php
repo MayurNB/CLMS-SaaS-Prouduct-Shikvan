@@ -250,6 +250,35 @@ Employer
             <li class="nav-item"><a class="nav-link" href="{{ url('/base/tooltips') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tooltips</a></li> -->
           </ul>
         </li>
+         <li class="nav-title">Admission Work </li>
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="{{ url('Employer_acm') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-puzzle') }}"></use>
+            </svg> Addmission </a>
+          <ul class="nav-group-items compact">
+            <li class="nav-item"><a class="nav-link" href="{{ Route('branchAdmissionTokenPageShow') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Admission Token  </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('branchReviewAdmissionForm') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Admission Panel </a></li>
+            <!-- <li class="nav-item"><a class="nav-link" href="{{ url('employerLearnerEnrollment') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Enrollment </a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ Route('employerProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> pro </a></li> -->
+            <!-- <li class="nav-item"><a class="nav-link" href="{{ url('Employer_content') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Content Mgt </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('Employer_assignment') }}" ><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Assignment Mgt 
+                <svg class="icon icon-sm ms-2">
+                  <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>
+                </svg><span class="badge badge-sm bg-danger ms-auto">PRO</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('Employer_exam') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Exam Mgt</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('Employer_result') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Result Mgt </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/collapse') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Collapse</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/list-group') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> List group</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/navs-tabs') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Navs &amp; Tabs</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/pagination') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Pagination</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/placeholders') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Placeholders</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/popovers') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Popovers</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/progress') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Progress</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/spinners') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Spinners</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/tables') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tables</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/base/tooltips') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Tooltips</a></li> -->
+          </ul>
+        </li>
         <li class="nav-title">Administration & Compliance</li>
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="{{ url('Employer_acm') }}">
             <svg class="nav-icon">
@@ -290,6 +319,9 @@ Employer
             <li class="nav-item"><a class="nav-link" href="{{ Route('learnerNewEnrollment') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Learner Enrollment </a></li>
             <li class="nav-item"><a class="nav-link" href="{{ Route('fees.payments.page') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Fees Payment </a></li>
             <li class="nav-item"><a class="nav-link" href="{{ Route('enrollments.enrollmentManage') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Learner Manage </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('batchLearnerPageShow') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Learner Batch  </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('instructorOnboard') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Instructor Onboard </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('enrollments.enrollmentManage') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Course Assign </a></li>
             <!-- <li class="nav-item"><a class="nav-link" href="{{ url('employerLearnerEnrollment') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Enrollment </a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ Route('employerProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> pro </a></li> -->
             <!-- <li class="nav-item"><a class="nav-link" href="{{ url('Employer_content') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Content Mgt </a></li>
@@ -319,6 +351,11 @@ Employer
             </svg>Academic & Schedule</a>
           <ul class="nav-group-items compact">
             <li class="nav-item"><a class="nav-link" href="{{ Route('branchExecutiveProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Programs & Courses </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('InstructorCourseShow') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Instructor & Courses </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('batchCreationPageShow') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Batch Creation </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('timeTableCreationPageShow') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> TimeTable </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('timetable.view') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> TimeTable View </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ Route('branchAttendanceMasterView') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Attendance View </a></li>
             <!-- <li class="nav-item"><a class="nav-link" href="{{ Route('branchExecutiveBranch') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Branches Manages </a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('employerLearnerEnrollment') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Enrollment </a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ Route('employerProgramAndCourses') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> pro </a></li> -->

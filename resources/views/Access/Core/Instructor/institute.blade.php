@@ -450,7 +450,7 @@
                                 <div id="combinedUserTableContainer" class="table-responsive mt-3">
                                     {{-- This is where a table of all users (students, staff, etc.) would be loaded --}}
                                     @php
-$institute = session('activeBranch')?->institute;
+$institute = session('activeBranch_Id')?->institute;
 @endphp
 
 

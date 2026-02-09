@@ -449,9 +449,7 @@
                                 {{-- Placeholder for combined user data table, if needed --}}
                                 <div id="combinedUserTableContainer" class="table-responsive mt-3">
                                     {{-- This is where a table of all users (students, staff, etc.) would be loaded --}}
-                                    @php
-$institute = session('activeBranch')?->institute;
-@endphp
+                                   
 
 
 <form action="{{ url('updateEmployerprofile') }}" method="POST" enctype="multipart/form-data">

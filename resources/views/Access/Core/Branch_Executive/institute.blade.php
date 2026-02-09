@@ -191,7 +191,7 @@
 
 
 
-@section('side bar')
+
 @section('side bar')
 <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
      <li class="nav-title">Overview</li>

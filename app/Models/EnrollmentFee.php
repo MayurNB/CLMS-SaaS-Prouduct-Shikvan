@@ -53,9 +53,12 @@ class EnrollmentFee extends Model
      * Get all the individual payment transactions made toward this fee.
      * This uses the polymorphic relationship defined in the payments table.
      */
-    public function payments()
-    {
-        // Many payments belong to this single financial record
-        return $this->morphMany(Payment::class, 'payable');
-    }
+    /**
+ * Define the relationship to payments.
+ * Since your payments table uses payable_id, we use a hasMany relationship.
+ */
+public function payments()
+{
+    return $this->hasMany(Payment::class, 'payable_id', 'id');
+}
 }

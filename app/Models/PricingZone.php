@@ -10,7 +10,7 @@ class PricingZone extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'zone_id';
     public $incrementing = false;
     protected $keyType = 'string';
 
@@ -19,6 +19,7 @@ class PricingZone extends Model
     protected $fillable = [
         'zone_name',
         'description',
+        'rate_multiplier'
     ];
 
     /**

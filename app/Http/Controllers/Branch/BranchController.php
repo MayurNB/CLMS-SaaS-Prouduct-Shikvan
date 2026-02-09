@@ -138,11 +138,18 @@ public function branchExecutiveBranch()
 
 public function InstructorBranch()
 {
-    return view('Access.Core.Instructor.branch');
+    $user=Auth::user();
+
+    $branch=Branch::where('id',session('activeBranch_id'))->first();
+    return view('Access.Core.Instructor.branch',compact('branch'));
 }
 
 public function LearnerBranch()
 {
-    return view('Access.Core.Learner.branch');
+    $user=Auth::user();
+
+    $branch=Branch::where('id',session('activeBranch_id'))->first();
+
+     return view('Access.Core.Learner.branch',compact('branch'));
 }
 }

@@ -18,6 +18,8 @@ use App\Http\Controllers\LearnerEnrollment\LearnerEnrollmentCreationController;
 
 use App\Http\Controllers\LearnerEnrollment\LearnerEnrollmentManageController;
 
+use App\Http\Controllers\LearnerEnrollment\LearnerEnrollmentViewController;
+
 use App\Http\Controllers\BillingControllersManagements\UnitBillController;
 
 use App\Http\Controllers\LearnerOnboard;
@@ -29,6 +31,31 @@ use App\Http\Controllers\ComingSoon\ComingSoonController;
 use App\Http\Controllers\Fees\FeesSetupController;
 
 use App\Http\Controllers\Payments\FeesPaymentsController;
+
+use App\Http\Controllers\InstructorCourseAssignments\InstructorCourseAssignmentsController;
+
+use App\Http\Controllers\PackageZonePrice\PackageController;
+use App\Http\Controllers\PackageZonePrice\ZonePriceController;
+
+use App\Http\Controllers\InstructorOnboard\InstructorOnboardController;
+
+use App\Http\Controllers\Batch\BatchController;
+use App\Http\Controllers\Batch\BatchLearnerController;
+
+use App\Http\Controllers\TimeTable\TimeTableController;
+
+use App\Http\Controllers\Attendance\LearnerAttendanceController;
+
+use App\Http\Controllers\Attendance\AttendanceController;
+
+use App\Http\Controllers\ProgramsCourses\ProgramViewController;
+
+use App\Http\Controllers\Tax\TaxSetupController;
+
+use App\Http\Controllers\Admission\AdmissionFormConfigController;
+use App\Http\Controllers\Admission\AdmissionTokenController;
+use  App\Http\Controllers\Admission\AdmissionPublicFormController;
+
 // ✅ Root Redirect
 Route::get('/fine', fn() => Redirect::to('https://mnbsolutions.vercel.app/'));
 
@@ -40,6 +67,20 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Branch + Role selection
 Route::get('/login/branch-role', [LoginController::class, 'showBranchRoleSelection'])->name('login.showBranchRole');
 Route::post('/select-branch-role', [LoginController::class, 'selectBranchRole'])->name('selectBranchRole');
+
+
+// Public routed
+
+Route::get('/public/admission/form', [AdmissionPublicFormController::class, 'AdmissionPublicFormPageShow'])->name('AdmissionPublicFormPageShow');
+
+Route::post('/public/admission/verify-token', [AdmissionPublicFormController::class, 'verifyToken']);
+Route::post('/public/admission/submit', [AdmissionPublicFormController::class, 'submitAdmission']);
+Route::post('/public/admission/track', [AdmissionPublicFormController::class, 'trackAdmission']);
+
+
+// Public routed end here it.
+
+
 
 
 // ✅ AUTH-PROTECTED ROUTES
@@ -89,6 +130,25 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/users/{branch_id}/{role_id}', [EmployerUserManagementController::class, 'getUsers']);
     Route::get('/user/{user_id}', [EmployerUserManagementController::class, 'getSingleUser']);
     Route::post('/user/save', [EmployerUserManagementController::class, 'storeOrUpdateUser']);
+
+
+//Package Zone Price related routes here
+
+    Route::get('/package-creation', [PackageController::class, 'packageCreationPageAdmin'])->name('packageCreationPageAdmin');
+    Route::post( 
+    '/packages/create', 
+    [PackageController::class, 'packageCreationByAdmin']
+)->name('packageCreationByAdmin');
+    Route::get('/zone-creation', [ZonePriceController::class, 'zonePricePageAdmin'])->name('zonePricePageAdmin');
+    Route::post( 
+    '/zone/create', 
+    [ZonePriceController::class, 'zonePriceByAdmin']
+)->name('zonePriceByAdmin');
+
+
+//end routes of the packages zones prices
+
+
 //End Admin Routes. 
     });
 
@@ -117,6 +177,32 @@ Route::post('/fees/store', [FeesSetupController::class, 'storeFee'])->name('empl
 Route::post('/fees/deactivate/{id}', [FeesSetupController::class, 'deactivateFee'])->name('employer.fees.deactivate');
 Route::post('/employer/fees/reactivate', [FeesSetupController::class, 'reactivateFee'])->name('employer.fees.reactivate');
     // fees setup page deisgn above
+
+
+   // Admission related routes
+
+
+Route::get(
+    '/admission-form-config-show',
+    [AdmissionFormConfigController::class, 'employerAdmissionFormConfigPageShow']
+)->name('admission.form.config.page.show');
+
+Route::post(
+    '/admission-form-config-save',
+    [AdmissionFormConfigController::class, 'saveConfig']
+)->name('admission.form.config.store');
+
+Route::delete(
+    '/admission-form-config/{id}',
+    [AdmissionFormConfigController::class, 'delete']
+)->name('admission.form.config.delete');
+
+    // Tax setup route
+
+
+Route::get('/tax/setup', [TaxSetupController::class, 'employerTexCreationPageShow'])->name('employerTexCreationPageShow');
+Route::post('/tax/setup', [TaxSetupController::class, 'storeTax'])->name('tax.store');
+    // Tax setup route end
 
     Route::get('/programs-courses',[ProgramsAndCoursesController::class, 'employerProgramAndCourses'])->name('employerProgramAndCourses');
 
@@ -203,6 +289,33 @@ Route::get('/unit-bill-show', [UnitBillController::class, 'UnitBillView'])->name
           Route::get('/branch/programs/{programId}/edit-data', [ProgramsAndCoursesController::class, 'getProgramDetails'])->name('employer.program.details.ajax.branch');
 
 
+          // admission related routed
+
+
+     Route::get(
+    '/admission-token',
+    [AdmissionTokenController::class, 'branchAdmissionTokenPageShow']
+)->name('branchAdmissionTokenPageShow');
+
+Route::post(
+    '/admission-token/generate',
+    [AdmissionTokenController::class, 'generateToken']
+)->name('admission.token.generate');
+
+  // List of admissions
+   Route::get('/admission-form-review', [AdmissionPublicFormController::class, 'branchReviewAdmissionForm'])
+        ->name('branchReviewAdmissionForm');
+
+    // Dedicated Edit/Review Page (Full Page, No Modal)
+    Route::get('/admission-review/{id}', [AdmissionPublicFormController::class, 'editAdmission'])
+        ->name('branchAdmissionEdit');
+
+    // Action (Verify/Reject)
+    Route::post('/admission-action/{id}', [AdmissionPublicFormController::class, 'updateAction'])
+        ->name('branchAdmissionAction');
+        
+        // admission related routes end here
+
     // Learner OnBoard to Payment Confirm Entire procedure it
         
         Route::get('/learner-onboard', [LearnerOnboardController::class, 'learnerOnboard'])->name('learnerOnboard');
@@ -240,7 +353,105 @@ Route::get('/unit-bill-show', [UnitBillController::class, 'UnitBillView'])->name
 Route::get('/enrollments/{id}', [LearnerEnrollmentManageController::class, 'enrollmentManageView'])
     ->name('enrollments.enrollmentManageView');
 
-    // Learner OnBoard to Pyamnet Confirm procedure end it     
+    // Learner OnBoard to Pyamnet Confirm procedure end it    
+    
+    // instructor onboard and manage
+
+    Route::get('/instructor-onboard', [InstructorOnboardController::class, 'instructorOnboard'])->name('instructorOnboard');
+
+    Route::post('/instructor/create', [InstructorOnboardController::class, 'instructorDataOnboard'])->name('instructorDataOnboard');
+
+    // end it the instructor and manage
+    
+    // instructor courses asisgne
+
+
+        Route::get('/instructor-courses', [InstructorCourseAssignmentsController::class, 'InstructorCourseShow'])->name('InstructorCourseShow');
+   
+       
+    Route::post('/instructor-courses/store', 
+        [InstructorCourseAssignmentsController::class, 'store']
+    )->name('instructor.assignments.store');
+
+    Route::put('/instructor-courses/{assignment}', 
+        [InstructorCourseAssignmentsController::class, 'update']
+    )->name('instructor.assignments.update');
+
+    Route::post('/instructor-courses/toggle/{assignment}', 
+        [InstructorCourseAssignmentsController::class, 'toggleStatus']
+    )->name('instructor.assignments.toggle');
+
+    /* AJAX */
+    Route::get('/instructor-courses/ajax/program/{program}/courses',
+        [InstructorCourseAssignmentsController::class, 'getProgramCourses']
+    );
+
+    Route::get('/instructor-courses/ajax/instructor/{user}',
+        [InstructorCourseAssignmentsController::class, 'getInstructorInfo']
+    );
+
+    // end it the instructor assigne
+
+
+
+    // batch creation to assign to learners
+
+        Route::get('/batch-creation', [BatchController::class, 'batchCreationPageShow'])->name('batchCreationPageShow');
+
+        Route::get('/batches/create',
+        [BatchController::class, 'batchCreationPageShow']
+    )->name('batches.create');
+
+    Route::post('/batches/store',
+        [BatchController::class, 'batchDataStore']
+    )->name('batches.store');
+
+    
+    Route::get('/batch-learners', [BatchLearnerController::class, 'batchLearnerPageShow'])->name('batchLearnerPageShow');
+  
+    // Fetch learners + batches by program
+    Route::get(
+    '/batch-learners/program/{programId}',
+    [BatchLearnerController::class, 'getProgramLearners']
+)->name('branch.batch.learners.program');
+
+Route::post(
+    '/branch-executive/batch-learners/assign',
+    [BatchLearnerController::class, 'assignBatch']
+)->name('branch.batch.learners.assign');
+
+    // betch creation end to assign to learners batchLearnerPageShow
+
+
+    // Time table related routes
+
+     Route::get('/timetable', [TimeTableController::class, 'timeTableCreationPageShow'])
+        ->name('timeTableCreationPageShow');
+
+    // This is the route the error is complaining about
+    Route::post('/branch-executive/store-timetable', [TimeTableController::class, 'timeTableDataStore'])
+        ->name('timeTable.store');
+
+    Route::get('/timetable/data/{programId}', [TimeTableController::class, 'getProgramData'])
+        ->name('timeTable.getData');
+
+        // Dedicated Viewer Route
+Route::get('/branch-executive/timetable/view', [TimeTableController::class, 'timeTableViewPage'])
+     ->name('timetable.view');
+        
+        //End time table related routes
+
+
+        // Attendance master view route
+
+           Route::get('/attendance/fetch-details/{id}', [AttendanceController::class, 'getAttendanceDetailsJSON'])
+        ->name('executive.attendance.fetchDetails');
+
+// Branch Executive Specific
+Route::get('/master-attendance-view', [AttendanceController::class, 'branchAttendanceMasterView'])
+    ->name('branchAttendanceMasterView');
+
+        // end master view route
             
    Route::get('/Learner Enrollment', [LearnerEnrollmentController::class, 'branchExecutiveLearnerEnrollment'])->name('branchExecutiveLearnerEnrollment');
 
@@ -306,6 +517,31 @@ Route::get('/learner-enrollment-manage',[LearnerEnrollmentController::class,'Lea
 
         Route::get('/branch', [BranchController::class, 'InstructorBranch'])->name('InstructorBranch');
 
+
+        //my time table related routes
+
+
+        Route::get('/my-timetable', [TimeTableController::class, 'instructorTimeTableView'])
+     ->name('instructorTimeTableView');
+
+     Route::get('/learner-attendance', [LearnerAttendanceController::class, 'learnerAttendances'])
+     ->name('learnerAttendances');
+
+Route::get('/instructor/attendance/fetch-students/{timetableId}', [LearnerAttendanceController::class, 'fetchStudents'])
+     ->name('instructor.attendance.fetch');    // Store the attendance
+    Route::post('/store', [LearnerAttendanceController::class, 'storeAttendance'])->name('attendance.store');
+        
+    // Add this inside your instructor middleware group 
+Route::get('/instructor/view-history', [AttendanceController::class, 'instructorAttendanceView'])
+    ->name('instructorAttendanceView');
+
+// This is the specific URL the JavaScript 'fetch' looks for
+Route::get('/attendance/fetch-details/{id}', [AttendanceController::class, 'getAttendanceDetailsJSON'])
+        ->name('instructor.attendance.fetchDetails');
+    
+    
+
+    //end my time table related routes 
     
     });
 
@@ -320,6 +556,44 @@ Route::get('/learner-enrollment-manage',[LearnerEnrollmentController::class,'Lea
 
         Route::get('/branch', [BranchController::class, 'LearnerBranch'])->name('LearnerBranch');
 
+        
+        //Learner Enrollment View
+
+        Route::get('/enrollment/view', [LearnerEnrollmentViewController::class, 'learnerEnrollmentView'])->name('learnerEnrollmentView');
+
+
+        // Learner Enrollment View End
+
+        // learner Time table view
+
+        Route::get('/timetable/view', [TimeTableController::class, 'learnerViewTimeTable'])->name('learnerViewTimeTable');
+
+        // learner End time table 
+
+        // Batch related route
+
+        Route::get('/batch/view', [BatchLearnerController::class, 'learnerBatchView'])->name('learnerBatchView');
+
+
+        // Batch related route end
+
+
+        // Program related route
+        
+        Route::get('/program/view', [ProgramViewController::class, 'learnerProgramView'])->name('learnerProgramView');
+
+
+        // program related route end 
+
+
+        // Attendance route 
+     
+        Route::get('/attendance/view', [AttendanceController::class, 'learnerAttendanceView'])->name('learnerAttendanceView');
+
+
+        // Attendance route end 
+        
+        
         Route::get('/just-view',[LearnerEnrollmentController::class,'JustView'])->name('JustView');
     
     });

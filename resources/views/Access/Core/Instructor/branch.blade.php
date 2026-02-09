@@ -360,10 +360,7 @@
                         View Branch
                     </button> -->
 
-                    @php
-$branch = session('activeBranch');
-
-@endphp
+                   
 
 
 <div class="card mt-4">

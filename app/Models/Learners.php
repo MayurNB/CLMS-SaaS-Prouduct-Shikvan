@@ -33,4 +33,24 @@ class Learners extends Model
         // learner_id in enrollments references id in learners
         return $this->hasMany(Enrollment::class, 'learner_id', 'id');
     }
+
+    public function activeBatch()
+    {
+        return $this->hasOne(LearnerBatch::class, 'learner_id')
+            ->where('status', 'active');
+    }
+
+    /**
+     * Get all batch assignments for this learner.
+     */
+    public function learnerBatches()
+    {
+        return $this->hasMany(LearnerBatch::class, 'learner_id');
+    }
+
+    public function branch()
+{
+    // branch_id in learners table references id in branches table
+    return $this->belongsTo(Branch::class, 'branch_id');
+}
 }

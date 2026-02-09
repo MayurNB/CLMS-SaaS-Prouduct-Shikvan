@@ -54,11 +54,10 @@ class Enrollment extends Model
     /**
      * Define the relationship to the financial record for this enrollment.
      */
-    public function fee()
-    {
-        // One Enrollment has one EnrollmentFee record
-        return $this->hasOne(EnrollmentFee::class, 'enrollment_id', 'id');
-    }
+    public function enrollmentFee() // Changed from 'fee' to 'enrollmentFee'
+{
+    return $this->hasOne(EnrollmentFee::class, 'enrollment_id', 'id');
+}
 
     /**
      * Define the relationship to the courses included in this enrollment.

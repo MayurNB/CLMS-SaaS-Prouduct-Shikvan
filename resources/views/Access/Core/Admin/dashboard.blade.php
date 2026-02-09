@@ -192,8 +192,8 @@
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-puzzle') }}"></use>
             </svg> Price Package</a>
           <ul class="nav-group-items compact">
-            <li class="nav-item"><a class="nav-link" href="{{ url('/') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Creation Price & Package</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Update Price & Package </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('packageCreationPageAdmin') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Creation Price & Package</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('zonePricePageAdmin') }}"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Update Price & Package </a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/') }}" ><span class="nav-icon"><span class="nav-icon-bullet"></span></span> View
                 <svg class="icon icon-sm ms-2">
                   <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-external-link') }}"></use>

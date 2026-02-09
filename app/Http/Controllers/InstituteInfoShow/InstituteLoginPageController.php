@@ -110,54 +110,68 @@ class InstituteLoginPageController extends Controller
    public function InstructorInstitute()
   {
 
-            $programs = Program::all(); 
+            $user= Auth::user();
 
+            // Get correct branch ID from session
+    $branchId = session('activeBranch_id') ?? null;
 
-     // We count all rows in learner_catalog where the current employer is the creator.
-        $learnerCount = 0;
-        //Learner::where('created_by', $employerId)->count();
+            if (!$branchId) {
+        dd("No activeBranch in session. Fix your login/session setter.");
+    }
 
-        // 3. Calculate the Total Fees Collection (Revenue)
-        // We sum the 'raw_fee_amount' column for all entries created by this employer.
-        $totalFeesCollected = 0;
-        //Learner::where('created_by', $employerId)->sum('raw_fee_amount');
+    // 2. get institute_id using branchId
+    $instituteId = Branch::where('id', $branchId)->value('institute_id');
 
-        $programs =0;
-        
-        // Use a currency symbol (e.g., Indian Rupee)
-        $currencySymbol = '₹'; 
-     return view('Access.Core.Instructor.institute' , [
-            'learnerCount' => $learnerCount,
-            'totalFees' => $totalFeesCollected,
-            'currencySymbol' => $currencySymbol,
-            
-        ]);
+    if (!$instituteId) {
+        dd("Branch does not have institute_id.");
+    }
+
+    // 3. get institute info
+    $institute = InstituteInfo::where('id',$instituteId)->first();
+
+    if (!$institute) {
+        dd("Institute not found.");
+    }
+
+    // debug
+    // dd($institute->id);
+
+    // 4. return view
+    return view('Access.Core.Branch_Executive.institute', [
+        'institute' => $institute,
+    ]);
   }
 
   public function LearnerInstitute()
   {
 
-            $programs = Program::all(); 
+           $user= Auth::user();
 
+            // Get correct branch ID from session
+    $branchId = session('activeBranch_id') ?? null;
 
-     // We count all rows in learner_catalog where the current employer is the creator.
-        $learnerCount = 0;
-        //Learner::where('created_by', $employerId)->count();
+            if (!$branchId) {
+        dd("No activeBranch in session. Fix your login/session setter.");
+    }
 
-        // 3. Calculate the Total Fees Collection (Revenue)
-        // We sum the 'raw_fee_amount' column for all entries created by this employer.
-        $totalFeesCollected = 0;
-        //Learner::where('created_by', $employerId)->sum('raw_fee_amount');
+    // 2. get institute_id using branchId
+    $instituteId = Branch::where('id', $branchId)->value('institute_id');
 
-        $programs =0;
-        
-        // Use a currency symbol (e.g., Indian Rupee)
-        $currencySymbol = '₹'; 
+    if (!$instituteId) {
+        dd("Branch does not have institute_id.");
+    }
+
+    // 3. get institute info
+    $institute = InstituteInfo::where('id',$instituteId)->first();
+
+    if (!$institute) {
+        dd("Institute not found.");
+    }
+
+    // debug
+    // dd($institute->id);
      return view('Access.Core.Learner.institute' , [
-            'learnerCount' => $learnerCount,
-            'totalFees' => $totalFeesCollected,
-            'currencySymbol' => $currencySymbol,
-            
-        ]);
+        'institute' => $institute,
+    ]);
   }
 }

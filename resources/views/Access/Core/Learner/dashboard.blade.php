@@ -212,6 +212,55 @@ Employer
             <svg class="nav-icon">
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
             </svg> Profile</a></li>
+
+       <li class="nav-title"> Studyplace </li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('LearnerInstitute') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
+            </svg> My Institute </a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('LearnerBranch') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
+            </svg> My Branch </a></li>
+
+        <li class="nav-title"> AcademicPlace </li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('learnerEnrollmentView') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
+            </svg> My Enrollment </a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('learnerBatchView') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
+            </svg> My Batch </a></li>
+         <li class="nav-item"><a class="nav-link" href="{{ route('learnerProgramView') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
+            </svg> My Program </a></li>
+
+        <li class="nav-title"> Attendance & Schedule </li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('learnerViewTimeTable') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
+            </svg> My TimeTable </a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('learnerAttendanceView') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
+            </svg> My Attendance </a></li>
+        
+
+        <li class="nav-title"> Fees & Payments </li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('learnerViewTimeTable') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
+            </svg> My Fees </a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('LearnerBranch') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
+            </svg> My Payments </a></li>
+         <li class="nav-item"><a class="nav-link" href="{{ route('LearnerBranch') }}">
+            <svg class="nav-icon">
+              <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-drop') }}"></use>
+            </svg> My Program </a></li>
         <!-- <li class="nav-title">Branch Management </li>
         <li class="nav-item"><a class="nav-link" href="{{ url('employerProfile') }}">
             <svg class="nav-icon">

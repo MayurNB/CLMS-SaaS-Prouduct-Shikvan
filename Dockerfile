@@ -12,8 +12,17 @@ WORKDIR /var/www/html
 # Install System Dependencies
 # -----------------------------
 RUN apt-get update && apt-get install -y \
-    libpng-dev libonig-dev libxml2-dev zip unzip procps \
-    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd \
+    git \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    libicu-dev \
+    zip \
+    unzip \
+    procps \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd intl zip \
     && rm -rf /var/lib/apt/lists/*
 
 # -----------------------------
