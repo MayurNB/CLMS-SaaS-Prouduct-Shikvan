@@ -284,7 +284,7 @@ Route::get('/unit-bill-show', [UnitBillController::class, 'UnitBillView'])->name
 
         Route::get('/programs-courses',[ProgramsAndCoursesController::class, 'branchExecutiveProgramAndCourses'])->name('branchExecutiveProgramAndCourses');
 
-        Route::get('/programs/{programId}/details', [ProgramsAndCoursesController::class, 'getProgramDetails'])->name('getProgramDetails');
+        Route::get('/programs/{programId}/details', [ProgramsAndCoursesController::class, 'getProgramDetails'])->name('branch.program.details');
 
           Route::get('/branch/programs/{programId}/edit-data', [ProgramsAndCoursesController::class, 'getProgramDetails'])->name('employer.program.details.ajax.branch');
 
@@ -478,7 +478,7 @@ Route::get('/master-attendance-view', [AttendanceController::class, 'branchAtten
  Route::get('/program/{program_id}/courses', [LearnerEnrollmentController::class, 'fetchProgramCourses'])
         ->name('branchExecutive.program.courses');  
     
-    Route::post('/store', [LearnerEnrollmentController::class, 'saveEnrollment'])->name('enrollments.store');
+    Route::post('/store', [LearnerEnrollmentController::class, 'saveEnrollment'])->name('enrollments.save_manual');
     
 //Route::post('/enrollment/get-program-details', [LearnerEnrollmentController::class, 'getProgramDetails'])->name('enrollment.getProgramDetails');
 
