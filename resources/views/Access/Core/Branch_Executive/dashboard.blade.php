@@ -628,7 +628,7 @@ Employer
                                 <svg class="icon">
                                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-arrow-bottom') }}"></use>
                                 </svg>)</span></div>
-                        <div>Active Learners</div>
+                        <div>Active Learners </div>
                     </div>
                     <div class="dropdown">
                         <!-- <button class="btn btn-transparent text-white p-0" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
