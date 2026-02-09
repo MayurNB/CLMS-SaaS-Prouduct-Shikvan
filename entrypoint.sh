@@ -13,7 +13,7 @@ fi
 
 # 3. DATABASE MIGRATIONS
 # Migrations run here so the DB is ready before users arrive
-php artisan migrate --force --no-interaction --no-ansi \
+php artisan migrate --force --no-interaction --no-ansi --seed \
   || echo "Migration failed or skipped, but starting server anyway..."
 
 # 4. PERFORMANCE OPTIMIZATION
