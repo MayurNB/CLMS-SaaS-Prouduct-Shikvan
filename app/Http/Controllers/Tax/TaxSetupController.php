@@ -32,8 +32,13 @@ class TaxSetupController extends Controller
 {
    public function employerTexCreationPageShow()
 {
+
+    $user = Auth::user();
+
+    // Correctly get the institute ID via employer profile
+    $instituteId = $user->employerProfile?->institute?->id;
     // Fetch all tax records to display in the table
-    $taxes = \App\Models\TaxMaster::orderBy('created_at', 'desc')->get();
+    $taxes = \App\Models\TaxMaster::orderBy('created_at', 'desc')->where('institute_id',$instituteId)->where('status',1)->get();
     
     return view('Access.Core.Employer.tax_setup', compact('taxes'));
 }
@@ -41,13 +46,20 @@ class TaxSetupController extends Controller
 // Add this store method for the form submission
 public function storeTax(Request $request)
 {
-    $request->validate([
+     $user = Auth::user();
+
+    // Correctly get the institute ID via employer profile
+    $instituteId = $user->employerProfile?->institute?->id;
+
+
+   $request->validate([
         'tax_name' => 'required|string|max:255',
         'tax_percentage' => 'required|numeric|between:0,99.99',
     ]);
 
     \App\Models\TaxMaster::create([
         'id' => \Illuminate\Support\Str::uuid(),
+        'institute_id' => $instituteId,
         'tax_name' => $request->tax_name,
         'tax_code' => $request->tax_code,
         'tax_percentage' => $request->tax_percentage,

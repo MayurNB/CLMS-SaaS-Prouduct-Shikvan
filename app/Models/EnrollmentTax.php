@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EnrollmentTax extends Model {
     protected $fillable = [
-        'enrollment_fees_id', 'tax_master_id', 'tax_name_snapshot', 
+       'institute_id','enrollment_fees_id', 'tax_master_id', 'tax_name_snapshot', 
         'tax_percentage_snapshot', 'net_amount', 'tax_amount', 
         'final_grand_total', 'status', 'created_by'
     ];

@@ -393,7 +393,7 @@
                         </div>
 
                         <div class="ent-total ent-row">
-                                                      <h7>Institutional Fees: <span>₹{{ $extraCommonTotal }}</span> </h7>
+                                                      <h7>Institutional Fees: <span>₹{{ $extraCommonTotal }} + TAX </span> </h7>
 
                         </div>
 

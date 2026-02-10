@@ -15,6 +15,7 @@ class TaxMaster extends Model
     // 3. Ensure 'id' is in the fillable array so it can be mass-assigned
     protected $fillable = [
         'id',
+        'institute_id',
         'tax_name',
         'tax_code',
         'tax_percentage',

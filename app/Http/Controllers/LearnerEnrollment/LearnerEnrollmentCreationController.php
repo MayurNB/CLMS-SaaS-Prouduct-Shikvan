@@ -80,7 +80,7 @@ $programs = Program::where('is_active', 1)
 
         }
 
-        $query = Learners::where('branch_id', $branchId);
+        $query = Learners::where('branch_id', $branchId)->where('status','initial_entry');
 
         if (!empty($learnerCode)) {
             $query->where('learner_code', $learnerCode);
@@ -176,6 +176,8 @@ public function storeEnrollment(Request $request)
 
         $branch = Branch::findOrFail($branchId);
 
+        $LearnerData = Learners :: where('id',$request->learner_id)->first();
+
         /* -----------------------------
          | 1. CREATE ENROLLMENT
          -----------------------------*/
@@ -258,12 +260,64 @@ public function storeEnrollment(Request $request)
         }
 
         /* -----------------------------
-         | 6. ENROLLMENT FEES SNAPSHOT
+         | 6. EACH TAX COLLECT 
+         -----------------------------*/
+        $taxMasters = DB::table('tax_masters')
+        ->where('institute_id', $branch->institute_id)
+        ->where('status', 1)
+        ->get();
+
+        /* -----------------------------
+         | 7. TAX APPLY ON FINAL FEES
+         -----------------------------*/
+        $totalTaxAmount = 0;
+        $enrollmentFeesId = (string) Str::uuid(); // reuse later
+
+    foreach ($taxMasters as $tax) 
+    {
+
+        $taxAmount = round(($finalTotal * $tax->tax_percentage) / 100, 2);
+
+        $totalTaxAmount += $taxAmount;
+
+        DB::table('enrollment_taxes')->insert([
+        'id'                      => (string) Str::uuid(),
+        'institute_id'            => $branch->institute_id,
+        'enrollment_fees_id'      => $enrollmentFeesId,
+        'tax_master_id'           => $tax->id,
+        'tax_name_snapshot'       => $tax->tax_name,
+        'tax_percentage_snapshot' => $tax->tax_percentage,
+        'net_amount'              => $finalTotal,
+        'tax_amount'              => $taxAmount,
+        'final_grand_total'       => $finalTotal + $taxAmount,
+        'created_by'              => Auth::id(),
+        'created_at'              => now(),
+        'updated_at'              => now(),
+        ]);
+    }
+
+    if ($taxMasters->isEmpty()) 
+    {
+      $finalAmountWithTax = $finalTotal;
+    }
+
+     /* -----------------------------
+         | 8. FINAL GRAND FEES
+         -----------------------------*/
+      
+       $allCombinedTax = round($totalTaxAmount, 2);
+
+       $finalAmountWithTax = round($finalTotal + $allCombinedTax, 2);
+
+ 
+
+        /* -----------------------------
+         | 9. ENROLLMENT FEES SNAPSHOT
          -----------------------------*/
         DB::table('enrollment_fees')->insert([
-            'id'                => (string) Str::uuid(),
+            'id'                => $enrollmentFeesId,
             'enrollment_id'     => $enrollmentId,
-            'total_fee_charged' => $finalTotal,
+            'total_fee_charged' => $finalAmountWithTax,
             'paid_amount'       => 0,
             'discount_applied'  => $discountAmount,
             'fee_status'        => 'pending',
@@ -272,7 +326,7 @@ public function storeEnrollment(Request $request)
         ]);
 
         /* -----------------------------
-         | 7. DISCOUNT SNAPSHOT
+         | 10. DISCOUNT SNAPSHOT
          -----------------------------*/
         if ($discount && $discountAmount > 0) {
             DB::table('enrollment_discounts')->insert([
@@ -286,7 +340,7 @@ public function storeEnrollment(Request $request)
         }
 
         /* -----------------------------
-         | 8. APPLIED FEES SNAPSHOT
+         | 11. APPLIED FEES SNAPSHOT
          -----------------------------*/
         foreach ($appliedFees as $fee) {
             DB::table('enrollment_applied_fees')->insert([
@@ -299,6 +353,22 @@ public function storeEnrollment(Request $request)
                 'updated_at'    => now(),
             ]);
         }
+
+
+        /* -----------------------------
+         | 12. LOG ACTIVITY CAPTURE
+         -----------------------------*/
+            DB::table('activity_logs')->insert([
+    'id'            => (string) Str::uuid(),
+    'user_id'       => $LearnerData->user_id,      // learner
+    'activity_type' => 'Enrollment Confirmed',
+    'description'   => "Enrollment confirmed. Payment pending.",
+    'loggable_id'   => Auth::id(),              
+    'loggable_type' => 'Branch Executive',
+    'created_at'    => now(),
+    'updated_at'    => now(),
+]);
+
 
         DB::commit();
 
