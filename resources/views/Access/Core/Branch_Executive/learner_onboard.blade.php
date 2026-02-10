@@ -401,6 +401,7 @@
 
         @forelse($LearnersData ?? [] as $learner)
             <div class="clms-item">
+                <div class="clms-meta">{{ $learner->learner_code }}</div>
                 <div class="clms-name">
                     {{ $learner->raw_learner_name }}
                 </div>
