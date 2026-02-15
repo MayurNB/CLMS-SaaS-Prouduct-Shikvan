@@ -87,151 +87,296 @@
     <canvas id="canvas" class="hidden"></canvas>
 
     <script>
-        let streams = {};
-        const canvas = document.getElementById('canvas');
+let streams = {};
+const canvas = document.getElementById('canvas');
 
-        async function compressImage(base64Str) {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.src = base64Str;
-                img.onload = () => {
-                    const MAX_WIDTH = 1000;
-                    let width = img.width, height = img.height;
-                    if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-                    canvas.width = width; canvas.height = height;
-                    canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-                    resolve(canvas.toDataURL('image/jpeg', 0.6));
-                };
-            });
-        }
+/* ===============================
+   IMAGE COMPRESSION
+================================ */
+async function compressImage(base64Str) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.src = base64Str;
+        img.onload = () => {
+            const MAX_WIDTH = 1000;
+            let width = img.width, height = img.height;
 
-        async function verifyAdmissionToken(mode) {
-            const token = document.getElementById('tokenInput').value;
-            if(!token) return alert("Enter Token");
-            try {
-                const response = await fetch('/public/admission/verify-token', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                    body: JSON.stringify({ token: token })
-                });
-                const data = await response.json();
-                if(data.status) {
-                    if(data.mode === 'track') alert("Status: " + data.admission_status);
-                    else renderForm(data);
-                } else alert(data.message);
-            } catch(e) { alert("Error connecting to server."); }
-        }
-
-        function renderForm(data) {
-            document.getElementById('tokenOverlay').classList.add('hidden');
-            document.getElementById('mainPortal').classList.remove('hidden');
-            document.getElementById('branchName').innerText = data.branch.branch_name;
-            document.getElementById('instName').innerText = data.institute.institute_name;
-            document.getElementById('instLogo').src = data.institute.logo_url;
-            document.getElementById('activeTokenDisplay').innerText = data.token;
-            document.getElementById('tokenHidden').value = data.token;
-
-            const container = document.getElementById('formSectionsContainer');
-            container.innerHTML = "";
-            
-            const groups = data.fields.reduce((acc, f) => {
-                acc[f.type] = acc[f.type] || [];
-                acc[f.type].push(f);
-                return acc;
-            }, {});
-
-            let step = 1;
-            for (const [type, fields] of Object.entries(groups)) {
-                let sectionHtml = `<div class="section-card">
-                    <h2 class="text-2xl font-black text-blue-900 mb-6 flex items-center gap-3">
-                        <span class="bg-blue-600 text-white w-8 h-8 rounded-lg flex items-center justify-center text-sm">${step++}</span>
-                        ${type} Details
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">`;
-
-                fields.forEach(f => {
-                    if(f.type === 'Documents') {
-                        sectionHtml += `<div class="col-span-2 md:col-span-1">
-                            <label class="input-label">${f.field_label}</label>
-                            <div class="doc-capture-box">
-                                <video id="vid-${f.field_name}" autoplay playsinline class="hidden"></video>
-                                <img id="img-${f.field_name}" class="hidden">
-                                <i id="icon-${f.field_name}" class="fa fa-file-invoice text-gray-200 text-4xl"></i>
-                            </div>
-                            <div class="flex gap-2">
-                                <button type="button" onclick="openCam('${f.field_name}')" class="flex-1 bg-gray-800 text-white p-2 rounded-lg text-[10px] font-bold">SCAN</button>
-                                <button type="button" onclick="capture('${f.field_name}')" id="cap-${f.field_name}" class="hidden flex-1 bg-green-600 text-white p-2 rounded-lg text-[10px] font-bold">CAPTURE</button>
-                                <label class="flex-1 bg-gray-200 text-center p-2 rounded-lg text-[10px] font-bold cursor-pointer">UPLOAD <input type="file" class="hidden" onchange="fileUp(event, '${f.field_name}')"></label>
-                            </div>
-                            <input type="hidden" name="form_data[${f.field_name}]" id="input-${f.field_name}">
-                        </div>`;
-                    } else {
-                        sectionHtml += `<div>
-                            <label class="input-label">${f.field_label} ${f.is_required ? '<span class="text-red-500">*</span>' : ''}</label>
-                            <input type="text" name="form_data[${f.field_name}]" class="input-field" ${f.is_required ? 'required' : ''}>
-                        </div>`;
-                    }
-                });
-                sectionHtml += `</div></div>`;
-                container.insertAdjacentHTML('beforeend', sectionHtml);
+            if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width;
+                width = MAX_WIDTH;
             }
+
+            canvas.width = width;
+            canvas.height = height;
+            canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+
+            resolve(canvas.toDataURL('image/jpeg', 0.7));
+        };
+    });
+}
+
+/* ===============================
+   VERIFY TOKEN
+================================ */
+async function verifyAdmissionToken(mode) {
+    const token = document.getElementById('tokenInput').value;
+    if (!token) return alert("Enter Token");
+
+    try {
+        const response = await fetch('/public/admission/verify-token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ token })
+        });
+
+        const data = await response.json();
+
+        if (!data.status) {
+            alert(data.message);
+            return;
         }
 
-        // Camera and Submission functions remain the same as your previous logic...
-        async function openCam(type) {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: type === 'profile' ? true : { facingMode: "environment" } 
-                });
-                streams[type] = stream;
-                const v = document.getElementById(`vid-${type}`);
-                v.srcObject = stream;
-                v.classList.remove('hidden');
-                document.getElementById(`cap-${type}`).classList.remove('hidden');
-                if(document.getElementById(`icon-${type}`)) document.getElementById(`icon-${type}`).classList.add('hidden');
-            } catch (err) { alert("Camera access denied."); }
+        if (mode === 'track') {
+            alert("Status: " + data.admission_status);
+        } else {
+            renderForm(data);
         }
 
-        async function capture(type) {
-            const v = document.getElementById(`vid-${type}`);
-            canvas.width = v.videoWidth; canvas.height = v.videoHeight;
-            canvas.getContext('2d').drawImage(v, 0, 0);
-            const compressed = await compressImage(canvas.toDataURL('image/jpeg', 0.9));
-            document.getElementById(`img-${type}`).src = compressed;
-            document.getElementById(`img-${type}`).classList.remove('hidden');
-            v.classList.add('hidden');
-            document.getElementById(`cap-${type}`).classList.add('hidden');
-            document.getElementById(`input-${type}`).value = compressed;
-            if(streams[type]) streams[type].getTracks().forEach(t => t.stop());
+    } catch (e) {
+        alert("Error connecting to server.");
+    }
+}
+
+/* ===============================
+   RENDER FORM
+================================ */
+function renderForm(data) {
+    document.getElementById('tokenOverlay').classList.add('hidden');
+    document.getElementById('mainPortal').classList.remove('hidden');
+
+    document.getElementById('branchName').innerText = data.branch.branch_name;
+    document.getElementById('instName').innerText = data.institute.institute_name;
+    document.getElementById('instLogo').src = data.institute.logo_url;
+    document.getElementById('activeTokenDisplay').innerText = data.token;
+    document.getElementById('tokenHidden').value = data.token;
+
+    const container = document.getElementById('formSectionsContainer');
+    container.innerHTML = "";
+
+    const groups = data.fields.reduce((acc, f) => {
+        acc[f.type] = acc[f.type] || [];
+        acc[f.type].push(f);
+        return acc;
+    }, {});
+
+    let step = 1;
+
+    for (const [type, fields] of Object.entries(groups)) {
+        let sectionHtml = `
+        <div class="section-card">
+            <h2 class="text-2xl font-black text-blue-900 mb-6 flex items-center gap-3">
+                <span class="bg-blue-600 text-white w-8 h-8 rounded-lg flex items-center justify-center text-sm">
+                    ${step++}
+                </span>
+                ${type} Details
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        `;
+
+        fields.forEach(f => {
+            if (f.type === 'Documents') {
+                sectionHtml += `
+                <div class="col-span-2 md:col-span-1">
+                    <label class="input-label">${f.field_label}</label>
+
+                    <div class="doc-capture-box">
+                        <video id="vid-${f.field_name}" autoplay playsinline class="hidden"></video>
+                        <img id="img-${f.field_name}" class="hidden">
+                        <i id="icon-${f.field_name}" class="fa fa-file-invoice text-gray-200 text-4xl"></i>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button type="button" onclick="openCam('${f.field_name}')"
+                            class="flex-1 bg-gray-800 text-white p-2 rounded-lg text-[10px] font-bold">
+                            SCAN
+                        </button>
+
+                        <button type="button" onclick="capture('${f.field_name}')"
+                            id="cap-${f.field_name}"
+                            class="hidden flex-1 bg-green-600 text-white p-2 rounded-lg text-[10px] font-bold">
+                            CAPTURE
+                        </button>
+
+                        <label class="flex-1 bg-gray-200 text-center p-2 rounded-lg text-[10px] font-bold cursor-pointer">
+                            UPLOAD
+                            <input type="file" class="hidden"
+                                onchange="fileUp(event, '${f.field_name}')">
+                        </label>
+                    </div>
+
+                    <input type="hidden" name="form_data[${f.field_name}]"
+                        id="input-${f.field_name}">
+                </div>
+                `;
+            } else {
+                sectionHtml += `
+                <div>
+                    <label class="input-label">
+                        ${f.field_label}
+                        ${f.is_required ? '<span class="text-red-500">*</span>' : ''}
+                    </label>
+
+                    <input type="text"
+                        name="form_data[${f.field_name}]"
+                        class="input-field"
+                        ${f.is_required ? 'required' : ''}>
+                </div>
+                `;
+            }
+        });
+
+        sectionHtml += `</div></div>`;
+        container.insertAdjacentHTML('beforeend', sectionHtml);
+    }
+}
+
+/* ===============================
+   CAMERA
+================================ */
+async function openCam(type) {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" }
+        });
+
+        streams[type] = stream;
+
+        const v = document.getElementById(`vid-${type}`);
+        v.srcObject = stream;
+        v.classList.remove('hidden');
+
+        document.getElementById(`cap-${type}`).classList.remove('hidden');
+        if (document.getElementById(`icon-${type}`))
+            document.getElementById(`icon-${type}`).classList.add('hidden');
+
+    } catch (err) {
+        alert("Camera access denied.");
+    }
+}
+
+async function capture(type) {
+    const v = document.getElementById(`vid-${type}`);
+
+    canvas.width = v.videoWidth;
+    canvas.height = v.videoHeight;
+    canvas.getContext('2d').drawImage(v, 0, 0);
+
+    const base64 = canvas.toDataURL('image/jpeg', 0.9);
+    const compressed = await compressImage(base64);
+
+    const url = await uploadToCloudinary(compressed);
+    if (!url) return;
+
+    document.getElementById(`input-${type}`).value = url;
+
+    document.getElementById(`img-${type}`).src = compressed;
+    document.getElementById(`img-${type}`).classList.remove('hidden');
+
+    v.classList.add('hidden');
+    document.getElementById(`cap-${type}`).classList.add('hidden');
+
+    if (streams[type])
+        streams[type].getTracks().forEach(t => t.stop());
+}
+
+/* ===============================
+   FILE UPLOAD
+================================ */
+function fileUp(e, type) {
+    const reader = new FileReader();
+
+    reader.onload = async () => {
+        const compressed = await compressImage(reader.result);
+        const url = await uploadToCloudinary(compressed);
+        if (!url) return;
+
+        document.getElementById(`input-${type}`).value = url;
+
+        document.getElementById(`img-${type}`).src = compressed;
+        document.getElementById(`img-${type}`).classList.remove('hidden');
+
+        if (document.getElementById(`icon-${type}`))
+            document.getElementById(`icon-${type}`).classList.add('hidden');
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+}
+
+/* ===============================
+   SUBMIT FORM
+================================ */
+async function handleFormSubmit(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerText = "SUBMITTING...";
+
+    try {
+        const response = await fetch('/public/admission/submit', {
+            method: 'POST',
+            body: new FormData(e.target),
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        });
+
+        const res = await response.json();
+
+        if (res.status) {
+            alert("Application Submitted!");
+            window.location.reload();
+        } else {
+            alert(res.message);
+            btn.disabled = false;
+            btn.innerText = "SUBMIT APPLICATION";
         }
 
-        function fileUp(e, type) {
-            const reader = new FileReader();
-            reader.onload = async () => {
-                const compressed = await compressImage(reader.result);
-                document.getElementById(`img-${type}`).src = compressed;
-                document.getElementById(`img-${type}`).classList.remove('hidden');
-                document.getElementById(`input-${type}`).value = compressed;
-                if(document.getElementById(`icon-${type}`)) document.getElementById(`icon-${type}`).classList.add('hidden');
-            };
-            reader.readAsDataURL(e.target.files[0]);
-        }
+    } catch (err) {
+        alert("Server error");
+        btn.disabled = false;
+        btn.innerText = "SUBMIT APPLICATION";
+    }
+}
 
-        async function handleFormSubmit(e) {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = true; btn.innerText = "SUBMITTING...";
-            try {
-                const response = await fetch('/public/admission/submit', {
-                    method: 'POST',
-                    body: new FormData(e.target),
-                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
-                });
-                const res = await response.json();
-                if(res.status) { alert("Application Submitted!"); window.location.reload(); }
-                else { alert(res.message); btn.disabled = false; btn.innerText = "SUBMIT APPLICATION"; }
-            } catch (err) { alert("Server error"); btn.disabled = false; }
+/* ===============================
+   CLOUDINARY UPLOAD
+================================ */
+async function uploadToCloudinary(base64Image) {
+    const formData = new FormData();
+    formData.append("file", base64Image);
+    formData.append("upload_preset", "admission_unsigned");
+
+    const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dx5q7ht0x/image/upload",
+        {
+            method: "POST",
+            body: formData
         }
-    </script>
+    );
+
+    const data = await response.json();
+
+    if (!data.secure_url) {
+        alert("Cloudinary upload failed");
+        return null;
+    }
+
+    return data.secure_url;
+}
+</script>
 </body>
 </html>

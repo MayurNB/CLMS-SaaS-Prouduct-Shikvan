@@ -222,7 +222,7 @@
                 @endphp
                 
                 <img id="preview-{{ $field->field_name }}" 
-                     src="{{ $filePath ? asset('storage/'.$filePath) : 'https://ui-avatars.com/api/?name=No+Image' }}" 
+                     src="{{ $filePath }}" 
                      class="w-100 h-100 style-contain" style="object-fit: contain;">
                 
                 <video id="video-{{ $field->field_name }}" class="d-none w-100 h-100" style="object-fit: cover;" autoplay playsinline></video>

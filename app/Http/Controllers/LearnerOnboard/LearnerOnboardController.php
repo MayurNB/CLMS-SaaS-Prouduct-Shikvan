@@ -77,6 +77,8 @@ class LearnerOnboardController extends Controller
 
             $branchId = $branchRole->branch_id;
 
+            $BranchData = Branch ::where('id',$branchId)->first();
+
             // 2️⃣ Get learner role_id
             $learnerRoleId = DB::table('roles')
                 ->where('name', 'Learner')
@@ -91,6 +93,11 @@ class LearnerOnboardController extends Controller
             $userId = (string) Str::uuid();
             $username = strtolower($validated['first_name'] . '.' . $validated['last_name']) . rand(100, 999);
 
+            
+           
+            
+            
+            
             DB::table('users')->insert([
                 'id' => $userId,
                 'name' => trim($validated['first_name'] . ' ' . $validated['last_name']),
@@ -138,6 +145,7 @@ class LearnerOnboardController extends Controller
             $learnerCode = 'LRN-' . strtoupper(Str::random(6));
             DB::table('learners')->insert([
                 'id' => (string) Str::uuid(),
+                'institute_id' =>  $BranchData->institute_id, 
                 'raw_learner_name' => trim($validated['first_name'] . ' ' . $validated['last_name']),
                 'raw_email' => $validated['email'],
                 'raw_phone' => $validated['phone'],

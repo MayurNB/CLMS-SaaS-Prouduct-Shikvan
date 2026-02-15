@@ -36,6 +36,8 @@ use App\Models\LearnerAttendance;
 use App\Models\LectureAttendance;
 use Illuminate\Support\Facades\Log;
 
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+
 
 
 use App\Models\AdmissionFormConfig; // Ensure this model exists
@@ -114,102 +116,113 @@ class AdmissionPublicFormController extends Controller
     /**
      * Submit admission form (ONE TIME)
      */
-    public function submitAdmission(Request $request)
+   public function submitAdmission(Request $request)
 {
+    Log::info('===== NEW ADMISSION REQUEST =====');
+    Log::info('Full Request Data:', $request->all());
+
+    //dd(config('cloudinary.cloud_url'));
+
     DB::beginTransaction();
 
     try {
-        // Validate and Lock Token
+
+        // ---------------- TOKEN CHECK ----------------
+        $tokenValue = $request->get('token');
+        Log::info('Token Received:', ['token' => $tokenValue]);
+
+        if (!$tokenValue) {
+            throw new \Exception('Token missing in request');
+        }
+
         $token = DB::table('admission_tokens')
-            ->where('token', $request->token)
-            ->lockForUpdate()
+            ->where('token', trim($tokenValue))
             ->first();
 
-        if (!$token || $token->status !== 'active') {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'This token is no longer valid or has already been used.'
-            ]);
+        Log::info('Token DB Result:', ['token_record' => $token]);
+
+        if (!$token) {
+            throw new \Exception('Token not found in database');
+        }
+
+        if ($token->status !== 'active') {
+            throw new \Exception('Token is not active');
+        }
+
+        // ---------------- FORM DATA ----------------
+        $formDataRaw = $request->get('form_data');
+        Log::info('Form Data Raw:', ['form_data' => $formDataRaw]);
+
+        if (!$formDataRaw || !is_array($formDataRaw)) {
+            throw new \Exception('form_data is missing or not array');
         }
 
         $processedFormData = [];
 
-        // ================= PROCESS FORM DATA =================
-        if ($request->has('form_data')) {
-            foreach ($request->form_data as $field => $value) {
+        foreach ($formDataRaw as $field => $value) {
 
-                /* 1. COMPRESSED BASE64 IMAGE (From Camera or JS-compressed Upload) */
-                if (is_string($value) && str_starts_with($value, 'data:image')) {
-                    
-                    // Extract data from "data:image/jpeg;base64,xxxx"
-                    $imageData = explode(',', $value)[1];
-                    $imageDecoded = base64_decode($imageData);
+    if (empty($value)) {
+        $processedFormData[$field] = null;
+        continue;
+    }
 
-                    // Create unique file name inside institute folder
-                    $fileName = "admissions/{$token->institute_id}/" . $field . '_' . Str::uuid() . '.jpg';
-                    
-                    // Save to Public Storage
-                    Storage::disk('public')->put($fileName, $imageDecoded);
-                    $processedFormData[$field] = $fileName;
-                } 
+    // If it is Cloudinary URL, just store it
+    if (is_string($value) && str_contains($value, 'res.cloudinary.com')) {
+        $processedFormData[$field] = $value;
+    } else {
+        $processedFormData[$field] = is_string($value) ? trim($value) : $value;
+    }
+}
 
-                /* 2. DIRECT FILE UPLOAD (Fallback) */
-                else if ($request->hasFile("form_data.$field")) {
-                    $path = $request->file("form_data.$field")->store(
-                        "admissions/{$token->institute_id}", 
-                        'public'
-                    );
-                    $processedFormData[$field] = $path;
-                } 
-
-                /* 3. STANDARD TEXT FIELDS */
-                else {
-                    $processedFormData[$field] = $value;
-                }
-            }
-        }
-
-        // ================= INSERT ADMISSION RECORD =================
+        // ---------------- INSERT ----------------
         DB::table('admission')->insert([
-            'id'           => Str::uuid(),
-            'institute_id' => $token->institute_id,
-            'branch_id'    => $token->branch_id,
-            'token_id'     => $token->id,
-            // Capture any direct fields if necessary (like name/email if not in form_data)
-            'learner_name' => trim($processedFormData['learner_first_name'] . ' ' . $processedFormData['learner_surname']),
-            'phone_no'     => $processedFormData['phone'],
-            'email'        => $processedFormData['email'],
-            'form_data'    => json_encode($processedFormData),
-            'status'       => 'pending',
-            'created_at'   => now(),
-            'updated_at'   => now()
-        ]);
+    'id'           => (string) \Illuminate\Support\Str::uuid(),
+    'institute_id' => $token->institute_id,
+    'branch_id'    => $token->branch_id,
+    'token_id'     => $token->id,
+    'learner_name' => trim(
+        ($processedFormData['learner_first_name'] ?? '') . ' ' .
+        ($processedFormData['learner_surname'] ?? '')
+    ) ?: 'Unknown',
+    'phone_no'     => $processedFormData['phone'] ?? '0000000000',
+    'email'        => $processedFormData['email'] ?? null,
+    'form_data'    => json_encode($processedFormData), // ✅ FIXED
+    'status'       => 'pending',
+    'created_at'   => now(),
+    'updated_at'   => now()
+]);
 
-        // ================= MARK TOKEN AS USED =================
+// ✅ Mark token used
         DB::table('admission_tokens')
             ->where('id', $token->id)
             ->update(['status' => 'used']);
 
         DB::commit();
 
+        Log::info('===== ADMISSION SUCCESS =====');
+
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => 'Admission submitted successfully'
         ]);
 
     } catch (\Throwable $e) {
+
         DB::rollBack();
-        Log::error("Admission Error: " . $e->getMessage());
+
+        Log::error('===== ADMISSION FAILURE =====', [
+            'error_message' => $e->getMessage(),
+            'error_line' => $e->getLine(),
+            'error_file' => $e->getFile()
+        ]);
 
         return response()->json([
-            'status'  => false,
-            'message' => 'Internal server error',
-            'error'   => $e->getMessage() 
+            'status' => false,
+            'message' => 'Server Error',
+            'error' => $e->getMessage()
         ], 500);
     }
 }
-
     /**
      * Track admission using token
      */
